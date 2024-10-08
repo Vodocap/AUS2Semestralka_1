@@ -9,9 +9,9 @@ public abstract class StromNode {
     private int cislo;
     private String popis;
     private StromNode[] zoznam;
-    private Kluc kluc;
+    private Kluce kluc;
 
-    public StromNode (int paCislo, String paPopis, StromNode[] paZoznam, Kluc paKluc) {
+    public StromNode (int paCislo, String paPopis, StromNode[] paZoznam, Kluce paKluc) {
         this.cislo = paCislo;
         this.popis = paPopis;
         this.zoznam = paZoznam;

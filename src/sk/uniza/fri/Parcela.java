@@ -7,7 +7,7 @@ package sk.uniza.fri;
  */
 public class Parcela extends StromNode {
 
-    public Parcela(int paCislo, String paPopis, StromNode[] paZoznam, Kluc paKluc) {
+    public Parcela(int paCislo, String paPopis, StromNode[] paZoznam, Kluce paKluc) {
         super(paCislo, paPopis, paZoznam, paKluc);
     }
 }
