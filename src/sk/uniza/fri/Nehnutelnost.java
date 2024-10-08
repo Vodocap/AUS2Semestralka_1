@@ -5,5 +5,9 @@ package sk.uniza.fri;
  *
  * @author matus
  */
-public class Nehnutelnost {
+public class Nehnutelnost extends StromNode {
+
+    public Nehnutelnost(int paCislo, String paPopis, StromNode[] paZoznam, Kluc paKluc) {
+        super(paCislo, paPopis, paZoznam, paKluc);
+    }
 }

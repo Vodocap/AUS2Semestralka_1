@@ -5,5 +5,9 @@ package sk.uniza.fri;
  *
  * @author matus
  */
-public class Parcela {
+public class Parcela extends StromNode {
+
+    public Parcela(int paCislo, String paPopis, StromNode[] paZoznam, Kluc paKluc) {
+        super(paCislo, paPopis, paZoznam, paKluc);
+    }
 }
