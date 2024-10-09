@@ -5,6 +5,9 @@ package sk.uniza.fri;
  *
  * @author matus
  */
+
+// kluc by mal byt vediet byt cokolvek
+
 public class Kluce {
     private double[] kluce;
     private int aktIndex;

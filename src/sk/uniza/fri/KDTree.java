@@ -6,6 +6,12 @@ package sk.uniza.fri;
  *
  * @author matus
  */
+
+// lubovolny pocet dimenzi, kluc moze byt cokolvek, definujeme kluc cez genericku triedu
+    // vetvenie podla komparatorov ktore u rozne
+    //pre kazdy level wsa definuje komparator
+    //compareto treba pridat aj atribut level
+
 public class KDTree {
 
     public KDTree(int pocetK) {
@@ -13,7 +19,7 @@ public class KDTree {
 
     }
 
-    public boolean instert(INode paNode) {
+    public boolean instert(StromNode paNode) {
         return true;
     }
 
