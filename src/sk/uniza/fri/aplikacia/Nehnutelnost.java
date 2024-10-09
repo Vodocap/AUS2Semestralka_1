@@ -1,4 +1,7 @@
-package sk.uniza.fri;
+package sk.uniza.fri.aplikacia;
+
+import sk.uniza.fri.struktura.StromNode;
+import sk.uniza.fri.struktura.Kluce;
 
 /**
  * 8. 10. 2024 - 14:38

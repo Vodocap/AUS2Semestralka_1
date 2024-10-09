@@ -1,4 +1,4 @@
-package sk.uniza.fri;
+package sk.uniza.fri.struktura;
 
 
 /**

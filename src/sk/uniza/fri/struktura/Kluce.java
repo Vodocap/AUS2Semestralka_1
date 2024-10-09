@@ -1,4 +1,4 @@
-package sk.uniza.fri;
+package sk.uniza.fri.struktura;
 
 /**
  * 8. 10. 2024 - 14:38
@@ -7,9 +7,9 @@ package sk.uniza.fri;
  */
 
 // kluc by mal byt vediet byt cokolvek
-
+// s duplicitou klucov
 public class Kluce {
-    private double[] kluce;
+    private double[] kluce; /// takto asi nie, kluc moze byt cokolvek
     private int aktIndex;
     public Kluce(int paPocetKlucov) {
         this.kluce = new double[paPocetKlucov];
