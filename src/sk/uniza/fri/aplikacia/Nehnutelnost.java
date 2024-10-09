@@ -10,6 +10,7 @@ import sk.uniza.fri.struktura.Kluce;
  */
 //ulozit do viacej stromov lebo nimi netreba setrit
     //konkretne 3 stromy v jednom parcely v druhom nehnutelnosti a v tretom oboje
+    //treba vediet aj profiler
 public class Nehnutelnost extends StromNode {
 
     public Nehnutelnost(int paCislo, String paPopis, StromNode[] paZoznam, Kluce paKluc) {
