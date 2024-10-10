@@ -1,7 +1,6 @@
 package sk.uniza.fri.aplikacia;
 
 import sk.uniza.fri.struktura.StromNode;
-import sk.uniza.fri.struktura.Kluce;
 
 /**
  * 8. 10. 2024 - 14:38
@@ -13,8 +12,8 @@ import sk.uniza.fri.struktura.Kluce;
     //treba vediet aj profiler
 public class Nehnutelnost extends StromNode {
 
-    public Nehnutelnost(int paCislo, String paPopis, StromNode[] paZoznam, Kluce paKluc) {
-        super(paCislo, paPopis, paZoznam, paKluc);
+    public Nehnutelnost() {
+
     }
 
 

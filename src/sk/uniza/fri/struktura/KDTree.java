@@ -12,15 +12,52 @@ package sk.uniza.fri.struktura;
     //pre kazdy level wsa definuje komparator
     //compareto treba pridat aj atribut level
 
-public class KDTree {
-
-    public KDTree(int pocetK) {
+public class KDTree<T> {
+    private StromNode<T> root;
+    private int depth;
+    private int level;
+    public KDTree() {
 
 
     }
+    public void emplaceRoot(StromNode<T> paNode) {
+        this.root = paNode;
+    }
 
-    public boolean instert(StromNode paNode) {
-        return true;
+    public StromNode<T> getRoot() {
+        return this.root;
+    }
+
+    public boolean instert(StromNode<T> paNode) {
+        StromNode<T> currentNode = this.root;
+        //treba prepinanie levelov vyhutať
+        while (currentNode != null) {
+            if (paNode.getData().compareTo(currentNode.getData()) == 1) {
+                if (currentNode.getRight() == null) {
+                    currentNode.setRight(paNode);
+                    currentNode = null;
+                    return true;
+                }
+                currentNode = currentNode.getRight();
+            } else if (paNode.getData().compareTo(currentNode.getData()) == -1) {
+                if (currentNode.getLeft() == null) {
+                    currentNode.setLeft(paNode);
+                    currentNode = null;
+                    return true;
+                }
+                currentNode = currentNode.getLeft();
+            } else {
+                if (currentNode.getLeft() == null) {
+                    currentNode.setLeft(paNode);
+                    currentNode = null;
+                    return true;
+                }
+            }
+
+        }
+
+
+        return false;
     }
 
 }

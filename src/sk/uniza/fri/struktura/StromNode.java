@@ -5,11 +5,10 @@ package sk.uniza.fri.struktura;
  *
  * @author matus
  */
-public abstract class StromNode {
-    private int cislo;
-    private String popis;
-    private StromNode[] zoznam;
-    private Kluce kluc;
+public abstract class StromNode<T> {
+    protected StromNode<T> right;
+    protected StromNode<T> left;
+    protected AData<T> data;
 
     //abstract data (tam je comapre), abstract node a abstract strom
     //Abstract data bude interface aby bola viacnas dedicnost
@@ -19,13 +18,31 @@ public abstract class StromNode {
     //atributy prec, ma to byt vseobecne takze tie sa definuju az v triedach co dedia
     //kluce generujeme nahodne
     //spravit si tester (náhodne vyberáme operácie s náhodnýmk hodnotami)
-    public StromNode (int paCislo, String paPopis, StromNode[] paZoznam, Kluce paKluc) {
-        this.cislo = paCislo;
-        this.popis = paPopis;
-        this.zoznam = paZoznam;
-        this.kluc = paKluc;
+
+    public void setRight(StromNode<T> right) {
+        this.right = right;
     }
-    private int compare(StromNode paNode) {
-        return 0;
+    public void setLeft(StromNode<T> left) {
+        this.left = left;
     }
+
+    public StromNode<T> getLeft() {
+        return this.left;
+    }
+
+    public StromNode<T> getRight() {
+        return this.right;
+    }
+
+    public AData<T> getData() {
+        return this.data;
+    }
+
+    public void setData(AData<T> data) {
+        this.data = data;
+    }
+
+
+
+
 }
