@@ -30,6 +30,7 @@ public class KDTree<T> {
 
     public boolean instert(StromNode<T> paNode) {
         StromNode<T> currentNode = this.root;
+        int level = 0;
         //treba prepinanie levelov vyhutať
         while (currentNode != null) {
             if (paNode.getData().compareTo(currentNode.getData()) == 1) {
@@ -39,12 +40,14 @@ public class KDTree<T> {
                     return true;
                 }
                 currentNode = currentNode.getRight();
+                level++;
             } else if (paNode.getData().compareTo(currentNode.getData()) == -1) {
                 if (currentNode.getLeft() == null) {
                     currentNode.setLeft(paNode);
                     currentNode = null;
                     return true;
                 }
+                level++;
                 currentNode = currentNode.getLeft();
             } else {
                 if (currentNode.getLeft() == null) {
@@ -52,6 +55,8 @@ public class KDTree<T> {
                     currentNode = null;
                     return true;
                 }
+                level++;
+                currentNode = currentNode.getLeft();
             }
 
         }
