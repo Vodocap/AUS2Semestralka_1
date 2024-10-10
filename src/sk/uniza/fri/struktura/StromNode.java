@@ -8,7 +8,8 @@ package sk.uniza.fri.struktura;
 public abstract class StromNode<T> {
     protected StromNode<T> right;
     protected StromNode<T> left;
-    protected AData<T> data;
+    protected StromNode<T> parent;
+    protected IData<T> data;
 
     //abstract data (tam je comapre), abstract node a abstract strom
     //Abstract data bude interface aby bola viacnas dedicnost
@@ -34,15 +35,19 @@ public abstract class StromNode<T> {
         return this.right;
     }
 
-    public AData<T> getData() {
+    public IData<T> getData() {
         return this.data;
     }
 
-    public void setData(AData<T> data) {
+    public void setData(IData<T> data) {
         this.data = data;
     }
 
+    public StromNode<T> getParent() {
+        return parent;
+    }
 
-
-
+    public void setParent(StromNode<T> parent) {
+        this.parent = parent;
+    }
 }

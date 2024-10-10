@@ -7,9 +7,30 @@ import sk.uniza.fri.struktura.StromNode;
  *
  * @author matus
  */
-public class Parcela extends StromNode {
+public class Parcela extends StromNode<Double> {
+    private int cislo;
+    private String popis;
 
-    public Parcela(int paCislo, String paPopis, StromNode[] paZoznam, Kluce paKluc) {
-        super(paCislo, paPopis, paZoznam, paKluc);
+    public Parcela(GPSData gPSData, int paCislo, String paPopis) {
+        super.data = gPSData;
+        this.cislo = paCislo;
+        this.popis = paPopis;
     }
+
+    public int getCislo() {
+        return cislo;
+    }
+
+    public void setCislo(int cislo) {
+        this.cislo = cislo;
+    }
+
+    public String getPopis() {
+        return popis;
+    }
+
+    public void setPopis(String popis) {
+        this.popis = popis;
+    }
+
 }
