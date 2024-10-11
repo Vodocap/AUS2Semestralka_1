@@ -14,16 +14,27 @@ public class GPSData implements IData<Double> {
     }
     @Override
     public int compareTo(IData<Double> paData, int dimension) {
-        if (this.getDataAtD(paData, dimension) > this.suradnice[dimension]) {
+        if (paData.getDataAtD(dimension) > this.suradnice[dimension]) {
+            //System.out.println(paData.getDataAtD(dimension));
+            //System.out.println(this.suradnice[dimension]);
+            //System.out.println(-1);
             return -1;
-        } else if (this.getDataAtD(paData, dimension) < this.suradnice[dimension]) {
+        } else if (paData.getDataAtD(dimension) < this.suradnice[dimension]) {
+            //System.out.println(paData.getDataAtD(dimension));
+            //System.out.println(this.suradnice[dimension]);
+            //System.out.println(1);
             return 1;
         }
+
         return 0;
     }
 
+    public double getSuradnicaAtD(int dimension) {
+        return this.suradnice[dimension];
+    }
+
     @Override
-    public Double getDataAtD(IData<Double> paData, int dimension) {
+    public Double getDataAtD(int dimension) {
         return this.suradnice[dimension];
     }
 

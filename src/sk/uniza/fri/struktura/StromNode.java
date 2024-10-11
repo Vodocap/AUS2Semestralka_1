@@ -44,7 +44,7 @@ public abstract class StromNode<T> {
     }
 
     public StromNode<T> getParent() {
-        return parent;
+        return this.parent;
     }
 
     public void setParent(StromNode<T> parent) {

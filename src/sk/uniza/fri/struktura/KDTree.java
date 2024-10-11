@@ -14,7 +14,7 @@ package sk.uniza.fri.struktura;
 
 public class KDTree<T> {
     private StromNode<T> root;
-    private int dimensions;
+    private final int dimensions;
     public KDTree(int paDimensions) {
         this.dimensions = paDimensions;
 
@@ -30,16 +30,18 @@ public class KDTree<T> {
     public boolean insert(StromNode<T> paNode) {
         if (this.root == null ) {
             this.emplaceRoot(paNode);
+            return true;
         }
         StromNode<T> currentNode = this.root;
         StromNode<T> tempNode = this.root;
         int level = 0;
-        //treba prepinanie levelov vyhutať
+
         while (currentNode != null) {
             int k = level % this.dimensions;
             if (paNode.getData().compareTo(currentNode.getData(), k) == 1) {
                 if (currentNode.getRight() == null) {
                     currentNode.setRight(paNode);
+                    //System.out.println("doprava");
                     currentNode = null;
                     return true;
                 }
@@ -51,6 +53,7 @@ public class KDTree<T> {
             } else if (paNode.getData().compareTo(currentNode.getData(), k) == -1) {
                 if (currentNode.getLeft() == null) {
                     currentNode.setLeft(paNode);
+                    //System.out.println("dolava");
                     currentNode = null;
                     return true;
                 }
@@ -61,6 +64,7 @@ public class KDTree<T> {
             } else if (paNode.getData().compareTo(currentNode.getData(), k) == 0) {
                 if (currentNode.getLeft() == null) {
                     currentNode.setLeft(paNode);
+                    //System.out.println("rovnaki");
                     currentNode = null;
                     return true;
                 }
@@ -76,10 +80,53 @@ public class KDTree<T> {
         return false;
     }
 
-    public void printTree() {
+    public StromNode<T> find(IData<T> paData) {
         StromNode<T> currentNode = this.root;
-        while (true) {
-            currentNode.getData().printData();
+        int level = 0;
+
+        while (currentNode != null) {
+            int k = level % this.dimensions;
+            if (paData.compareTo(currentNode.getData(), k) == 1) {
+                currentNode = currentNode.getRight();
+                level++;
+            } else if (paData.compareTo(currentNode.getData(), k) == -1) {
+                currentNode = currentNode.getLeft();
+                level++;
+            } else if (paData.compareTo(currentNode.getData(), k) == 0) {
+                return currentNode;
+            }
+            level++;
+
+        }
+
+
+        return null;
+    }
+
+    public void printTree() {
+        //toto treba vyhútať.. prehliadku
+        StromNode<T> currentNode = this.root;
+        int rootAccessedTimes = 0;
+        while (rootAccessedTimes != 3 ) {
+            if (currentNode == this.root) {
+                rootAccessedTimes++;
+            }
+            if (currentNode.left == null) {
+                //currentNode.getData().printData();
+                currentNode = currentNode.getParent();
+
+            } else if (currentNode.right == null) {
+                //currentNode.getData().printData();
+                currentNode = currentNode.getParent();
+
+            } else if (currentNode.left != null){
+                //currentNode.getData().printData();
+                currentNode = currentNode.getLeft();
+            } else if (currentNode.right != null && currentNode.left == null) {
+                //currentNode.getData().printData();
+                currentNode = currentNode.getRight();
+            }
+
 
         }
     }
