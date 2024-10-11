@@ -9,6 +9,16 @@ public abstract class StromNode<T> {
     protected StromNode<T> right;
     protected StromNode<T> left;
     protected StromNode<T> parent;
+    protected int level;
+
+    public int getLevel() {
+        return this.level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
     protected IData<T> data;
 
     //abstract data (tam je comapre), abstract node a abstract strom
@@ -49,5 +59,9 @@ public abstract class StromNode<T> {
 
     public void setParent(StromNode<T> parent) {
         this.parent = parent;
+    }
+
+    public void printNode() {
+        System.out.println(this.level);
     }
 }

@@ -23,14 +23,14 @@ public class Main {
             vlozene.add(tempN);
             kdTree.insert(tempN);
         }
-
-        for (int i = 0; i < 4; i++) {
-            int rand_index = rand.nextInt(10);
-            System.out.println("Hladane");
-            vlozene.get(rand_index).getData().printData();
-            System.out.println("najdene");
-            kdTree.find(vlozene.get(rand_index).getData()).getData().printData();
-        }
+        kdTree.proccessAllNode(kdTree.getRoot());
+        //for (int i = 0; i < 4; i++) {
+        //    int rand_index = rand.nextInt(10);
+        //    System.out.println("Hladane");
+        //    vlozene.get(rand_index).getData().printData();
+        //    System.out.println("najdene");
+        //    kdTree.find(vlozene.get(rand_index).getData()).getData().printData();
+        //}
 
     }
 }
