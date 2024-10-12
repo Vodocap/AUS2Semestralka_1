@@ -16,7 +16,7 @@ public class Main {
         Random rand = new Random(10);
         ArrayList<StromNode<Double>> vlozene = new ArrayList<StromNode<Double>>();
         for (int i = 0; i < 10; i++) {
-            double[] tempPole = {rand.nextDouble(), rand.nextDouble()};
+            double[] tempPole = {0.3, rand.nextDouble()};
 
             char[] tempPoleChar = {'N', 'E'};
             Nehnutelnost tempN = new Nehnutelnost(new GPSData(2, tempPole, tempPoleChar), 10, "Domec");
@@ -24,13 +24,13 @@ public class Main {
             kdTree.insert(tempN);
         }
         kdTree.proccessAllNode(kdTree.getRoot());
-        //for (int i = 0; i < 4; i++) {
-        //    int rand_index = rand.nextInt(10);
-        //    System.out.println("Hladane");
-        //    vlozene.get(rand_index).getData().printData();
-        //    System.out.println("najdene");
-        //    kdTree.find(vlozene.get(rand_index).getData()).getData().printData();
-        //}
+        for (int i = 0; i < 4; i++) {
+            int rand_index = rand.nextInt(10);
+            System.out.println("Hladane");
+            vlozene.get(rand_index).getData().printData();
+            System.out.println("najdene");
+           kdTree.find(vlozene.get(rand_index).getData()).getData().printData();
+        }
 
     }
 }

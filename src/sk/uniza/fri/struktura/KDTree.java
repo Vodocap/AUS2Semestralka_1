@@ -102,7 +102,18 @@ public class KDTree<T> {
                 currentNode = currentNode.getLeft();
                 level++;
             } else if (paData.compareTo(currentNode.getData(), k) == 0) {
-                return currentNode;
+
+                if (paData.compareTo(currentNode.getData(),(k + 1) % 2) == 0) {
+                    return currentNode;
+                }
+                if (paData.compareTo(currentNode.getLeft().getData(), k) == 0) {
+                    if (paData.compareTo(currentNode.getLeft().getData(), (k + 1) % 2) == 0) {
+                        return currentNode.getLeft();
+                    }
+                    currentNode = currentNode.getLeft();
+                }
+
+
             }
             level++;
 
