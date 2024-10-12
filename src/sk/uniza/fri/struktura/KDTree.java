@@ -123,6 +123,15 @@ public class KDTree<T> {
         return null;
     }
 
+    public StromNode<T> remove(IData<T> paData) {
+        StromNode<T> nodeToRemove = this.find(paData);
+        if (nodeToRemove.getLeft() == null && nodeToRemove.getRight() == null) {
+            //nodeToRemove.getParent() treba spravit ze ako ja dostanem ze ktorehho syna mam mazat
+            return nodeToRemove;
+        };
+        return nodeToRemove;
+    }
+
     public void proccessAllNode(StromNode<T> paNode) {
         this.proccessNode(paNode);
     }
