@@ -103,15 +103,13 @@ public class KDTree<T> {
                 level++;
             } else if (paData.compareTo(currentNode.getData(), k) == 0) {
 
-                if (paData.compareTo(currentNode.getData(),(k + 1) % this.dimensions) == 0) {
+                if (paData.compareWholeTo(currentNode.getData())) {
                     return currentNode;
                 }
-                if (paData.compareTo(currentNode.getLeft().getData(), k) == 0) {
-                    if (paData.compareTo(currentNode.getLeft().getData(), (k + 1) % this.dimensions) == 0) {
-                        return currentNode.getLeft();
-                    }
-                    currentNode = currentNode.getLeft();
+                if (paData.compareWholeTo(currentNode.getLeft().getData())) {
+                    return currentNode.getLeft();
                 }
+                currentNode = currentNode.getLeft();
 
 
             }
@@ -123,10 +121,15 @@ public class KDTree<T> {
         return null;
     }
 
+
     public StromNode<T> remove(IData<T> paData) {
         StromNode<T> nodeToRemove = this.find(paData);
         if (nodeToRemove.getLeft() == null && nodeToRemove.getRight() == null) {
-            //nodeToRemove.getParent() treba spravit ze ako ja dostanem ze ktorehho syna mam mazat
+            if (nodeToRemove.getData().compareWholeTo(nodeToRemove.getParent().getLeft().getData())) {
+                nodeToRemove.getParent().setLeft(null);
+            } else {
+                nodeToRemove.getParent().setRight(null);
+            }
             return nodeToRemove;
         };
         return nodeToRemove;
@@ -137,7 +140,6 @@ public class KDTree<T> {
     }
 
     public void proccessNode(StromNode<T> paNode) {
-        //toto treba vyhútať.. prehliadku
 
         if (paNode != null) {
             this.proccessNode(paNode.getLeft());

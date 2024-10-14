@@ -11,6 +11,7 @@ public class GPSData implements IData<Double> {
         this.pocetSuradnic = paPocetSuradnic;
         this.suradnice = paSuradnice;
         this.smery = paSmery;
+
     }
     @Override
     public int compareTo(IData<Double> paData, int dimension) {
@@ -27,6 +28,21 @@ public class GPSData implements IData<Double> {
         }
 
         return 0;
+    }
+
+    @Override
+    public boolean compareWholeTo(IData<Double> paData) {
+        int rovneSuradnice = 0;
+        for (int i = 0; i < this.pocetSuradnic; i++) {
+            if (this.suradnice[i] == paData.getDataAtD(i)) {
+                rovneSuradnice++;
+            }
+        }
+
+        if (rovneSuradnice == this.pocetSuradnic) {
+            return true;
+        }
+        return false;
     }
 
     public double getSuradnicaAtD(int dimension) {
