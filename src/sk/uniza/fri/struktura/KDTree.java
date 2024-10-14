@@ -103,11 +103,11 @@ public class KDTree<T> {
                 level++;
             } else if (paData.compareTo(currentNode.getData(), k) == 0) {
 
-                if (paData.compareTo(currentNode.getData(),(k + 1) % 2) == 0) {
+                if (paData.compareTo(currentNode.getData(),(k + 1) % this.dimensions) == 0) {
                     return currentNode;
                 }
                 if (paData.compareTo(currentNode.getLeft().getData(), k) == 0) {
-                    if (paData.compareTo(currentNode.getLeft().getData(), (k + 1) % 2) == 0) {
+                    if (paData.compareTo(currentNode.getLeft().getData(), (k + 1) % this.dimensions) == 0) {
                         return currentNode.getLeft();
                     }
                     currentNode = currentNode.getLeft();
@@ -119,7 +119,7 @@ public class KDTree<T> {
 
         }
 
-
+        System.out.println("Talyto node tam nemame");
         return null;
     }
 

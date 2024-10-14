@@ -21,7 +21,7 @@ public class Nehnutelnost extends StromNode<Double> {
     }
 
     public int getCislo() {
-        return cislo;
+        return this.cislo;
     }
 
     public void setCislo(int cislo) {
@@ -29,7 +29,7 @@ public class Nehnutelnost extends StromNode<Double> {
     }
 
     public String getPopis() {
-        return popis;
+        return this.popis;
     }
 
     public void setPopis(String popis) {
