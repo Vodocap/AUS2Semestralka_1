@@ -1,13 +1,13 @@
 package sk.uniza.fri.aplikacia;
 
-import sk.uniza.fri.struktura.StromNode;
+import sk.uniza.fri.struktura.TrNode;
 
 /**
  * 8. 10. 2024 - 14:38
  *
  * @author matus
  */
-public class Parcela extends StromNode<Double> {
+public class Parcela extends TrNode<Double> {
     private int cislo;
     private String popis;
 

@@ -7,36 +7,33 @@ package sk.uniza.fri.struktura;
  * @author matus
  */
 
-// lubovolny pocet dimenzi, kluc moze byt cokolvek, definujeme kluc cez genericku triedu
-    // vetvenie podla komparatorov ktore u rozne
-    //pre kazdy level wsa definuje komparator
-    //compareto treba pridat aj atribut level
+
 
 public class KDTree<T> {
-    private StromNode<T> root;
+    private TrNode<T> root;
     private final int dimensions;
     public KDTree(int paDimensions) {
         this.dimensions = paDimensions;
 
     }
-    public void emplaceRoot(StromNode<T> paNode) {
+    public void emplaceRoot(TrNode<T> paNode) {
         this.root = paNode;
     }
 
-    public StromNode<T> getRoot() {
+    public TrNode<T> getRoot() {
         return this.root;
     }
 
 
-    public boolean insert(StromNode<T> paNode) {
+    public boolean insert(TrNode<T> paNode) {
         int level = 0;
         if (this.root == null ) {
             this.emplaceRoot(paNode);
             level++;
             return true;
         }
-        StromNode<T> currentNode = this.root;
-        StromNode<T> tempNode = this.root;
+        TrNode<T> currentNode = this.root;
+        TrNode<T> tempNode = this.root;
 
 
         while (currentNode != null) {
@@ -58,7 +55,7 @@ public class KDTree<T> {
             } else if (paNode.getData().compareTo(currentNode.getData(), k) == -1) {
                 if (currentNode.getLeft() == null) {
                     currentNode.setLeft(paNode);
-                    //System.out.println("dolava");
+
                     currentNode = null;
                     return true;
                 }
@@ -71,7 +68,7 @@ public class KDTree<T> {
             } else if (paNode.getData().compareTo(currentNode.getData(), k) == 0) {
                 if (currentNode.getLeft() == null) {
                     currentNode.setLeft(paNode);
-                    //System.out.println("rovnaki");
+
                     currentNode = null;
                     return true;
                 }
@@ -89,8 +86,8 @@ public class KDTree<T> {
         return false;
     }
 
-    public StromNode<T> find(IData<T> paData) {
-        StromNode<T> currentNode = this.root;
+    public TrNode<T> find(IData<T> paData) {
+        TrNode<T> currentNode = this.root;
         int level = 0;
 
         while (currentNode != null) {
@@ -117,13 +114,13 @@ public class KDTree<T> {
 
         }
 
-        System.out.println("Talyto node tam nemame");
+        System.out.println("Such a node does not exist in this tree");
         return null;
     }
 
 
-    public StromNode<T> remove(IData<T> paData) {
-        StromNode<T> nodeToRemove = this.find(paData);
+    public TrNode<T> remove(IData<T> paData) {
+        TrNode<T> nodeToRemove = this.find(paData);
         if (nodeToRemove.getLeft() == null && nodeToRemove.getRight() == null) {
             if (nodeToRemove.getData().compareWholeTo(nodeToRemove.getParent().getLeft().getData())) {
                 nodeToRemove.getParent().setLeft(null);
@@ -135,16 +132,16 @@ public class KDTree<T> {
         return nodeToRemove;
     }
 
-    public void proccessAllNode(StromNode<T> paNode) {
+    public void proccessAllNode(TrNode<T> paNode) {
         this.proccessNode(paNode);
     }
 
-    public void proccessNode(StromNode<T> paNode) {
+    public void proccessNode(TrNode<T> paNode) {
 
         if (paNode != null) {
             this.proccessNode(paNode.getLeft());
-            paNode.getData().printData();
             paNode.printNode();
+            paNode.getData().printData();
             this.proccessNode(paNode.getRight());
         }
 
