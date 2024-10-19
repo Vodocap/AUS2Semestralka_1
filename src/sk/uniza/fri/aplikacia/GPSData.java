@@ -17,7 +17,6 @@ public class GPSData<T> extends TrNode<Double> implements IData<Double> {
     }
     @Override
     public int compareTo(IData<Double> paData, int dimension) {
-
         if (paData.getDataAtD(dimension) > this.suradnice[dimension]) {
             return -1;
         } else if (paData.getDataAtD(dimension) < this.suradnice[dimension]) {

@@ -134,7 +134,7 @@ public class KDTree<T> {
         return nodeToRemove;
     }
 
-    public void proccessAllNode(TrNode<T> paNode) {
+    public void proccessAllNodes(TrNode<T> paNode) {
         //this.proccessNode(paNode);
         ArrayList<TrNode<T>> nodesResult = new ArrayList<>();
         TrNode<T> currentNode = this.root;

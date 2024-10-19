@@ -1,7 +1,8 @@
 package sk.uniza.fri;
 
 import sk.uniza.fri.aplikacia.GPSData;
-import sk.uniza.fri.aplikacia.Nehnutelnost;
+import sk.uniza.fri.aplikacia.Parcela;
+import sk.uniza.fri.struktura.IData;
 import sk.uniza.fri.struktura.KDTree;
 import sk.uniza.fri.struktura.TrNode;
 
@@ -33,15 +34,17 @@ public class TestTrieda {
                 tempPole = dupPole;
             }
             char[] tempPoleChar = {'N', 'E'};
-
-        }
-        this.kDStrom.proccessAllNode(this.kDStrom.getRoot());
+            GPSData<Parcela> gpsData = new GPSData<Parcela>(2, tempPole, tempPoleChar);
+            this.vkladanePrvky.add(gpsData);
+            this.kDStrom.insert(gpsData);
+            }
+        this.kDStrom.proccessAllNodes(this.kDStrom.getRoot());
     }
 
     public void najdiNahodnePrvky(int pocetNahodnychPrvkov) {
         Random rand = new Random(10);
         for (int i = 0; i < pocetNahodnychPrvkov; i++) {
-            int rand_index = rand.nextInt(10);
+            int rand_index = rand.nextInt(pocetNahodnychPrvkov);
             System.out.println("Hladane");
             this.vkladanePrvky.get(rand_index).getData().printData();
             System.out.println("najdene");
