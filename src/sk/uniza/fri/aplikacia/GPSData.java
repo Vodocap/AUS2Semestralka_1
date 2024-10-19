@@ -9,7 +9,8 @@ public class GPSData implements IData<Double> {
 
     public GPSData(int paPocetSuradnic, double[] paSuradnice, char[] paSmery) {
         this.pocetSuradnic = paPocetSuradnic;
-        this.suradnice = paSuradnice;
+        this.suradnice = paSuradnice; //davaju sa styri suradnice prve dve su pre sirku druhy par je pre dlzku avsak parcela
+        //je definovana len dlzkou a v strome sa porovnavaju len podla suradnic sirky
         this.smery = paSmery;
 
     }

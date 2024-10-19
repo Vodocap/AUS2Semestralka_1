@@ -10,6 +10,7 @@ public abstract class TrNode<T> {
     protected TrNode<T> left;
     protected TrNode<T> parent;
     protected int level;
+    protected IData<T> data;
 
     public int getLevel() {
         return this.level;
@@ -18,9 +19,6 @@ public abstract class TrNode<T> {
     public void setLevel(int level) {
         this.level = level;
     }
-
-    protected IData<T> data;
-
 
     public void setRight(TrNode<T> right) {
         this.right = right;

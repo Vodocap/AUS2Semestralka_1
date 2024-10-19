@@ -1,6 +1,8 @@
 package sk.uniza.fri.struktura;
 
 
+import java.util.ArrayList;
+
 /**
  * 8. 10. 2024 - 14:38
  *
@@ -133,10 +135,43 @@ public class KDTree<T> {
     }
 
     public void proccessAllNode(TrNode<T> paNode) {
-        this.proccessNode(paNode);
+        //this.proccessNode(paNode);
+        ArrayList<TrNode<T>> nodesResult = new ArrayList<>();
+        TrNode<T> currentNode = this.root;
+
+        while (currentNode != null) {
+            if (currentNode.left == null) {
+                nodesResult.add(currentNode);
+                currentNode = currentNode.right;
+
+            } else {
+                TrNode<T> previousNode = currentNode.left;
+                while (previousNode.right != null && previousNode.right != currentNode) {
+                    previousNode = previousNode.right;
+                }
+
+                if (previousNode.right == null) {
+                    previousNode.right = currentNode;
+                    currentNode = currentNode.left;
+
+                } else {
+                    previousNode.right = null;
+                    nodesResult.add(currentNode);
+                    currentNode = currentNode.right;
+                }
+            }
+
+        }
+        for (TrNode<T> tTrNode : nodesResult) {
+            tTrNode.printNode();
+            tTrNode.getData().printData();
+        }
+
     }
 
     public void proccessNode(TrNode<T> paNode) {
+
+
 
         if (paNode != null) {
             this.proccessNode(paNode.getLeft());
