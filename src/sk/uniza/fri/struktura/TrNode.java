@@ -10,7 +10,6 @@ public abstract class TrNode<T> {
     protected TrNode<T> left;
     protected TrNode<T> parent;
     protected int level;
-    protected IData<T> data;
 
     public int getLevel() {
         return this.level;
@@ -35,13 +34,9 @@ public abstract class TrNode<T> {
         return this.right;
     }
 
-    public IData<T> getData() {
-        return this.data;
-    }
+    public abstract IData<T> getData();
 
-    public void setData(IData<T> data) {
-        this.data = data;
-    }
+    public abstract void setDataAtD(int dimension, double value);
 
     public TrNode<T> getParent() {
         return this.parent;

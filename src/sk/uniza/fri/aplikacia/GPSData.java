@@ -1,30 +1,26 @@
 package sk.uniza.fri.aplikacia;
 
 import sk.uniza.fri.struktura.IData;
+import sk.uniza.fri.struktura.TrNode;
 
-public class GPSData implements IData<Double> {
+public class GPSData<T> extends TrNode<Double> implements IData<Double> {
     private double[] suradnice;
     private char[] smery;
     private int pocetSuradnic;
+    private T uzemnyCelok;
 
     public GPSData(int paPocetSuradnic, double[] paSuradnice, char[] paSmery) {
         this.pocetSuradnic = paPocetSuradnic;
-        this.suradnice = paSuradnice; //davaju sa styri suradnice prve dve su pre sirku druhy par je pre dlzku avsak parcela
-        //je definovana len dlzkou a v strome sa porovnavaju len podla suradnic sirky
+        this.suradnice = paSuradnice;
         this.smery = paSmery;
 
     }
     @Override
     public int compareTo(IData<Double> paData, int dimension) {
+
         if (paData.getDataAtD(dimension) > this.suradnice[dimension]) {
-            //System.out.println(paData.getDataAtD(dimension));
-            //System.out.println(this.suradnice[dimension]);
-            //System.out.println(-1);
             return -1;
         } else if (paData.getDataAtD(dimension) < this.suradnice[dimension]) {
-            //System.out.println(paData.getDataAtD(dimension));
-            //System.out.println(this.suradnice[dimension]);
-            //System.out.println(1);
             return 1;
         }
 
@@ -69,4 +65,24 @@ public class GPSData implements IData<Double> {
             System.out.println(smer);
         }
     }
+
+
+    @Override
+    public IData<Double> getData() {
+        return this;
+    }
+
+    @Override
+    public void setDataAtD(int dimension, double value) {
+        this.suradnice[dimension] = value;
+    }
+
+    public T getUzemnyCelok() {
+        return this.uzemnyCelok;
+    }
+
+    public void setUzemnyCelok(T uzemnyCelok) {
+        this.uzemnyCelok = uzemnyCelok;
+    }
+
 }

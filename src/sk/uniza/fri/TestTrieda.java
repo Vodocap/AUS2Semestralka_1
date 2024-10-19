@@ -33,9 +33,7 @@ public class TestTrieda {
                 tempPole = dupPole;
             }
             char[] tempPoleChar = {'N', 'E'};
-            Nehnutelnost tempN = new Nehnutelnost(new GPSData(2, tempPole, tempPoleChar), 10, "Nehnutelnost");
-            this.vkladanePrvky.add(tempN);
-            this.kDStrom.insert(tempN);
+
         }
         this.kDStrom.proccessAllNode(this.kDStrom.getRoot());
     }

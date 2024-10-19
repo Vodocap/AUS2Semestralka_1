@@ -2,20 +2,23 @@ package sk.uniza.fri.aplikacia;
 
 import sk.uniza.fri.struktura.TrNode;
 
+import java.util.ArrayList;
+
 /**
  * 8. 10. 2024 - 14:38
  *
  * @author matus
  */
 
-public class Nehnutelnost extends TrNode<Double> {
+public class Nehnutelnost {
     private int cislo;
     private String popis;
+    private ArrayList<Parcela> parcely;
 
-    public Nehnutelnost(GPSData gPSData, int paCislo, String paPopis) {
-        super.data = gPSData;
+    public Nehnutelnost(int paCislo, String paPopis) {
         this.cislo = paCislo;
         this.popis = paPopis;
+        this.parcely = new ArrayList<>();
     }
 
     public int getCislo() {
@@ -32,5 +35,17 @@ public class Nehnutelnost extends TrNode<Double> {
 
     public void setPopis(String popis) {
         this.popis = popis;
+    }
+
+    public ArrayList<Parcela> getParcely() {
+        return this.parcely;
+    }
+
+    public void addParcela(Parcela paParcela) {
+        this.parcely.add(paParcela);
+    }
+
+    public void removeParcela(Parcela paParcela) {
+        this.parcely.removeIf(hladanaNehnutelnost -> hladanaNehnutelnost == paParcela);
     }
 }
