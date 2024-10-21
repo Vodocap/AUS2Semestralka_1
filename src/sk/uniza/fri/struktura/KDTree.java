@@ -29,6 +29,10 @@ public class KDTree<T> {
 
 
     public boolean insert(TrNode<T> paNode) {
+        System.out.println("Inserting node");
+        paNode.printNode();
+        paNode.getData().printData();
+        System.out.println("********************************");
         int level = 0;
         if (this.root == null ) {
             this.emplaceRoot(paNode);
@@ -135,51 +139,76 @@ public class KDTree<T> {
         return null;
     }
 
+    private void disconnectNodeFully(TrNode<T> paNode) {
+        paNode.setParent(null);
+        paNode.setLeft(null);
+        paNode.setRight(null);
+    }
+
+    private void disconnectSons(TrNode<T> paNode) {
+        paNode.setLeft(null);
+        paNode.setRight(null);
+    }
+
 
     public TrNode<T> remove(IData<T> paData) {
         TrNode<T> nodeToRemove = this.find(paData);
-        if (nodeToRemove.getLeft() == null && nodeToRemove.getRight() == null) {
-            if (nodeToRemove.getData().compareWholeTo(nodeToRemove.getParent().getLeft().getData())) {
-                nodeToRemove.getParent().setLeft(null);
-            } else {
-                nodeToRemove.getParent().setRight(null);
+        System.out.println("Printing node to remove");
+        if (nodeToRemove != null) {
+            nodeToRemove.printNode();
+            nodeToRemove.getData().printData();
+            if (nodeToRemove.getLeft() == null && nodeToRemove.getRight() == null) {
+                if (nodeToRemove.getData().compareWholeTo(nodeToRemove.getParent().getLeft().getData())) {
+                    nodeToRemove.getParent().setLeft(null);
+                } else {
+                    nodeToRemove.getParent().setRight(null);
+                }
+                return nodeToRemove;
             }
-            return nodeToRemove;
+
+            if (nodeToRemove.getLeft() != null) {
+                TrNode<T> tempNode = nodeToRemove;
+                TrNode<T> maxLeft = this.inOrderWithFindMinMax(nodeToRemove.getLeft(), true, false);
+                if (maxLeft.isLeaf() && nodeToRemove.isRoot()) {
+                    maxLeft.getData().swapData(nodeToRemove.getData());
+                    this.disconnectNodeFully(maxLeft);
+                    return nodeToRemove;
+
+                }
+                TrNode<T> maxLeftLSon = maxLeft.getLeft();
+                TrNode<T> maxLeftRSon = maxLeft.getRight();
+                maxLeft.setParent(nodeToRemove.getParent());
+                maxLeft.setLevel(nodeToRemove.getLevel());
+                this.disconnectSons(maxLeft);
+                this.inOrderWithFindMinMax(maxLeftLSon, true, true);
+                this.inOrderWithFindMinMax(maxLeftRSon, true, true);
+                this.disconnectNodeFully(tempNode);
+                return nodeToRemove;
+
+            }
+            if (nodeToRemove.getRight() != null) {
+                TrNode<T> tempNode = nodeToRemove;
+                TrNode<T> minRight = this.inOrderWithFindMinMax(nodeToRemove.getRight(), false, false);
+                if (minRight.isLeaf() && nodeToRemove.isRoot()) {
+                    minRight.getData().swapData(nodeToRemove.getData());
+                    this.disconnectNodeFully(minRight);
+                    return nodeToRemove;
+                }
+                TrNode<T> minRigtLSon = minRight.getLeft();
+                TrNode<T> minRightRSon = minRight.getRight();
+                minRight.setParent(nodeToRemove.getParent());
+                minRight.setLevel(nodeToRemove.getLevel());
+                this.disconnectSons(minRight);
+                this.inOrderWithFindMinMax(minRigtLSon, true, true);
+                this.inOrderWithFindMinMax(minRightRSon, true, true);
+                this.disconnectNodeFully(tempNode);
+                return nodeToRemove;
+            }
+        } else {
+            System.out.println("taky node tam neni");
         }
 
-        if (nodeToRemove.getLeft() != null) {
-            TrNode<T> tempNode = nodeToRemove;
-            TrNode<T> maxLeft = inOrderWithFindMinMax(nodeToRemove.getLeft(), true, false);
-            TrNode<T> maxLeftLSon = maxLeft.getLeft();
-            TrNode<T> maxLeftRSon = maxLeft.getRight();
-            maxLeft.setParent(nodeToRemove.getParent());
-            maxLeft.setLevel(nodeToRemove.getLevel());
-            maxLeft.setRight(null);
-            maxLeft.setLeft(null);
-            this.inOrderWithFindMinMax(maxLeftLSon, true, true);
-            this.inOrderWithFindMinMax(maxLeftRSon, true, true);
-            tempNode.setParent(null);
-            tempNode.setLeft(null);
-            tempNode.setRight(null);
-            return nodeToRemove;
 
-        }
-        if (nodeToRemove.getRight() != null) {
-            TrNode<T> tempNode = nodeToRemove;
-            TrNode<T> minRight = inOrderWithFindMinMax(nodeToRemove.getRight(), false, false);
-            TrNode<T> minRigtLSon = minRight.getLeft();
-            TrNode<T> minRightRSon = minRight.getRight();
-            minRight.setParent(nodeToRemove.getParent());
-            minRight.setLevel(nodeToRemove.getLevel());
-            minRight.setRight(null);
-            minRight.setLeft(null);
-            this.inOrderWithFindMinMax(minRigtLSon, true, true);
-            this.inOrderWithFindMinMax(minRightRSon, true, true);
-            tempNode.setParent(null);
-            tempNode.setLeft(null);
-            tempNode.setRight(null);
-            return nodeToRemove;
-        }
         return nodeToRemove;
     }
 
@@ -191,53 +220,64 @@ public class KDTree<T> {
         TrNode<T> currentNode = paNode;
 
         while (currentNode != null) {
-            if (currentNode.left == null) {
+            if (currentNode.getLeft() == null) {
                 nodesResult.add(currentNode);
-                currentNode = currentNode.right;
+                currentNode = currentNode.getRight();
 
             } else {
-                TrNode<T> previousNode = currentNode.left;
-                while (previousNode.right != null && previousNode.right != currentNode) {
-                    previousNode = previousNode.right;
+                TrNode<T> previousNode = currentNode.getLeft();
+                while (previousNode.getRight() != null && previousNode.getRight() != currentNode) {
+                    previousNode = previousNode.getRight();
                 }
 
-                if (previousNode.right == null) {
-                    previousNode.right = currentNode;
-                    currentNode = currentNode.left;
+                if (previousNode.getRight() == null) {
+                    previousNode.setRight(currentNode);
+                    currentNode = currentNode.getLeft();
 
                 } else {
-                    previousNode.right = null;
+                    previousNode.setRight(null);
                     nodesResult.add(currentNode);
-                    currentNode = currentNode.right;
+                    currentNode = currentNode.getRight();
                 }
             }
 
         }
+        System.out.println("Amount of elements in the tree:");
+        System.out.println(nodesResult.size());
         for (TrNode<T> tTrNode : nodesResult) {
-            if (tTrNode.getData().compareTo(minNode.getData(), paNode.getLevel() % this.dimensions) < 0) {
-                System.out.println("Novy minnode");
-                tTrNode.printNode();
-                tTrNode.getData().printData();
-                minNode = tTrNode;
+            tTrNode.printNode();
+            tTrNode.getData().printData();
+            System.out.println("-------------------------------------------------");
+            if (tTrNode != paNode) {
+                if (tTrNode.getData().compareTo(minNode.getData(), paNode.getLevel() % this.dimensions) < 0) {
+                    //System.out.println("Novy minnode");
+                    tTrNode.printNode();
+                    tTrNode.getData().printData();
+                    minNode = tTrNode;
+                }
+
+                if (tTrNode.getData().compareTo(maxNode.getData(), paNode.getLevel() % this.dimensions) > 0) {
+                    //System.out.println("Novy maxnode");
+                    tTrNode.printNode();
+                    tTrNode.getData().printData();
+                    maxNode = tTrNode;
+                }
+
+                if (insertSubtree) {
+                    this.insert(tTrNode);
+                }
+
             }
 
-            if (tTrNode.getData().compareTo(maxNode.getData(), paNode.getLevel() % this.dimensions) > 0) {
-                System.out.println("Novy maxnode");
-                tTrNode.printNode();
-                tTrNode.getData().printData();
-                maxNode = tTrNode;
+
             }
 
-            if (insertSubtree) {
-                this.insert(tTrNode);
-            }
-
-        }
         if (minOrMax) {
             return maxNode;
         } else {
             return minNode;
         }
+
 
     }
 

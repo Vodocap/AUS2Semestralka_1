@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * @author matus
  */
 
-public class Nehnutelnost {
+public class Nehnutelnost implements IUzemnyCelok{
     private int cislo;
     private String popis;
     private ArrayList<Parcela> parcely;
@@ -24,6 +24,7 @@ public class Nehnutelnost {
     public int getCislo() {
         return this.cislo;
     }
+
 
     public void setCislo(int cislo) {
         this.cislo = cislo;

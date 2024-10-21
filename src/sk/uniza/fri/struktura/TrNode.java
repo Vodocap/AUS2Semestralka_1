@@ -6,10 +6,10 @@ package sk.uniza.fri.struktura;
  * @author matus
  */
 public abstract class TrNode<T> {
-    protected TrNode<T> right;
-    protected TrNode<T> left;
-    protected TrNode<T> parent;
-    protected int level;
+    private TrNode<T> right;
+    private TrNode<T> left;
+    private TrNode<T> parent;
+    private int level;
 
     public int getLevel() {
         return this.level;
@@ -49,5 +49,19 @@ public abstract class TrNode<T> {
     public void printNode() {
         System.out.println("Node at level: ");
         System.out.println(this.level);
+    }
+
+    public boolean isLeaf() {
+        if (this.right == null && this.left == null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isRoot() {
+        if (this.parent == null) {
+            return true;
+        }
+        return false;
     }
 }

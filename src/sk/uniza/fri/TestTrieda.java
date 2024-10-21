@@ -33,7 +33,7 @@ public class TestTrieda {
                 tempPole = dupPole;
             }
             char[] tempPoleChar = {'N', 'E'};
-            GPSData<Parcela> gpsData = new GPSData<Parcela>(2, tempPole, tempPoleChar);
+            GPSData gpsData = new GPSData(2, tempPole, tempPoleChar);
             this.vkladanePrvky.add(gpsData);
             this.kDStrom.insert(gpsData);
             }
@@ -49,6 +49,23 @@ public class TestTrieda {
 
 
 
+    }
+
+    private void dajPocetPrvkovVKontrolnomErejLitse() {
+        System.out.println("Pocet prvkov na kontrolu");
+        System.out.println(this.vkladanePrvky.size());
+    }
+
+
+    public void deletujAVypisSkontroluj(int paPocetPrvkov) {
+        Random rand = new Random(10);
+        for (int i = 0; i < paPocetPrvkov; i++) {
+            int rand_index = rand.nextInt(paPocetPrvkov);
+            this.kDStrom.remove(this.vkladanePrvky.get(rand_index).getData());
+            this.vkladanePrvky.remove(this.vkladanePrvky.get(rand_index));
+        }
+        this.kDStrom.inOrderWithFindMinMax(this.kDStrom.getRoot(), false, false);
+        this.dajPocetPrvkovVKontrolnomErejLitse();
     }
 
     public void najdiNahodnePrvky(int pocetNahodnychPrvkov) {

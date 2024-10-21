@@ -3,11 +3,11 @@ package sk.uniza.fri.aplikacia;
 import sk.uniza.fri.struktura.IData;
 import sk.uniza.fri.struktura.TrNode;
 
-public class GPSData<T> extends TrNode<Double> implements IData<Double> {
+public class GPSData extends TrNode<Double> implements IData<Double> {
     private double[] suradnice;
     private char[] smery;
     private int pocetSuradnic;
-    private T uzemnyCelok;
+    private IUzemnyCelok uzemnyCelok;
 
     public GPSData(int paPocetSuradnic, double[] paSuradnice, char[] paSmery) {
         this.pocetSuradnic = paPocetSuradnic;
@@ -28,6 +28,7 @@ public class GPSData<T> extends TrNode<Double> implements IData<Double> {
 
         return 0;
     }
+
 
     @Override
     public boolean compareWholeTo(IData<Double> paData) {
@@ -65,6 +66,15 @@ public class GPSData<T> extends TrNode<Double> implements IData<Double> {
         }
     }
 
+    @Override
+    public void swapData(IData<Double> paData) {
+        paData = (GPSData) paData;
+        ((GPSData) paData).setPocetSuradnic(this.pocetSuradnic);
+        ((GPSData) paData).setSuradnice(this.suradnice);
+        ((GPSData) paData).setSmery(this.smery);
+        ((GPSData) paData).setUzemnyCelok(this.uzemnyCelok);
+    }
+
 
     @Override
     public IData<Double> getData() {
@@ -76,12 +86,36 @@ public class GPSData<T> extends TrNode<Double> implements IData<Double> {
         this.suradnice[dimension] = value;
     }
 
-    public T getUzemnyCelok() {
+    public IUzemnyCelok getUzemnyCelok() {
         return this.uzemnyCelok;
     }
 
-    public void setUzemnyCelok(T uzemnyCelok) {
+    public void setUzemnyCelok(IUzemnyCelok uzemnyCelok) {
         this.uzemnyCelok = uzemnyCelok;
+    }
+
+    public double[] getSuradnice() {
+        return this.suradnice;
+    }
+
+    public char[] getSmery() {
+        return this.smery;
+    }
+
+    private int getPocetSuradnic() {
+        return this.pocetSuradnic;
+    }
+
+    public void setSmery(char[] smery) {
+        this.smery = smery;
+    }
+
+    public void setPocetSuradnic(int pocetSuradnic) {
+        this.pocetSuradnic = pocetSuradnic;
+    }
+
+    public void setSuradnice(double[] suradnice) {
+        this.suradnice = suradnice;
     }
 
 }

@@ -8,4 +8,5 @@ public interface IData<T> {
     boolean compareWholeTo(IData<T> paData);
     T getDataAtD(int dimension);
     public void printData();
+    void swapData(IData<T> paData);
 }
