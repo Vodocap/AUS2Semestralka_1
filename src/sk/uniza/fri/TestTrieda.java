@@ -2,7 +2,6 @@ package sk.uniza.fri;
 
 import sk.uniza.fri.aplikacia.GPSData;
 import sk.uniza.fri.aplikacia.Parcela;
-import sk.uniza.fri.struktura.IData;
 import sk.uniza.fri.struktura.KDTree;
 import sk.uniza.fri.struktura.TrNode;
 
@@ -38,7 +37,18 @@ public class TestTrieda {
             this.vkladanePrvky.add(gpsData);
             this.kDStrom.insert(gpsData);
             }
-        this.kDStrom.proccessAllNodes(this.kDStrom.getRoot());
+        TrNode<Double> testNode = this.kDStrom.getRoot();
+        TrNode<Double> resultNodeMax = this.kDStrom.inOrderWithFindMinMax(testNode, true, false);
+        TrNode<Double> resultNodeMin = this.kDStrom.inOrderWithFindMinMax(testNode, false, false);
+        System.out.println("Maxnode");
+        resultNodeMax.printNode();
+        resultNodeMax.getData().printData();
+        System.out.println("Minnode");
+        resultNodeMin.printNode();
+        resultNodeMin.getData().printData();
+
+
+
     }
 
     public void najdiNahodnePrvky(int pocetNahodnychPrvkov) {

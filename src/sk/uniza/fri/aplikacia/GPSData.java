@@ -17,9 +17,12 @@ public class GPSData<T> extends TrNode<Double> implements IData<Double> {
     }
     @Override
     public int compareTo(IData<Double> paData, int dimension) {
-        if (paData.getDataAtD(dimension) > this.suradnice[dimension]) {
+        double porovnavajuce = this.suradnice[dimension];
+        double porovnavaneS = paData.getDataAtD(dimension);
+
+        if (porovnavaneS > porovnavajuce) {
             return -1;
-        } else if (paData.getDataAtD(dimension) < this.suradnice[dimension]) {
+        } else if (porovnavaneS < porovnavajuce) {
             return 1;
         }
 
@@ -41,9 +44,6 @@ public class GPSData<T> extends TrNode<Double> implements IData<Double> {
         return false;
     }
 
-    public double getSuradnicaAtD(int dimension) {
-        return this.suradnice[dimension];
-    }
 
     @Override
     public Double getDataAtD(int dimension) {
