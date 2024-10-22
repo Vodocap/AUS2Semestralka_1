@@ -19,14 +19,17 @@ public class GPSData extends TrNode<Double> implements IData<Double> {
     public int compareTo(IData<Double> paData, int dimension) {
         double porovnavajuce = this.suradnice[dimension];
         double porovnavaneS = paData.getDataAtD(dimension);
+        double epsilon = 1e-9;
 
-        if (porovnavaneS > porovnavajuce) {
-            return -1;
+        if (Math.abs(porovnavaneS - porovnavajuce) < epsilon) {
+            return 0;
         } else if (porovnavaneS < porovnavajuce) {
             return 1;
+        } else {
+            return -1;
         }
 
-        return 0;
+
     }
 
 

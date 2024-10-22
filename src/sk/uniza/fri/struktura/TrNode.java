@@ -52,16 +52,18 @@ public abstract class TrNode<T> {
     }
 
     public boolean isLeaf() {
-        if (this.right == null && this.left == null) {
-            return true;
-        }
-        return false;
+        return this.right == null && this.left == null;
     }
 
     public boolean isRoot() {
-        if (this.parent == null) {
-            return true;
-        }
-        return false;
+        return this.parent == null;
+    }
+
+    public boolean hasLeft() {
+        return this.getLeft() != null;
+    }
+
+    public boolean hasRight() {
+        return this.getRight() != null;
     }
 }

@@ -9,4 +9,5 @@ public interface IData<T> {
     T getDataAtD(int dimension);
     public void printData();
     void swapData(IData<T> paData);
+
 }

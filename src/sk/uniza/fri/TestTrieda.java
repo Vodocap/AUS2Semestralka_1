@@ -1,7 +1,6 @@
 package sk.uniza.fri;
 
 import sk.uniza.fri.aplikacia.GPSData;
-import sk.uniza.fri.aplikacia.Parcela;
 import sk.uniza.fri.struktura.KDTree;
 import sk.uniza.fri.struktura.TrNode;
 
@@ -38,8 +37,8 @@ public class TestTrieda {
             this.kDStrom.insert(gpsData);
             }
         TrNode<Double> testNode = this.kDStrom.getRoot();
-        TrNode<Double> resultNodeMax = this.kDStrom.inOrderWithFindMinMax(testNode, true, false);
-        TrNode<Double> resultNodeMin = this.kDStrom.inOrderWithFindMinMax(testNode, false, false);
+        TrNode<Double> resultNodeMax = this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(testNode, true, false, false);
+        TrNode<Double> resultNodeMin = this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(testNode, false, false, false);
         System.out.println("Maxnode");
         resultNodeMax.printNode();
         resultNodeMax.getData().printData();
@@ -54,24 +53,35 @@ public class TestTrieda {
     private void dajPocetPrvkovVKontrolnomErejLitse() {
         System.out.println("Pocet prvkov na kontrolu");
         System.out.println(this.vkladanePrvky.size());
+        System.out.println("Pocet prvkov v strome");
+        this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(this.kDStrom.getRoot(), false, false, false);
     }
 
 
     public void deletujAVypisSkontroluj(int paPocetPrvkov) {
         Random rand = new Random(10);
         for (int i = 0; i < paPocetPrvkov; i++) {
-            int rand_index = rand.nextInt(paPocetPrvkov);
-            this.kDStrom.remove(this.vkladanePrvky.get(rand_index).getData());
+            int rand_index = rand.nextInt(this.vkladanePrvky.size());
+            if (i == 7) {
+                System.out.println("sautu safiri bulbuli");
+            }
+            this.kDStrom.delete(this.vkladanePrvky.get(rand_index).getData());
             this.vkladanePrvky.remove(this.vkladanePrvky.get(rand_index));
         }
-        this.kDStrom.inOrderWithFindMinMax(this.kDStrom.getRoot(), false, false);
+        int index = 0;
+        for (TrNode<Double> doubleTrNode : this.vkladanePrvky) {
+            System.out.println("Index: " + index + " Prvok");
+            doubleTrNode.getData().printData();
+            index++;
+        }
+        this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(this.kDStrom.getRoot(), false, false, true);
         this.dajPocetPrvkovVKontrolnomErejLitse();
     }
 
     public void najdiNahodnePrvky(int pocetNahodnychPrvkov) {
         Random rand = new Random(10);
         for (int i = 0; i < pocetNahodnychPrvkov; i++) {
-            int rand_index = rand.nextInt(pocetNahodnychPrvkov);
+            int rand_index = rand.nextInt(this.vkladanePrvky.size());
             System.out.println("Hladane");
             this.vkladanePrvky.get(rand_index).getData().printData();
             System.out.println("najdene");
