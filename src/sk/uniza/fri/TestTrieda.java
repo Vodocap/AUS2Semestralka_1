@@ -36,16 +36,15 @@ public class TestTrieda {
             this.vkladanePrvky.add(gpsData);
             this.kDStrom.insert(gpsData);
             }
-        TrNode<Double> testNode = this.kDStrom.getRoot();
-        TrNode<Double> resultNodeMax = this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(testNode, true, false, false);
-        TrNode<Double> resultNodeMin = this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(testNode, false, false, false);
-        System.out.println("Maxnode");
-        resultNodeMax.printNode();
-        resultNodeMax.getData().printData();
-        System.out.println("Minnode");
-        resultNodeMin.printNode();
-        resultNodeMin.getData().printData();
-
+//        TrNode<Double> testNode = this.kDStrom.getRoot();
+////        TrNode<Double> resultNodeMax = this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(testNode, true, false, false);
+////        TrNode<Double> resultNodeMin = this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(testNode, false, false, false);
+////        System.out.println("Maxnode");
+////        resultNodeMax.printNode();
+////        resultNodeMax.getData().printData();
+////        System.out.println("Minnode");
+////        resultNodeMin.printNode();
+////        resultNodeMin.getData().printData();
 
 
     }
@@ -57,14 +56,20 @@ public class TestTrieda {
         this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(this.kDStrom.getRoot(), false, false, false);
     }
 
+    public void reinsertujCelyStrom() {
+        TrNode trNode = this.kDStrom.getRoot().getLeft();
+        trNode.setParent(null);
+        this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(trNode, true, true, false);
+        System.out.println("____________________________________________________________________");
+        System.out.println("Kontrolna prejliadka");
+        this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(this.kDStrom.getRoot(), false, false, true);
+    }
+
 
     public void deletujAVypisSkontroluj(int paPocetPrvkov) {
         Random rand = new Random(10);
         for (int i = 0; i < paPocetPrvkov; i++) {
             int rand_index = rand.nextInt(this.vkladanePrvky.size());
-            if (i == 7) {
-                System.out.println("sautu safiri bulbuli");
-            }
             this.kDStrom.delete(this.vkladanePrvky.get(rand_index).getData());
             this.vkladanePrvky.remove(this.vkladanePrvky.get(rand_index));
         }
@@ -74,6 +79,8 @@ public class TestTrieda {
             doubleTrNode.getData().printData();
             index++;
         }
+        System.out.println("____________________________________________________________________");
+        System.out.println("Kontrolna prejliadka");
         this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(this.kDStrom.getRoot(), false, false, true);
         this.dajPocetPrvkovVKontrolnomErejLitse();
     }

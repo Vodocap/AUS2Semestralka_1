@@ -5,8 +5,9 @@ public class Main {
 
     public static void main(String[] args) {
         TestTrieda testTrieda = new TestTrieda(2);
-        testTrieda.naplnStromAVypis(100, false);
-        testTrieda.deletujAVypisSkontroluj(50);
+        testTrieda.naplnStromAVypis(10, false);
+        testTrieda.deletujAVypisSkontroluj(4);
+        //testTrieda.reinsertujCelyStrom();
         //testTrieda.najdiNahodnePrvky(3);
 
     }

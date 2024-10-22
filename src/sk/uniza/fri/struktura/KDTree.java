@@ -28,7 +28,10 @@ public class KDTree<T> {
     }
 
 
-    public boolean insert(TrNode<T> paNode) {
+    public boolean insert(IData<T> paData) {
+        TrNode<T> paNode = new TrNode<T>();
+
+        paData.swapData(paData);
         System.out.println("Inserting node");
         paNode.getData().printData();
 
@@ -46,15 +49,14 @@ public class KDTree<T> {
             int k = level % this.dimensions;
             parentNode = currentNode;
 
-            System.out.println("sautusafiribulbuli level " + level);
+            //System.out.println("sautusafiribulbuli level " + level);
 
             int comparison = paNode.getData().compareTo(currentNode.getData(), k);
 
             if (comparison > 0) {
                 currentNode = currentNode.getRight();
-            } else if (comparison < 0){
-                currentNode = currentNode.getLeft();
-            } else {
+            }
+            if (comparison <= 0) {
                 currentNode = currentNode.getLeft();
             }
 
@@ -125,7 +127,7 @@ public class KDTree<T> {
     private void replaceNode(TrNode<T> nodeToRemove, TrNode<T> newNode) {
 
         if (nodeToRemove.isRoot()) {
-            this.root = newNode;
+            this.emplaceRoot(newNode);
         } else {
             TrNode<T> parent = nodeToRemove.getParent();
             if (parent.getLeft() == nodeToRemove) {
@@ -137,7 +139,6 @@ public class KDTree<T> {
 
         if (newNode != null) {
             newNode.setParent(nodeToRemove.getParent());
-            newNode.setLevel(nodeToRemove.getLevel());
             newNode.setLeft(nodeToRemove.getLeft());
             newNode.setRight(nodeToRemove.getRight());
 
@@ -148,6 +149,8 @@ public class KDTree<T> {
                 newNode.getRight().setParent(newNode);
             }
         }
+
+        nodeToRemove.setParent(null);
 
 
     }
@@ -165,17 +168,31 @@ public class KDTree<T> {
 
 
             if (nodeToRemove.isLeaf()) {
-                this.replaceNode(nodeToRemove, null);
+                if (!nodeToRemove.getParent().isRoot()) {
+
+                    if (nodeToRemove.getParent() != null) {
+
+                        if (nodeToRemove.getParent().getLeft() == nodeToRemove) {
+
+                            nodeToRemove.getParent().setLeft(null);
+                        } else {
+
+                            nodeToRemove.getParent().setRight(null);
+                        }
+                    }
+                } else {
+                    this.emplaceRoot(null);
+                }
                 return nodeToRemove;
 
             }
 
             TrNode<T> replacerNode;
             if (nodeToRemove.hasLeft()) {
-                replacerNode = this.inOrderOrFindMinMaxOrInsertSubtree(nodeToRemove.getLeft(), true, false, false);
+                replacerNode = this.inOrderOrFindMinMaxOrInsertSubtree(nodeToRemove.getLeft(), true, false, true);
 
             } else {
-                replacerNode = this.inOrderOrFindMinMaxOrInsertSubtree(nodeToRemove.getRight(), false, false, false);
+                replacerNode = this.inOrderOrFindMinMaxOrInsertSubtree(nodeToRemove.getRight(), false, false, true);
             }
 
             if (replacerNode.getParent().getLeft() == replacerNode) {
@@ -188,7 +205,7 @@ public class KDTree<T> {
             replacerNode.setParent(null);
 
             if (!replacerNode.isLeaf()) {
-                this.inOrderOrFindMinMaxOrInsertSubtree(replacerNode, false, true, false);
+                this.inOrderOrFindMinMaxOrInsertSubtree(replacerNode, false, true, true);
             }
 
             return nodeToRemove;
@@ -238,11 +255,19 @@ public class KDTree<T> {
 
 
         for (TrNode<T> tTrNode : nodesResult) {
+            //this.disconnectSons(tTrNode);
             if (printTree) {
                 System.out.println("-------------------------------------------------");
                 tTrNode.printNode();
                 tTrNode.getData().printData();
             }
+
+            if (insertSubtree) {
+                System.out.println("Inserting subtree into tree, node:");
+                tTrNode.getData().printData();
+                this.insert(tTrNode.getData());
+            }
+
             if (tTrNode != paNode) {
                 if (tTrNode.getData().compareTo(minNode.getData(), paNode.getLevel() % this.dimensions) < 0) {
                     //System.out.println("Novy minnode");
@@ -264,9 +289,6 @@ public class KDTree<T> {
 
 
 
-            }
-            if (insertSubtree) {
-                this.insert(tTrNode);
             }
 
 
