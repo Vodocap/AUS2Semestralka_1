@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 
 
-public class KDTree<T> {
+public class KDTree<T extends IData> {
     private TrNode<T> root;
     private final int dimensions;
 
@@ -28,12 +28,13 @@ public class KDTree<T> {
     }
 
 
-    public boolean insert(IData<T> paData) {
-        TrNode<T> paNode = new TrNode<T>();
-
-        paData.swapData(paData);
+    public boolean insert(T data) {
+        TrNode<T> paNode = new TrNode<>(data);
+        if (!paNode.isRoot()) {
+            this.disconnectNodeFully(paNode);
+        }
         System.out.println("Inserting node");
-        paNode.getData().printData();
+        paNode.printNode();
 
         if (this.root == null ) {
             this.emplaceRoot(paNode);
@@ -77,7 +78,7 @@ public class KDTree<T> {
 
     }
 
-    public TrNode<T> find(IData<T> paData) {
+    public TrNode<T> find(T paData) {
         TrNode<T> currentNode = this.root;
         int level = 0;
 
@@ -156,7 +157,7 @@ public class KDTree<T> {
     }
 
 
-    public TrNode<T> delete(IData<T> paData) {
+    public TrNode<T> delete(T paData) {
 
 
         TrNode<T> nodeToRemove = this.find(paData);
@@ -164,7 +165,7 @@ public class KDTree<T> {
         if (nodeToRemove != null) {
 
             nodeToRemove.printNode();
-            nodeToRemove.getData().printData();
+            //nodeToRemove.getData().printData();
 
 
             if (nodeToRemove.isLeaf()) {
@@ -201,7 +202,7 @@ public class KDTree<T> {
                 replacerNode.getParent().setRight(null);
             }
 
-            replacerNode.getData().swapData(nodeToRemove.getData());
+            //replacerNode.getData().swapData(nodeToRemove.getData());
             replacerNode.setParent(null);
 
             if (!replacerNode.isLeaf()) {
@@ -219,6 +220,7 @@ public class KDTree<T> {
 
     }
 
+    // pridat enum ako parameter ktory bude odlisovat casy
     public TrNode<T> inOrderOrFindMinMaxOrInsertSubtree(TrNode<T> paNode, boolean minOrMax, boolean insertSubtree, boolean printTree) {
         //this.proccessNode(paNode);
         TrNode<T> minNode = paNode;
@@ -261,14 +263,13 @@ public class KDTree<T> {
                 tTrNode.printNode();
                 tTrNode.getData().printData();
             }
-
-            if (insertSubtree) {
-                System.out.println("Inserting subtree into tree, node:");
-                tTrNode.getData().printData();
-                this.insert(tTrNode.getData());
-            }
-
+            
             if (tTrNode != paNode) {
+                if (insertSubtree) {
+                    System.out.println("Inserting subtree into tree, node:");
+                    tTrNode.getData().printData();
+                    this.insert(tTrNode.getData());
+                }
                 if (tTrNode.getData().compareTo(minNode.getData(), paNode.getLevel() % this.dimensions) < 0) {
                     //System.out.println("Novy minnode");
                     //if (printTree) {

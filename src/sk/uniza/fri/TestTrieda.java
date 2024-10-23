@@ -1,6 +1,8 @@
 package sk.uniza.fri;
 
 import sk.uniza.fri.aplikacia.GPSData;
+import sk.uniza.fri.aplikacia.GPSNode;
+import sk.uniza.fri.struktura.IData;
 import sk.uniza.fri.struktura.KDTree;
 import sk.uniza.fri.struktura.TrNode;
 
@@ -14,12 +16,12 @@ import java.util.Random;
  */
 public class TestTrieda {
 
-    private ArrayList<TrNode<Double>> vkladanePrvky;
-    private KDTree<Double> kDStrom;
+    private ArrayList<TrNode<IData>> vkladanePrvky;
+    private KDTree<IData> kDStrom;
 
     public TestTrieda (int paPocetDimenziVStrome) {
-        this.kDStrom = new KDTree<Double>(paPocetDimenziVStrome);
-        this.vkladanePrvky = new ArrayList<TrNode<Double>>();
+        this.kDStrom = new KDTree<IData>(paPocetDimenziVStrome);
+        this.vkladanePrvky = new ArrayList<TrNode<IData>>();
     }
 
     public void naplnStromAVypis(int paPocetPrvkov, boolean paAllowDuplicates) {
@@ -33,7 +35,10 @@ public class TestTrieda {
             }
             char[] tempPoleChar = {'N', 'E'};
             GPSData gpsData = new GPSData(2, tempPole, tempPoleChar);
-            this.vkladanePrvky.add(gpsData);
+
+
+            GPSNode gpsNode = new GPSNode<>(gpsData);
+            this.vkladanePrvky.add(gpsNode);
             this.kDStrom.insert(gpsData);
             }
 //        TrNode<Double> testNode = this.kDStrom.getRoot();
@@ -74,7 +79,7 @@ public class TestTrieda {
             this.vkladanePrvky.remove(this.vkladanePrvky.get(rand_index));
         }
         int index = 0;
-        for (TrNode<Double> doubleTrNode : this.vkladanePrvky) {
+        for (TrNode<IData> doubleTrNode : this.vkladanePrvky) {
             System.out.println("Index: " + index + " Prvok");
             doubleTrNode.getData().printData();
             index++;
@@ -92,7 +97,7 @@ public class TestTrieda {
             System.out.println("Hladane");
             this.vkladanePrvky.get(rand_index).getData().printData();
             System.out.println("najdene");
-            this.kDStrom.find(this.vkladanePrvky.get(rand_index).getData()).getData().printData();
+            this.kDStrom.find(this.vkladanePrvky.get(rand_index).getData()).printNode();
         }
     }
 

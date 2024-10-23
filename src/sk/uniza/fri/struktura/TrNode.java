@@ -5,11 +5,16 @@ package sk.uniza.fri.struktura;
  *
  * @author matus
  */
-public abstract class TrNode<T> {
+public class TrNode<T> {
     private TrNode<T> right;
     private TrNode<T> left;
     private TrNode<T> parent;
     private int level;
+    private T data;
+
+    public TrNode(T data) {
+        this.data = data;
+    }
 
     public int getLevel() {
         return this.level;
@@ -34,9 +39,14 @@ public abstract class TrNode<T> {
         return this.right;
     }
 
-    public abstract IData<T> getData();
+    public T getData() {
+        return this.data;
+    }
 
-    public abstract void setDataAtD(int dimension, double value);
+    public void setData(T paData) {
+        this.data = paData;
+    }
+
 
     public TrNode<T> getParent() {
         return this.parent;
@@ -47,8 +57,7 @@ public abstract class TrNode<T> {
     }
 
     public void printNode() {
-        System.out.println("Node at level: ");
-        System.out.println(this.level);
+        return;
     }
 
     public boolean isLeaf() {

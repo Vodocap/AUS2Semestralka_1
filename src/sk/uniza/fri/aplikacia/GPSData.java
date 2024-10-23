@@ -3,11 +3,13 @@ package sk.uniza.fri.aplikacia;
 import sk.uniza.fri.struktura.IData;
 import sk.uniza.fri.struktura.TrNode;
 
-public class GPSData extends TrNode<Double> implements IData<Double> {
+public class GPSData implements IData<Double> {
     private double[] suradnice;
     private char[] smery;
     private int pocetSuradnic;
     private IUzemnyCelok uzemnyCelok;
+
+    
 
     public GPSData(int paPocetSuradnic, double[] paSuradnice, char[] paSmery) {
         this.pocetSuradnic = paPocetSuradnic;
@@ -58,6 +60,7 @@ public class GPSData extends TrNode<Double> implements IData<Double> {
         return this.smery[dimension];
     }
 
+    @Override
     public void printData() {
         System.out.println("Suradnice: ");
         for (double suradnica : this.suradnice) {
@@ -78,16 +81,6 @@ public class GPSData extends TrNode<Double> implements IData<Double> {
         ((GPSData) paData).setUzemnyCelok(this.uzemnyCelok);
     }
 
-
-    @Override
-    public IData<Double> getData() {
-        return this;
-    }
-
-    @Override
-    public void setDataAtD(int dimension, double value) {
-        this.suradnice[dimension] = value;
-    }
 
     public IUzemnyCelok getUzemnyCelok() {
         return this.uzemnyCelok;
