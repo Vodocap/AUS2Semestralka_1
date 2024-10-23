@@ -1,7 +1,6 @@
 package sk.uniza.fri;
 
 import sk.uniza.fri.aplikacia.GPSData;
-import sk.uniza.fri.aplikacia.GPSNode;
 import sk.uniza.fri.struktura.IData;
 import sk.uniza.fri.struktura.KDTree;
 import sk.uniza.fri.struktura.TrNode;
@@ -29,15 +28,19 @@ public class TestTrieda {
 
         for (int i = 0; i < paPocetPrvkov; i++) {
             double[] tempPole = {rand.nextDouble(), rand.nextDouble()};
-            double[] dupPole = {0.3, rand.nextDouble()};
+            double[] dupPole = {0.3, 0.8};
             if (paAllowDuplicates && i % 2 == 1) {
                 tempPole = dupPole;
             }
             char[] tempPoleChar = {'N', 'E'};
             GPSData gpsData = new GPSData(2, tempPole, tempPoleChar);
+            if (paAllowDuplicates) {
+                gpsData = new GPSData(2, dupPole, tempPoleChar);
+            }
 
 
-            GPSNode gpsNode = new GPSNode<>(gpsData);
+
+            TrNode gpsNode = new TrNode(gpsData);
             this.vkladanePrvky.add(gpsNode);
             this.kDStrom.insert(gpsData);
             }
@@ -98,6 +101,15 @@ public class TestTrieda {
             this.vkladanePrvky.get(rand_index).getData().printData();
             System.out.println("najdene");
             this.kDStrom.find(this.vkladanePrvky.get(rand_index).getData()).printNode();
+        }
+    }
+
+    public void najdiSetkyPrvky () {
+        Random rand = new Random(10);
+        ArrayList<TrNode<IData>> zoznamDup = this.kDStrom.findAll(this.vkladanePrvky.get(rand.nextInt(this.vkladanePrvky.size())).getData());
+        for (TrNode<IData> iDataTrNode : zoznamDup) {
+            iDataTrNode.printNode();
+            iDataTrNode.getData().printData();
         }
     }
 

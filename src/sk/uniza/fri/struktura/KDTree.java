@@ -30,11 +30,9 @@ public class KDTree<T extends IData> {
 
     public boolean insert(T data) {
         TrNode<T> paNode = new TrNode<>(data);
-        if (!paNode.isRoot()) {
-            this.disconnectNodeFully(paNode);
-        }
         System.out.println("Inserting node");
         paNode.printNode();
+        paNode.getData().printData();
 
         if (this.root == null ) {
             this.emplaceRoot(paNode);
@@ -107,6 +105,37 @@ public class KDTree<T extends IData> {
 
         System.out.println("Such a node does not exist in this tree");
         return null;
+    }
+
+    public ArrayList<TrNode<T>> findAll(T paData) {
+
+        ArrayList<TrNode<T>> resultNodes = new ArrayList<TrNode<T>>();
+        TrNode<T> currentNode = this.root;
+        int level = 0;
+
+        while (currentNode != null) {
+            int k = level % this.dimensions;
+            if (paData.compareTo(currentNode.getData(), k) == 1) {
+                currentNode = currentNode.getRight();
+                level++;
+            } else if (paData.compareTo(currentNode.getData(), k) == -1) {
+                currentNode = currentNode.getLeft();
+                level++;
+            } else if (paData.compareTo(currentNode.getData(), k) == 0) {
+
+                if (paData.compareWholeTo(currentNode.getData())) {
+                    resultNodes.add(currentNode);
+                }
+                //if (paData.compareWholeTo(currentNode.getLeft().getData())) {
+                //    resultNodes.add(currentNode.getLeft());
+                //}
+                currentNode = currentNode.getLeft();
+
+
+            }
+
+        }
+        return resultNodes;
     }
 
     private void disconnectNodeFully(TrNode<T> paNode) {

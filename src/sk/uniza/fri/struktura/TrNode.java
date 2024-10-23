@@ -57,7 +57,7 @@ public class TrNode<T> {
     }
 
     public void printNode() {
-        return;
+        System.out.println("Node at level: " + this.level);
     }
 
     public boolean isLeaf() {
