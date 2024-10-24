@@ -1,20 +1,22 @@
 package sk.uniza.fri.aplikacia;
 
 import sk.uniza.fri.struktura.IData;
-import sk.uniza.fri.struktura.TrNode;
+
+import java.util.Random;
 
 public class GPSData implements IData<Double> {
     private double[] suradnice;
-    private char[] smery;
-    private int pocetSuradnic;
-    private IUzemnyCelok uzemnyCelok;
+    private UzemnyCelok uzemnyCelok;
+    private String ID;
+    private UzemnyCelok uzemnyCelok;
 
     
 
-    public GPSData(int paPocetSuradnic, double[] paSuradnice, char[] paSmery) {
-        this.pocetSuradnic = paPocetSuradnic;
+    public GPSData( double[] paSuradnice) {
+        Random rand = new Random();
+        this.ID = String.valueOf((char) (rand.nextInt(25) + 65) + " - " + rand.nextLong());
         this.suradnice = paSuradnice;
-        this.smery = paSmery;
+
 
     }
     @Override
@@ -38,13 +40,13 @@ public class GPSData implements IData<Double> {
     @Override
     public boolean compareWholeTo(IData<Double> paData) {
         int rovneSuradnice = 0;
-        for (int i = 0; i < this.pocetSuradnic; i++) {
+        for (int i = 0; i < this.suradnice.length; i++) {
             if (this.suradnice[i] == paData.getDataAtD(i)) {
                 rovneSuradnice++;
             }
         }
 
-        if (rovneSuradnice == this.pocetSuradnic) {
+        if (rovneSuradnice == this.suradnice.length && this.ID.equals(paData.getID())) {
             return true;
         }
         return false;
@@ -56,37 +58,39 @@ public class GPSData implements IData<Double> {
         return this.suradnice[dimension];
     }
 
-    public char getSmerAtD(int dimension) {
-        return this.smery[dimension];
-    }
-
     @Override
     public void printData() {
+        System.out.println("ID: " + this.ID);
+
         System.out.println("Suradnice: ");
         for (double suradnica : this.suradnice) {
             System.out.println(suradnica);
         }
         System.out.println("Smery: ");
-        for (char smer : this.smery) {
-            System.out.println(smer);
-        }
+
     }
 
     @Override
     public void swapData(IData<Double> paData) {
         paData = (GPSData) paData;
-        ((GPSData) paData).setPocetSuradnic(this.pocetSuradnic);
         ((GPSData) paData).setSuradnice(this.suradnice);
-        ((GPSData) paData).setSmery(this.smery);
         ((GPSData) paData).setUzemnyCelok(this.uzemnyCelok);
+        ((GPSData) paData).setID(this.ID);
     }
 
+    @Override
+    public String getID() {
+        return this.ID;
+    }
+    public void setID(String ID) {
+        this.ID = ID;
+    }
 
-    public IUzemnyCelok getUzemnyCelok() {
+    public UzemnyCelok getUzemnyCelok() {
         return this.uzemnyCelok;
     }
 
-    public void setUzemnyCelok(IUzemnyCelok uzemnyCelok) {
+    public void setUzemnyCelok(UzemnyCelok uzemnyCelok) {
         this.uzemnyCelok = uzemnyCelok;
     }
 
@@ -94,24 +98,23 @@ public class GPSData implements IData<Double> {
         return this.suradnice;
     }
 
-    public char[] getSmery() {
-        return this.smery;
-    }
+
 
     private int getPocetSuradnic() {
-        return this.pocetSuradnic;
+        return this.suradnice.length;
     }
 
-    public void setSmery(char[] smery) {
-        this.smery = smery;
-    }
 
-    public void setPocetSuradnic(int pocetSuradnic) {
-        this.pocetSuradnic = pocetSuradnic;
-    }
 
     public void setSuradnice(double[] suradnice) {
         this.suradnice = suradnice;
     }
 
+    public UzemnyCelok getUzemnyObjekt() {
+        return uzemnyCelok;
+    }
+
+    public void setUzemnyObjekt(UzemnyCelok uzemnyCelok) {
+        this.uzemnyCelok = uzemnyCelok;
+    }
 }

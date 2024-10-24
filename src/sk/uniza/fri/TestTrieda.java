@@ -33,9 +33,9 @@ public class TestTrieda {
                 tempPole = dupPole;
             }
             char[] tempPoleChar = {'N', 'E'};
-            GPSData gpsData = new GPSData(2, tempPole, tempPoleChar);
+            GPSData gpsData = new GPSData( tempPole);
             if (paAllowDuplicates) {
-                gpsData = new GPSData(2, dupPole, tempPoleChar);
+                gpsData = new GPSData(dupPole);
             }
 
 
@@ -100,7 +100,8 @@ public class TestTrieda {
             System.out.println("Hladane");
             this.vkladanePrvky.get(rand_index).getData().printData();
             System.out.println("najdene");
-            this.kDStrom.find(this.vkladanePrvky.get(rand_index).getData()).printNode();
+            IData gpsData = this.vkladanePrvky.get(rand_index).getData();
+            this.kDStrom.find(gpsData, gpsData.getID()).printNode();
         }
     }
 

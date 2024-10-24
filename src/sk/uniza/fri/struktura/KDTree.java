@@ -76,7 +76,7 @@ public class KDTree<T extends IData> {
 
     }
 
-    public TrNode<T> find(T paData) {
+    public TrNode<T> find(T paData, String ID) {
         TrNode<T> currentNode = this.root;
         int level = 0;
 
@@ -189,7 +189,7 @@ public class KDTree<T extends IData> {
     public TrNode<T> delete(T paData) {
 
 
-        TrNode<T> nodeToRemove = this.find(paData);
+        TrNode<T> nodeToRemove = this.find(paData, paData.getID());
         System.out.println("Printing node to remove");
         if (nodeToRemove != null) {
 
