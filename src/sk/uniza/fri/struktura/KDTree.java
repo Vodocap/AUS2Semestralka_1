@@ -30,13 +30,13 @@ public class KDTree<T extends IData> {
 
     public boolean insert(T data) {
         TrNode<T> paNode = new TrNode<>(data);
-        System.out.println("Inserting node");
-        paNode.printNode();
-        paNode.getData().printData();
 
         if (this.root == null ) {
             this.emplaceRoot(paNode);
             paNode.setLevel(0);
+            System.out.println("Inserted node");
+            paNode.printNode();
+            paNode.getData().printData();
             return true;
         }
         TrNode<T> currentNode = this.root;
@@ -62,8 +62,12 @@ public class KDTree<T extends IData> {
             level++;
         }
 
+
         paNode.setLevel(level);
         paNode.setParent(parentNode);
+        System.out.println("Inserted node");
+        paNode.printNode();
+        paNode.getData().printData();
 
         int finalDimension = (level - 1) % this.dimensions;
         if (paNode.getData().compareTo(parentNode.getData(), finalDimension) > 0) {
@@ -136,6 +140,11 @@ public class KDTree<T extends IData> {
     }
 
     private void disconnectNodeFully(TrNode<T> paNode) {
+        if (paNode.getParent().getLeft() == paNode) {
+            paNode.getParent().setLeft(null);
+        } else if (paNode.getParent().getRight() == paNode) {
+            paNode.getParent().setRight(null);
+        }
         paNode.setParent(null);
         paNode.setLeft(null);
         paNode.setRight(null);
@@ -187,75 +196,86 @@ public class KDTree<T extends IData> {
 
         TrNode<T> nodeToRemove = this.find(paData, paData.getID());
         System.out.println("Printing node to remove");
+
         while (!nodeToRemove.isLeaf()) {
+
             TrNode<T> replacerNode = null;
             if (nodeToRemove.hasLeft()) {
-                replacerNode = this.inOrderOrFindMinMaxOrInsertSubtree(nodeToRemove, true, false, false);
+                replacerNode = this.inOrderOrFindMinMaxOrInsertSubtree(nodeToRemove.getLeft(), true, false, false);
             } else if (nodeToRemove.hasRight()) {
-                replacerNode = this.inOrderOrFindMinMaxOrInsertSubtree(nodeToRemove, false, false, false);
+                replacerNode = this.inOrderOrFindMinMaxOrInsertSubtree(nodeToRemove.getRight(), false, false, false);
             }
             if (replacerNode != null) {
-                // depp copy da
-                //temp data = new data
+                    // depp copy da
+                    //temp data = new data
+
+                TrNode<T> temnode = new TrNode<>(nodeToRemove.getData());
                 nodeToRemove.setData(replacerNode.getData());
+                replacerNode.setData(temnode.getData());
+                nodeToRemove = replacerNode;
 
             }
 
         }
-        if (nodeToRemove != null) {
 
-            nodeToRemove.printNode();
-            //nodeToRemove.getData().printData();
+        this.disconnectNodeFully(nodeToRemove);
+        return nodeToRemove;
 
 
-            if (nodeToRemove.isLeaf()) {
-                if (!nodeToRemove.getParent().isRoot()) {
-
-                    if (nodeToRemove.getParent() != null) {
-
-                        if (nodeToRemove.getParent().getLeft() == nodeToRemove) {
-
-                            nodeToRemove.getParent().setLeft(null);
-                        } else {
-
-                            nodeToRemove.getParent().setRight(null);
-                        }
-                    }
-                } else {
-                    this.emplaceRoot(null);
-                }
-                return nodeToRemove;
-
-            }
-
-            TrNode<T> replacerNode;
-            if (nodeToRemove.hasLeft()) {
-                replacerNode = this.inOrderOrFindMinMaxOrInsertSubtree(nodeToRemove.getLeft(), true, false, true);
-
-            } else {
-                replacerNode = this.inOrderOrFindMinMaxOrInsertSubtree(nodeToRemove.getRight(), false, false, true);
-            }
-
-            if (replacerNode.getParent().getLeft() == replacerNode) {
-                replacerNode.getParent().setLeft(null);
-            } else {
-                replacerNode.getParent().setRight(null);
-            }
-
-            //replacerNode.getData().swapData(nodeToRemove.getData());
-            replacerNode.setParent(null);
-
-            if (!replacerNode.isLeaf()) {
-                this.inOrderOrFindMinMaxOrInsertSubtree(replacerNode, false, true, true);
-            }
-
-            return nodeToRemove;
-
-        } else {
-            System.out.println("No such node in tree");
-        }
-
-        return null;
+//        if (nodeToRemove != null) {
+//
+//            nodeToRemove.printNode();
+//            //nodeToRemove.getData().printData();
+//
+//
+//            if (nodeToRemove.isLeaf()) {
+//                if (!nodeToRemove.getParent().isRoot()) {
+//
+//                    if (nodeToRemove.getParent() != null) {
+//
+//                        if (nodeToRemove.getParent().getLeft() == nodeToRemove) {
+//
+//                            nodeToRemove.getParent().setLeft(null);
+//                        } else {
+//
+//                            nodeToRemove.getParent().setRight(null);
+//                        }
+//                    }
+//                } else {
+//                    this.emplaceRoot(null);
+//                }
+//                return nodeToRemove;
+//
+//            }
+//
+//            TrNode<T> replacerNode;
+//            if (nodeToRemove.hasLeft()) {
+//                replacerNode = this.inOrderOrFindMinMaxOrInsertSubtree(nodeToRemove.getLeft(), true, false, true);
+//
+//            } else {
+//                replacerNode = this.inOrderOrFindMinMaxOrInsertSubtree(nodeToRemove.getRight(), false, false, true);
+//            }
+//
+//            if (replacerNode.getParent().getLeft() == replacerNode) {
+//                replacerNode.getParent().setLeft(null);
+//            } else {
+//                replacerNode.getParent().setRight(null);
+//            }
+//
+//            //replacerNode.getData().swapData(nodeToRemove.getData());
+//            replacerNode.setParent(null);
+//
+//            if (!replacerNode.isLeaf()) {
+//                this.inOrderOrFindMinMaxOrInsertSubtree(replacerNode, false, true, true);
+//            }
+//
+//            return nodeToRemove;
+//
+//        } else {
+//            System.out.println("No such node in tree");
+//        }
+//
+//        return null;
 
 
     }
@@ -311,24 +331,24 @@ public class KDTree<T extends IData> {
                     this.insert(tTrNode.getData());
                 }
                 if (tTrNode.getData().compareTo(minNode.getData(), paNode.getLevel() % this.dimensions) < 0) {
-                    //System.out.println("Novy minnode");
-                    //if (printTree) {
-                    //    tTrNode.printNode();
-                    //    tTrNode.getData().printData();
-                    //}
+
+                    if (printTree) {
+                        System.out.println("Novy minnode");
+                        tTrNode.printNode();
+                        tTrNode.getData().printData();
+                    }
                     minNode = tTrNode;
                 }
 
                 if (tTrNode.getData().compareTo(maxNode.getData(), paNode.getLevel() % this.dimensions) > 0) {
-                    //System.out.println("Novy maxnode");
-                    //if (printTree) {
-                    //    tTrNode.printNode();
-                    //    tTrNode.getData().printData();
-                    //}
+
+                    if (printTree) {
+                        System.out.println("Novy maxnode");
+                        tTrNode.printNode();
+                        tTrNode.getData().printData();
+                    }
                     maxNode = tTrNode;
                 }
-
-
 
             }
 

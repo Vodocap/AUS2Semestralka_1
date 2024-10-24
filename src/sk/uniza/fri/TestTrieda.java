@@ -23,6 +23,17 @@ public class TestTrieda {
         this.vkladanePrvky = new ArrayList<TrNode<IData>>();
     }
 
+    public void skontrolujStrom() {
+        long najdene = 0;
+        for (TrNode<IData> iDataTrNode : this.vkladanePrvky) {
+            if (this.kDStrom.find(iDataTrNode.getData(), iDataTrNode.getData().getID()).getData().getID().equals(iDataTrNode.getData().getID())) {
+                najdene++;
+            };
+        }
+
+        System.out.println("Pocet hladanych " + this.vkladanePrvky.size() + " Pocet najdenych - " + najdene);
+    }
+
     public void naplnStromAVypis(int paPocetPrvkov, boolean paAllowDuplicates) {
         Random rand = new Random(10);
 
@@ -44,14 +55,7 @@ public class TestTrieda {
             this.vkladanePrvky.add(gpsNode);
             this.kDStrom.insert(gpsData);
             }
-        long najdene = 0;
-        for (TrNode<IData> iDataTrNode : this.vkladanePrvky) {
-            if (this.kDStrom.find(iDataTrNode.getData(), iDataTrNode.getData().getID()).getData().getID().equals(iDataTrNode.getData().getID())) {
-                najdene++;
-            };
-        }
 
-        System.out.println("Pocet hladanych " + this.vkladanePrvky.size() + " Pocet najdenych - " + najdene);
 //        TrNode<Double> testNode = this.kDStrom.getRoot();
 ////        TrNode<Double> resultNodeMax = this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(testNode, true, false, false);
 ////        TrNode<Double> resultNodeMin = this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(testNode, false, false, false);
@@ -88,6 +92,7 @@ public class TestTrieda {
             int rand_index = rand.nextInt(this.vkladanePrvky.size());
             this.kDStrom.delete(this.vkladanePrvky.get(rand_index).getData());
             this.vkladanePrvky.remove(this.vkladanePrvky.get(rand_index));
+            this.skontrolujStrom();
         }
         int index = 0;
         for (TrNode<IData> doubleTrNode : this.vkladanePrvky) {

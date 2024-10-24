@@ -72,9 +72,15 @@ public class GPSData implements IData<Double> {
     @Override
     public void swapData(IData<Double> paData) {
         paData = (GPSData) paData;
+        double[] tempSuradnice = ((GPSData) paData).getSuradnice();
+        UzemnyCelok tempUzemnyCelok = ((GPSData) paData).getUzemnyCelok();
+        String tempID = paData.getID();
         ((GPSData) paData).setSuradnice(this.suradnice);
         ((GPSData) paData).setUzemnyCelok(this.uzemnyCelok);
         ((GPSData) paData).setID(this.ID);
+        this.suradnice = tempSuradnice;
+        this.uzemnyCelok = tempUzemnyCelok;
+        this.ID = tempID;
     }
 
     @Override
