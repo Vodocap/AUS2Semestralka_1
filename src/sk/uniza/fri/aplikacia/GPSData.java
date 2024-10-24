@@ -8,7 +8,6 @@ public class GPSData implements IData<Double> {
     private double[] suradnice;
     private UzemnyCelok uzemnyCelok;
     private String ID;
-    private UzemnyCelok uzemnyCelok;
 
     
 
