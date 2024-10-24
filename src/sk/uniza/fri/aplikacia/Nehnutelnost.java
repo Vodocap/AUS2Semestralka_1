@@ -7,8 +7,6 @@ package sk.uniza.fri.aplikacia;
  */
 
 public class Nehnutelnost extends UzemnyCelok {
-
-
     public Nehnutelnost(int paCislo, String paPopis, GPSData paSirka, GPSData paDlzka) {
         super(paCislo, paPopis, paSirka, paDlzka);
     }

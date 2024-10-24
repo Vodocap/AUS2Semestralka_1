@@ -44,7 +44,7 @@ public abstract class UzemnyCelok {
         return this.uzemneObjekty;
     }
 
-    public void addUzemnyObjekt(UzemnyCelok paUzemnyCelok) {
+    public void pridajUzemnyCelok(UzemnyCelok paUzemnyCelok) {
         this.uzemneObjekty.add(paUzemnyCelok);
     }
 
