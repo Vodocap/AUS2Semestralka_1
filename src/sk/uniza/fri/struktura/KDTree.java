@@ -93,11 +93,8 @@ public class KDTree<T extends IData> {
                 if (paData.compareWholeTo(currentNode.getData())) {
                     return currentNode;
                 }
-                if (paData.compareWholeTo(currentNode.getLeft().getData())) {
-                    return currentNode.getLeft();
-                }
                 currentNode = currentNode.getLeft();
-
+                level++;
 
             }
 
@@ -188,9 +185,23 @@ public class KDTree<T extends IData> {
 
     public TrNode<T> delete(T paData) {
 
-
         TrNode<T> nodeToRemove = this.find(paData, paData.getID());
         System.out.println("Printing node to remove");
+        while (!nodeToRemove.isLeaf()) {
+            TrNode<T> replacerNode = null;
+            if (nodeToRemove.hasLeft()) {
+                replacerNode = this.inOrderOrFindMinMaxOrInsertSubtree(nodeToRemove, true, false, false);
+            } else if (nodeToRemove.hasRight()) {
+                replacerNode = this.inOrderOrFindMinMaxOrInsertSubtree(nodeToRemove, false, false, false);
+            }
+            if (replacerNode != null) {
+                // depp copy da
+                //temp data = new data
+                nodeToRemove.setData(replacerNode.getData());
+
+            }
+
+        }
         if (nodeToRemove != null) {
 
             nodeToRemove.printNode();
