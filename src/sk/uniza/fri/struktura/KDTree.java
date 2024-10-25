@@ -80,7 +80,7 @@ public class KDTree<T extends IData> {
 
     }
 
-    public TrNode<T> find(T paData, String ID) {
+    public TrNode<T> find(T paData) {
         TrNode<T> currentNode = this.root;
         int level = 0;
 
@@ -94,7 +94,7 @@ public class KDTree<T extends IData> {
                 level++;
             } else if (paData.compareTo(currentNode.getData(), k) == 0) {
 
-                if (paData.compareWholeTo(currentNode.getData())) {
+                if (paData.compareWholeTo(currentNode.getData(), true)) {
                     return currentNode;
                 }
                 currentNode = currentNode.getLeft();
@@ -124,7 +124,7 @@ public class KDTree<T extends IData> {
                 level++;
             } else if (paData.compareTo(currentNode.getData(), k) == 0) {
 
-                if (paData.compareWholeTo(currentNode.getData())) {
+                if (paData.compareWholeTo(currentNode.getData(), false)) {
                     resultNodes.add(currentNode);
                 }
                 //if (paData.compareWholeTo(currentNode.getLeft().getData())) {
@@ -150,15 +150,6 @@ public class KDTree<T extends IData> {
         paNode.setRight(null);
     }
 
-    private void disconnectSons(TrNode<T> paNode) {
-        paNode.setLeft(null);
-        paNode.setRight(null);
-    }
-
-    private void connectSons(TrNode<T> paParent, TrNode<T> paLeftSon, TrNode<T> paRightSon) {
-        paParent.setLeft(paLeftSon);
-        paParent.setRight(paRightSon);
-    }
 
     private void replaceNode(TrNode<T> nodeToRemove, TrNode<T> newNode) {
 
@@ -194,7 +185,7 @@ public class KDTree<T extends IData> {
 
     public TrNode<T> delete(T paData) {
 
-        TrNode<T> nodeToRemove = this.find(paData, paData.getID());
+        TrNode<T> nodeToRemove = this.find(paData);
         System.out.println("Printing node to remove");
 
         while (!nodeToRemove.isLeaf()) {
@@ -202,12 +193,11 @@ public class KDTree<T extends IData> {
             TrNode<T> replacerNode = null;
             if (nodeToRemove.hasLeft()) {
                 replacerNode = this.inOrderOrFindMinMaxOrInsertSubtree(nodeToRemove.getLeft(), true, false, false);
-            } else if (nodeToRemove.hasRight()) {
+            }
+            if (nodeToRemove.hasRight()) {
                 replacerNode = this.inOrderOrFindMinMaxOrInsertSubtree(nodeToRemove.getRight(), false, false, false);
             }
             if (replacerNode != null) {
-                    // depp copy da
-                    //temp data = new data
 
                 TrNode<T> temnode = new TrNode<>(nodeToRemove.getData());
                 nodeToRemove.setData(replacerNode.getData());
@@ -287,6 +277,10 @@ public class KDTree<T extends IData> {
         TrNode<T> maxNode = paNode;
         ArrayList<TrNode<T>> nodesResult = new ArrayList<>();
         TrNode<T> currentNode = paNode;
+        int level = paNode.getLevel() - 1;
+        if (paNode.isRoot()) {
+            level = paNode.getLevel();
+        }
 
         while (currentNode != null) {
             if (!currentNode.hasLeft()) {
@@ -330,20 +324,24 @@ public class KDTree<T extends IData> {
                     tTrNode.getData().printData();
                     this.insert(tTrNode.getData());
                 }
-                if (tTrNode.getData().compareTo(minNode.getData(), paNode.getLevel() % this.dimensions) < 0) {
+                System.out.println();
+
+
+                if (tTrNode.getData().compareTo(minNode.getData(), level % this.dimensions) < 0) {
 
                     if (printTree) {
-                        System.out.println("Novy minnode");
-                        tTrNode.printNode();
-                        tTrNode.getData().printData();
+//                        System.out.println("Novy minnode");
+//                        tTrNode.printNode();
+//                        tTrNode.getData().printData();
                     }
                     minNode = tTrNode;
                 }
 
-                if (tTrNode.getData().compareTo(maxNode.getData(), paNode.getLevel() % this.dimensions) > 0) {
+                if (tTrNode.getData().compareTo(maxNode.getData(), level % this.dimensions) >= 0) {
 
                     if (printTree) {
                         System.out.println("Novy maxnode");
+                        System.out.println("Urovne " + paNode.getLevel());
                         tTrNode.printNode();
                         tTrNode.getData().printData();
                     }

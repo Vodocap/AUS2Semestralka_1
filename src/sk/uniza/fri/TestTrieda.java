@@ -26,7 +26,7 @@ public class TestTrieda {
     public void skontrolujStrom() {
         long najdene = 0;
         for (TrNode<IData> iDataTrNode : this.vkladanePrvky) {
-            if (this.kDStrom.find(iDataTrNode.getData(), iDataTrNode.getData().getID()).getData().getID().equals(iDataTrNode.getData().getID())) {
+            if (this.kDStrom.find(iDataTrNode.getData()).getData().getID().equals(iDataTrNode.getData().getID())) {
                 najdene++;
             };
         }
@@ -92,8 +92,9 @@ public class TestTrieda {
             int rand_index = rand.nextInt(this.vkladanePrvky.size());
             this.kDStrom.delete(this.vkladanePrvky.get(rand_index).getData());
             this.vkladanePrvky.remove(this.vkladanePrvky.get(rand_index));
-            this.skontrolujStrom();
+
         }
+        this.skontrolujStrom();
         int index = 0;
         for (TrNode<IData> doubleTrNode : this.vkladanePrvky) {
             System.out.println("Index: " + index + " Prvok");
@@ -114,7 +115,7 @@ public class TestTrieda {
             this.vkladanePrvky.get(rand_index).getData().printData();
             System.out.println("najdene");
             IData gpsData = this.vkladanePrvky.get(rand_index).getData();
-            this.kDStrom.find(gpsData, gpsData.getID()).printNode();
+            this.kDStrom.find(gpsData).printNode();
         }
     }
 

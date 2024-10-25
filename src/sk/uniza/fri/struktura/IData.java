@@ -5,10 +5,10 @@ public interface IData<T> {
 
 
     int compareTo(IData<T> paData, int dimension);
-    boolean compareWholeTo(IData<T> paData);
+    boolean compareWholeTo(IData<T> paData, boolean compareID);
     T getDataAtD(int dimension);
     public void printData();
-    void swapData(IData<T> paData);
+    void deepSwapData(IData<T> paData);
     String getID();
 
 }

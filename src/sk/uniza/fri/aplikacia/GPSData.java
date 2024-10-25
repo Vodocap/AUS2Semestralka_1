@@ -26,7 +26,7 @@ public class GPSData implements IData<Double> {
 
         if (Math.abs(porovnavaneS - porovnavajuce) < epsilon) {
             return 0;
-        } else if (porovnavaneS < porovnavajuce) {
+        } else if (porovnavajuce > porovnavaneS) {
             return 1;
         } else {
             return -1;
@@ -37,16 +37,21 @@ public class GPSData implements IData<Double> {
 
 
     @Override
-    public boolean compareWholeTo(IData<Double> paData) {
+    public boolean compareWholeTo(IData<Double> paData, boolean compareID) {
         int rovneSuradnice = 0;
         for (int i = 0; i < this.suradnice.length; i++) {
             if (this.suradnice[i] == paData.getDataAtD(i)) {
                 rovneSuradnice++;
             }
         }
-
-        if (rovneSuradnice == this.suradnice.length && this.ID.equals(paData.getID())) {
-            return true;
+        if (compareID) {
+            if (rovneSuradnice == this.suradnice.length && this.ID.equals(paData.getID())) {
+                return true;
+            }
+        } else {
+            if (rovneSuradnice == this.suradnice.length) {
+                return true;
+            }
         }
         return false;
     }
@@ -70,7 +75,7 @@ public class GPSData implements IData<Double> {
     }
 
     @Override
-    public void swapData(IData<Double> paData) {
+    public void deepSwapData(IData<Double> paData) {
         paData = (GPSData) paData;
         double[] tempSuradnice = ((GPSData) paData).getSuradnice();
         UzemnyCelok tempUzemnyCelok = ((GPSData) paData).getUzemnyCelok();

@@ -17,7 +17,7 @@ public class DummyGPS implements IData {
     }
 
     @Override
-    public boolean compareWholeTo(IData paData) {
+    public boolean compareWholeTo(IData paData, boolean compareID) {
         return false;
     }
 
@@ -32,7 +32,7 @@ public class DummyGPS implements IData {
     }
 
     @Override
-    public void swapData(IData paData) {
+    public void deepSwapData(IData paData) {
 
     }
 
