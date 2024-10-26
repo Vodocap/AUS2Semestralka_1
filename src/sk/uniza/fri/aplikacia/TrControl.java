@@ -9,6 +9,11 @@ public class TrControl {
     private KDTree<GPSData> stromGPSParciel;
     private KDTree<GPSData> stromGPSNehnutelnosti;
     private KDTree<GPSData> stromUzemnychCelkov;
+    public TrControl () {
+        this.stromGPSParciel = new KDTree<GPSData>(2);
+        this.stromGPSNehnutelnosti = new KDTree<GPSData>(2);
+        this.stromUzemnychCelkov = new KDTree<GPSData>(2);
+    }
     public ArrayList<Nehnutelnost> najdiVsetkyNehnutelnosti(double poziciaX, double poziciaY) {
         double[] tempSuradnice = {poziciaX, poziciaY};
         GPSData tempData = new GPSData(tempSuradnice);

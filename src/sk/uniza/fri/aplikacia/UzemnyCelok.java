@@ -12,6 +12,7 @@ public abstract class UzemnyCelok {
     private int cislo;
     private String popis;
     private ArrayList<UzemnyCelok> uzemneObjekty;
+
     private GPSData sirka;
     private GPSData dlzka;
 
@@ -51,6 +52,15 @@ public abstract class UzemnyCelok {
     public void removeUzemnyObjekt(UzemnyCelok paUzemnyCelok) {
         this.uzemneObjekty.removeIf(hladanaNehnutelnost -> hladanaNehnutelnost == paUzemnyCelok);
     }
+
+    public GPSData getSirka() {
+        return this.sirka;
+    }
+
+    public GPSData getDlzka() {
+        return this.dlzka;
+    }
+
 
 
 

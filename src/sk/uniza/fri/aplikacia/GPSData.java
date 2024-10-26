@@ -40,7 +40,7 @@ public class GPSData implements IData<Double> {
     public boolean compareWholeTo(IData<Double> paData, boolean compareID) {
         int rovneSuradnice = 0;
         for (int i = 0; i < this.suradnice.length; i++) {
-            if (this.suradnice[i] == paData.getDataAtD(i)) {
+            if (this.compareTo(paData, i) == 0) {
                 rovneSuradnice++;
             }
         }
