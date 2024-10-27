@@ -123,6 +123,18 @@ public class TrControl {
         this.stromUzemnychCelkov.insert(dlzkoveData);
     }
 
+    public void vymazUzemnyCelok(UzemnyCelok uzemnyCelok) {
+        if (uzemnyCelok instanceof Parcela) {
+            this.stromGPSParciel.delete(uzemnyCelok.getSirka());
+            this.stromGPSParciel.delete(uzemnyCelok.getDlzka());
+        } else if (uzemnyCelok instanceof Nehnutelnost) {
+            this.stromGPSNehnutelnosti.delete(uzemnyCelok.getSirka());
+            this.stromGPSNehnutelnosti.delete(uzemnyCelok.getDlzka());
+        }
+        this.stromUzemnychCelkov.delete(uzemnyCelok.getSirka());
+        this.stromUzemnychCelkov.delete(uzemnyCelok.getDlzka());
+    }
+
 
 
 
