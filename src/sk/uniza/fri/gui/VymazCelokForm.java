@@ -27,7 +27,7 @@ public class VymazCelokForm extends JFrame {
     private JButton zrusitButton;
     private JCheckBox parcelaCheckBox;
     private JCheckBox nehnutelnostCheckBox;
-    private JList list1;
+    private JList<Object> list1;
     private JTextField textField1;
     private JTextField textField2;
     private JButton vymazButton;
@@ -40,10 +40,9 @@ public class VymazCelokForm extends JFrame {
     public VymazCelokForm(MainWindow paMainWindow) {
         this.createUIComponents();
         $$$setupUI$$$();
-        list1 = new JList<>();
-        list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        list1.setLayoutOrientation(JList.VERTICAL);
-        list1.setVisibleRowCount(-1);
+        this.list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        this.list1.setLayoutOrientation(JList.VERTICAL);
+        this.list1.setVisibleRowCount(-1);
         this.mainWindow = paMainWindow;
         this.trControl = paMainWindow.getTrControl();
 

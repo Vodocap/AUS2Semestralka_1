@@ -60,7 +60,7 @@ public class TestTrieda {
     public void skontrolujStrom() {
         long najdene = 0;
         System.out.println("VKLADANE PRVKY:");
-        for (TrNode<IData> iDataTrNode : vkladanePrvky) {
+        for (TrNode<IData> iDataTrNode : this.vkladanePrvky) {
             System.out.println(iDataTrNode.getData().toString());
         }
         System.out.println("STROM");
@@ -219,6 +219,39 @@ public class TestTrieda {
             iDataTrNode.printNode();
             iDataTrNode.getData().printData();
         }
+    }
+
+    public void testovaciePripady() {
+        this.kDStrom = new KDTree<>(2);
+        Integer[] integers = {3,4};
+        Integer[] integers1 = {4,1};
+        Integer[] integers2 = {2,1};
+        Integer[] integers3 = {1,0};
+        Integer[] integers4 = {0,4};
+        Integer[] integers5 = {1,4};
+        Integer[] integers6 = {1,2};
+
+        TestData testData = new TestData(integers);
+        TestData testData1 = new TestData(integers1);
+        TestData testData2 = new TestData(integers2);
+        TestData testData3 = new TestData(integers3);
+        TestData testData4 = new TestData(integers4);
+        TestData testData5 = new TestData(integers5);
+        TestData testData6 = new TestData(integers6);
+
+
+        this.kDStrom.insert(testData);
+        this.kDStrom.insert(testData1);
+        this.kDStrom.insert(testData2);
+        this.kDStrom.insert(testData3);
+        this.kDStrom.insert(testData4);
+        this.kDStrom.insert(testData5);
+        this.kDStrom.insert(testData6);
+        this.kDStrom.delete(testData2);
+        this.kDStrom.delete(testData4);
+
+
+
     }
 
 
