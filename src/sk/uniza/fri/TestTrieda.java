@@ -6,6 +6,7 @@ import sk.uniza.fri.struktura.IData;
 import sk.uniza.fri.struktura.KDTree;
 import sk.uniza.fri.struktura.TrNode;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -24,36 +25,49 @@ public class TestTrieda {
         this.vkladanePrvky = new ArrayList<TrNode<IData>>();
     }
 
-    public void generatorOperacii(int pocetoperacii, boolean inty) {
-        Random random = new Random();
+    public void generatorOperacii(int pocetoperacii, boolean inty, boolean testData) {
+        for (int i = 0; i < 100000; i++) {
+            Random random = new Random(i);
+            System.out.println("__________________________ SEED: (" + i + ") __________________________");
+            this.kDStrom = new KDTree<IData>(2);
+            this.vkladanePrvky = new ArrayList<TrNode<IData>>();
+            for (int j = 0; j < pocetoperacii; j++) {
+                double cislo = random.nextDouble(0.0,1.0);
+                if (cislo < 0.5) {
+                    if (inty) {
+                        this.naplnStromAVypisInty(1);
+                    } else {
+                        if (testData) {
+                            this.naplnStromAVypisTestTrieda(1);
+                        } else {
+                            this.naplnStromAVypis(1, false);
+                        }
 
-        for (int i = 0; i < pocetoperacii; i++) {
-            double cislo = random.nextDouble(0.0,1.0);
-            if (cislo < 0.33) {
-                if (inty) {
-                    this.naplnStromAVypisInty(10);
-                } else {
-                    this.naplnStromAVypis(10, false);
-                }
-            } else if (cislo > 0.33 && cislo < 0.66) {
-                if (!(this.vkladanePrvky.isEmpty())) {
-                    this.deletujAVypisSkontroluj(5);
-                }
+                    }
+                } else if (cislo > 0.5 ) {
+                    if (!(this.vkladanePrvky.isEmpty())) {
+                        this.deletujAVypisSkontroluj(1);
+                    }
 
-            } else {
-                if (this.kDStrom.getRoot() != null) {
-                    this.vyvolajBalancovanie();
                 }
             }
+            this.skontrolujStrom();
         }
-        if (this.kDStrom.getRoot() != null) {
-            this.vyvolajBalancovanie();
-        }
-        this.skontrolujStrom();
+
     }
+
 
     public void skontrolujStrom() {
         long najdene = 0;
+        System.out.println("VKLADANE PRVKY:");
+        for (TrNode<IData> iDataTrNode : vkladanePrvky) {
+            System.out.println(iDataTrNode.getData().toString());
+        }
+        System.out.println("STROM");
+        for (TrNode<IData> trNode : this.kDStrom.inorderMorris(this.kDStrom.getRoot())) {
+            System.out.println(trNode.getData().toString());
+        }
+
         for (TrNode<IData> iDataTrNode : this.vkladanePrvky) {
             if (this.kDStrom.find(iDataTrNode.getData()) == null) {
                 continue;
@@ -63,10 +77,13 @@ public class TestTrieda {
         }
 
         System.out.println("Pocet hladanych " + this.vkladanePrvky.size() + " Pocet najdenych - " + najdene);
+        if (najdene != this.vkladanePrvky.size()) {
+            throw new RuntimeException("dovidenia");
+        }
     }
 
     public void naplnStromAVypis(int paPocetPrvkov, boolean paAllowDuplicates) {
-        Random rand = new Random(10);
+        Random rand = new Random();
 
         for (int i = 0; i < paPocetPrvkov; i++) {
             double[] tempPole = {rand.nextDouble(), rand.nextDouble()};
@@ -99,22 +116,21 @@ public class TestTrieda {
 
 
     }
-
-    public void vyvolajBalancovanie() {
-        if (this.kDStrom.getRoot().hasRight() && !this.kDStrom.getRoot().hasLeft()) {
-            this.kDStrom.rebalanceTree();
-        }
+    private String vygenerujRandomString() {
+        byte[] array = new byte[7]; // length is bounded by 7
+        new Random().nextBytes(array);
+        String generatedString = new String(array, Charset.forName("UTF-8"));
+        return generatedString;
     }
 
-    public void naplnStromAVypisInty(int paPocetPrvkov) {
-        Random rand = new Random(10);
+    public void naplnStromAVypisTestTrieda(int paPocetPrvkov) {
+        Random rand = new Random();
 
         for (int i = 0; i < paPocetPrvkov; i++) {
-            Integer[] tempPole = {rand.nextInt(5), rand.nextInt(5)};
-            TestData gpsData = new TestData( tempPole);
-            TrNode testnode = new TrNode(gpsData);
+            TestDataComplex testDataComplex = new TestDataComplex(rand.nextDouble(), this.vygenerujRandomString(), rand.nextInt(3), rand.nextDouble());
+            TrNode testnode = new TrNode(testDataComplex);
             this.vkladanePrvky.add(testnode);
-            this.kDStrom.insert(gpsData);
+            this.kDStrom.insert(testDataComplex);
 
         }
 
@@ -129,6 +145,19 @@ public class TestTrieda {
 ////        resultNodeMin.getData().printData();
 
 
+    }
+
+    public void naplnStromAVypisInty(int paPocetPrvkov) {
+        Random rand = new Random();
+
+        for (int i = 0; i < paPocetPrvkov; i++) {
+            Integer[] tempPole = {rand.nextInt(5), rand.nextInt(5)};
+            TestData gpsData = new TestData(tempPole);
+            TrNode testnode = new TrNode(gpsData);
+            this.vkladanePrvky.add(testnode);
+            this.kDStrom.insert(gpsData);
+
+        }
     }
 
     private void dajPocetPrvkovVKontrolnomErejLitse() {
@@ -149,7 +178,7 @@ public class TestTrieda {
 
 
     public void deletujAVypisSkontroluj(int paPocetPrvkov) {
-        Random rand = new Random(10);
+        Random rand = new Random();
         for (int i = 0; i < paPocetPrvkov; i++) {
             int rand_index = rand.nextInt(this.vkladanePrvky.size());
             TrNode<IData> vkladanyNode = this.vkladanePrvky.get(rand_index);
@@ -172,7 +201,7 @@ public class TestTrieda {
     }
 
     public void najdiNahodnePrvky(int pocetNahodnychPrvkov) {
-        Random rand = new Random(10);
+        Random rand = new Random();
         for (int i = 0; i < pocetNahodnychPrvkov; i++) {
             int rand_index = rand.nextInt(this.vkladanePrvky.size());
             System.out.println("Hladane");

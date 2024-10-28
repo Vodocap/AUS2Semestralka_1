@@ -8,7 +8,7 @@ public interface IData<T> {
     boolean compareWholeTo(IData<T> paData, boolean compareID);
     T getDataAtD(int dimension);
     public void printData();
-    void deepSwapData(IData<T> paData);
+    IData<T> deepCopyData(IData<T> paData);
     String getID();
 
 }

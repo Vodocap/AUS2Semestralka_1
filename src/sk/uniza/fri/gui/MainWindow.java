@@ -83,7 +83,7 @@ public class MainWindow {
         vyradCelok.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                VymazCelok vyradCelok = new VymazCelok(MainWindow.this);
+                VymazCelokForm vyradCelok = new VymazCelokForm(MainWindow.this);
                 vyradCelok.setContentPane(vyradCelok.getjPanel());
                 vyradCelok.pack();
                 vyradCelok.setVisible(true);

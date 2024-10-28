@@ -14,9 +14,13 @@ import java.util.ArrayList;
 public class KDTree<T extends IData> {
     private TrNode<T> root;
     private final int dimensions;
+    private ArrayList<IData> duplicateData;
+    private ArrayList<TrNode<T>> duplicateNodes;
 
     public KDTree(int paDimensions) {
         this.dimensions = paDimensions;
+        this.duplicateData = new ArrayList<>();
+        this.duplicateNodes = new ArrayList<>();
 
     }
     public void emplaceRoot(TrNode<T> paNode) {
@@ -30,7 +34,7 @@ public class KDTree<T extends IData> {
 
     public boolean insert(T data) {
         TrNode<T> paNode = new TrNode<>(data);
-
+        System.out.println("INSERTING NODE (" + data.getDataAtD(0) + ", " + data.getDataAtD(1) + ")");
         if (this.root == null ) {
             this.emplaceRoot(paNode);
             paNode.setLevel(0);
@@ -39,23 +43,30 @@ public class KDTree<T extends IData> {
 //            paNode.getData().printData();
             return true;
         }
+        boolean rightSubtree = false;
         TrNode<T> currentNode = this.root;
         TrNode<T> parentNode = null;
         int level = 0;
 
+        if (paNode.getData().compareTo(currentNode.getData(), currentNode.getLevel() % this.dimensions) > 0) {
+            rightSubtree = true;
+
+        }
 
         while (currentNode != null) {
             int k = level % this.dimensions;
             parentNode = currentNode;
 
-            //System.out.println("sautusafiribulbuli level " + level);
 
             int comparison = paNode.getData().compareTo(currentNode.getData(), k);
 
             if (comparison > 0) {
                 currentNode = currentNode.getRight();
             }
-            if (comparison <= 0) {
+            if (comparison < 0) {
+                currentNode = currentNode.getLeft();
+            }
+            if (comparison == 0) {
                 currentNode = currentNode.getLeft();
             }
 
@@ -72,12 +83,71 @@ public class KDTree<T extends IData> {
         int finalDimension = (level - 1) % this.dimensions;
         if (paNode.getData().compareTo(parentNode.getData(), finalDimension) > 0) {
             parentNode.setRight(paNode);
-        } else {
+        } else if (paNode.getData().compareTo(parentNode.getData(), finalDimension) < 0) {
+            parentNode.setLeft(paNode);
+        } else if (paNode.getData().compareTo(parentNode.getData(), finalDimension) == 0) {
+            for (int i = 0; i < this.dimensions; i++) {
+                if (paNode.getData().compareTo(parentNode.getData(), i) == 0) {
+                    if (rightSubtree && !this.duplicateData.contains(paNode.getData())) {
+                        this.duplicateData.add(paNode.getData());
+                    }
+                }
+            }
+            parentNode.setLeft(paNode);
+
+
+        }
+
+        return true;
+
+    }
+
+
+    private boolean insertNoDuplicates(T data) {
+        TrNode<T> paNode = new TrNode<>(data);
+        System.out.println("INSERTING NODE (" + data.getDataAtD(0) + ", " + data.getDataAtD(1) + ")");
+        if (this.root == null ) {
+            this.emplaceRoot(paNode);
+            paNode.setLevel(0);
+//            System.out.println("Inserted node");
+//            paNode.printNode();
+//            paNode.getData().printData();
+            return true;
+        }
+
+        TrNode<T> currentNode = this.root;
+        TrNode<T> parentNode = null;
+        int level = 0;
+
+        while (currentNode != null) {
+            int k = level % this.dimensions;
+            parentNode = currentNode;
+
+            int comparison = paNode.getData().compareTo(currentNode.getData(), k);
+
+            if (comparison > 0) {
+                currentNode = currentNode.getRight();
+            }
+            if (comparison < 0) {
+                currentNode = currentNode.getLeft();
+            }
+            if (comparison == 0) {
+                currentNode = currentNode.getLeft();
+            }
+
+            level++;
+        }
+
+
+        paNode.setLevel(level);
+        paNode.setParent(parentNode);
+        int finalDimension = (level - 1) % this.dimensions;
+        if (paNode.getData().compareTo(parentNode.getData(), finalDimension) > 0) {
+            parentNode.setRight(paNode);
+        } else if (paNode.getData().compareTo(parentNode.getData(), finalDimension) <= 0) {
             parentNode.setLeft(paNode);
         }
-//        if (this.root.hasRight() && !this.root.hasLeft()) {
-//            this.rebalanceTree();
-//        }
+
 
         return true;
 
@@ -158,36 +228,67 @@ public class KDTree<T extends IData> {
     }
 
 
-    public ArrayList<TrNode<T>> subtreeHasDuplicates (TrNode<T> subtreeRoot) {
-        ArrayList<TrNode<T>> morrisNodes = this.inorderMorris(subtreeRoot);
-        ArrayList<TrNode<T>> duplicates = new ArrayList<>();
-        for (int i = 0; i < morrisNodes.size(); i++) {
-            TrNode<T> currentNode = morrisNodes.get(i);
-            for (int j = 0; j < morrisNodes.size(); j++) {
-                TrNode<T> tempNode = morrisNodes.get(j);
-                for (int d = 0; d < this.dimensions; d++) {
-                    if (currentNode.getData().getDataAtD(d).equals(tempNode.getData().getDataAtD(d))) {
-                        duplicates.add(currentNode);
-                        duplicates.add(tempNode);
-                    }
+    private void reinsertDuplicates() {
+        System.out.println("---------------------REINSERTING DUPLICATES---------------------");
+        ArrayList<TrNode<T>> rightSubtree = this.inorderMorris(this.root.getRight());
+        for (TrNode<T> tTrNode : rightSubtree) {
+            if (this.duplicateData.contains(tTrNode.getData())) {
+                System.out.println("FOUND DUPLICATE NODE");
+                this.duplicateNodes.add(tTrNode);
+
+            }
+
+        }
+        if (!this.duplicateNodes.isEmpty()) {
+            for (TrNode<T> duplicate : this.duplicateNodes) {
+                System.out.println("REINSERTING DUPLICATE NODE");
+                duplicate.getData().printData();
+                TrNode<T> deletedNode = this.deleteNode(duplicate);
+                if (this.find(duplicate.getData()) == null) {
+                    this.insertNoDuplicates(duplicate.getData());
                 }
             }
         }
-        return duplicates;
     }
 
-    public void rebalanceTree() {
-        ArrayList<TrNode<T>> duplicates  = this.subtreeHasDuplicates(this.root.getRight());
-        System.out.println("BEGINING REPALANCING");
-        for (TrNode<T> duplicate : duplicates) {
-            this.insert(this.delete(duplicate.getData()).getData());
+    public boolean delete(T paData) {
+        TrNode<T> nodeToRemove = this.find(paData);
+
+        if (nodeToRemove == null) {
+            return false;
+        }
+        while (!nodeToRemove.isLeaf()) {
+
+            TrNode<T> replacerNode = null;
+            if (nodeToRemove.hasRight()) {
+                replacerNode = this.inOrderOrFindMinMaxOrInsertSubtree(nodeToRemove.getRight(), false, false, false);
+            }
+            if (nodeToRemove.hasLeft()) {
+                replacerNode = this.inOrderOrFindMinMaxOrInsertSubtree(nodeToRemove.getLeft(), true, false, false);
+            }
+            if (replacerNode != null) {
+
+                TrNode<T> temnode = new TrNode<>(nodeToRemove.getData());
+                nodeToRemove.setData(replacerNode.getData());
+                replacerNode.setData(temnode.getData());
+                nodeToRemove = replacerNode;
+
+            }
+
         }
 
+        this.disconnectNodeFully(nodeToRemove);
+        this.duplicateData.remove(nodeToRemove.getData());
+        if (!this.duplicateData.isEmpty() && this.root.hasRight() && !this.root.hasLeft()) {
+            this.reinsertDuplicates();
+        }
+
+        return true;
+
+
     }
 
-    public TrNode<T> delete(T paData) {
-        TrNode<T> nodeToRemove = this.find(paData);
-//        System.out.println("Printing node to remove");
+    private TrNode<T> deleteNode(TrNode<T> nodeToRemove) {
         if (nodeToRemove == null) {
             System.out.println("NODE NOT FOUND");
             return null;
@@ -216,65 +317,10 @@ public class KDTree<T extends IData> {
         return nodeToRemove;
 
 
-//        if (nodeToRemove != null) {
-//
-//            nodeToRemove.printNode();
-//            //nodeToRemove.getData().printData();
-//
-//
-//            if (nodeToRemove.isLeaf()) {
-//                if (!nodeToRemove.getParent().isRoot()) {
-//
-//                    if (nodeToRemove.getParent() != null) {
-//
-//                        if (nodeToRemove.getParent().getLeft() == nodeToRemove) {
-//
-//                            nodeToRemove.getParent().setLeft(null);
-//                        } else {
-//
-//                            nodeToRemove.getParent().setRight(null);
-//                        }
-//                    }
-//                } else {
-//                    this.emplaceRoot(null);
-//                }
-//                return nodeToRemove;
-//
-//            }
-//
-//            TrNode<T> replacerNode;
-//            if (nodeToRemove.hasLeft()) {
-//                replacerNode = this.inOrderOrFindMinMaxOrInsertSubtree(nodeToRemove.getLeft(), true, false, true);
-//
-//            } else {
-//                replacerNode = this.inOrderOrFindMinMaxOrInsertSubtree(nodeToRemove.getRight(), false, false, true);
-//            }
-//
-//            if (replacerNode.getParent().getLeft() == replacerNode) {
-//                replacerNode.getParent().setLeft(null);
-//            } else {
-//                replacerNode.getParent().setRight(null);
-//            }
-//
-//            //replacerNode.getData().swapData(nodeToRemove.getData());
-//            replacerNode.setParent(null);
-//
-//            if (!replacerNode.isLeaf()) {
-//                this.inOrderOrFindMinMaxOrInsertSubtree(replacerNode, false, true, true);
-//            }
-//
-//            return nodeToRemove;
-//
-//        } else {
-//            System.out.println("No such node in tree");
-//        }
-//
-//        return null;
-
-
     }
 
-    private ArrayList<TrNode<T>> inorderMorris(TrNode<T> paNode) {
+
+    public ArrayList<TrNode<T>> inorderMorris(TrNode<T> paNode) {
         ArrayList<TrNode<T>> nodesResult = new ArrayList<>();
         TrNode<T> currentNode = paNode;
 
@@ -329,8 +375,6 @@ public class KDTree<T extends IData> {
             
             if (morrisNode != paNode) {
                 if (insertSubtree) {
-                    System.out.println("--------- ACHTUNG ACHTUNG ---------");
-                    System.out.println("********* STROM SA BALANCUJE *********");
                     morrisNode.getData().printData();
                     this.insert(morrisNode.getData());
                 }
@@ -338,11 +382,6 @@ public class KDTree<T extends IData> {
 
                 if (morrisNode.getData().compareTo(minNode.getData(), level % this.dimensions) < 0) {
 
-                    if (printTree) {
-//                        System.out.println("Novy minnode");
-//                        tTrNode.printNode();
-//                        tTrNode.getData().printData();
-                    }
                     minNode = morrisNode;
                 }
 

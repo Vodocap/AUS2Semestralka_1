@@ -61,6 +61,10 @@ public abstract class UzemnyCelok {
         return this.dlzka;
     }
 
+    public UzemnyCelok makeDeepCopy() {
+        return null;
+    }
+
 
 
 

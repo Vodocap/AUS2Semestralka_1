@@ -67,8 +67,8 @@ public class TestData implements IData<Integer> {
     }
 
     @Override
-    public void deepSwapData(IData<Integer> paData) {
-        return;
+    public IData deepCopyData(IData<Integer> paData) {
+        return null;
     }
 
     @Override

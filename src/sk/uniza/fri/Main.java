@@ -3,19 +3,22 @@ package sk.uniza.fri;
 
 import sk.uniza.fri.aplikacia.Parcela;
 import sk.uniza.fri.aplikacia.TrControl;
+import sk.uniza.fri.aplikacia.UzemnyCelok;
 
 public class Main {
 
     public static void main(String[] args) {
         TestTrieda testTrieda = new TestTrieda(2);
 
-//        testTrieda.generatorOperacii(10000, true);
-        TrControl trControl = new TrControl();
-        double [] suradnice = {10, 20, 30, 40};
-        trControl.pridajParcelu(10, "Janova parcela", suradnice);
-        for (Parcela parcela : trControl.najdiVsetkyParcely(10, 20)) {
-            System.out.println(parcela.toString());
-        }
+        testTrieda.generatorOperacii(10, true, false);
+//        TrControl trControl = new TrControl();
+//        double [] suradnice = {10, 20, 30, 40};
+//        trControl.pridajParcelu(10, "Janova parcela", suradnice);
+//        double [] suradnice1 = {10, 20, 30, 40};
+//        trControl.pridajNehnutelnost(10, "Janova parcela", suradnice1);
+//        for (UzemnyCelok parcela : trControl.najdiVsetkyObjekty(10, 20)) {
+//            System.out.println(parcela.toString());
+//        }
 //        testTrieda.naplnStromAVypis(1000000, false);
 //        testTrieda.naplnStromAVypisInty(20);
 //        testTrieda.vyvolajBalancovanie();

@@ -43,6 +43,7 @@ public class TrControl {
         ArrayList<UzemnyCelok> resultList = new ArrayList<>();
         for (TrNode<GPSData> gpsDataTrNode : tempList) {
             resultList.add(gpsDataTrNode.getData().getUzemnyObjekt());
+            System.out.println(gpsDataTrNode.getData().getUzemnyObjekt());
         }
         return resultList;
     }

@@ -75,17 +75,31 @@ public class GPSData implements IData<Double> {
     }
 
     @Override
-    public void deepSwapData(IData<Double> paData) {
+    public IData<Double> deepCopyData(IData<Double> paData) {
         paData = (GPSData) paData;
         double[] tempSuradnice = ((GPSData) paData).getSuradnice();
         UzemnyCelok tempUzemnyCelok = ((GPSData) paData).getUzemnyCelok();
         String tempID = paData.getID();
+        double[] suradniceCopy;
+        suradniceCopy = new double[2];
+        suradniceCopy[0] = paData.getDataAtD(0);
+        suradniceCopy[1] = paData.getDataAtD(1);
+
+        GPSData copiedData = new GPSData(suradniceCopy);
+        copiedData.setID(paData.getID());
+        if (((GPSData) paData).getUzemnyObjekt() instanceof Parcela) {
+
+//            copiedData.setUzemnyObjekt(new Parcela());
+        }
+
         ((GPSData) paData).setSuradnice(this.suradnice);
         ((GPSData) paData).setUzemnyCelok(this.uzemnyCelok);
         ((GPSData) paData).setID(this.ID);
         this.suradnice = tempSuradnice;
         this.uzemnyCelok = tempUzemnyCelok;
         this.ID = tempID;
+
+        return copiedData;
     }
 
     @Override
