@@ -26,7 +26,7 @@ public class TestTrieda {
     }
 
     public void generatorOperacii(int pocetoperacii, boolean inty, boolean testData) {
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 1000; i++) {
             Random random = new Random(i);
             System.out.println("__________________________ SEED: (" + i + ") __________________________");
             this.kDStrom = new KDTree<IData>(2);
@@ -117,8 +117,13 @@ public class TestTrieda {
 
     }
     private String vygenerujRandomString() {
+        Random random = new Random();
         byte[] array = new byte[7]; // length is bounded by 7
-        new Random().nextBytes(array);
+        random.nextBytes(array);
+        if (random.nextDouble() < 0.2) {
+            String duplikatnyString = "duplikatnyString";
+            return duplikatnyString;
+        }
         String generatedString = new String(array, Charset.forName("UTF-8"));
         return generatedString;
     }
@@ -223,13 +228,14 @@ public class TestTrieda {
 
     public void testovaciePripady() {
         this.kDStrom = new KDTree<>(2);
-        Integer[] integers = {0,3};
-        Integer[] integers1 = {4,1};
-        Integer[] integers2 = {4,4};
-        Integer[] integers3 = {4,2};
-        Integer[] integers4 = {4,3};
-        Integer[] integers5 = {4,3};
-        Integer[] integers6 = {3,4};
+        Integer[] integers = {0,0};
+        Integer[] integers1 = {2,1};
+        Integer[] integers2 = {2,3};
+        Integer[] integers3 = {2,1};
+        Integer[] integers4 = {3,3};
+        Integer[] integers5 = {3,2};
+        Integer[] integers6 = {3,3};
+        Integer[] integers7 = {4,0};
 
         TestData testData = new TestData(integers);
         TestData testData1 = new TestData(integers1);
@@ -238,16 +244,30 @@ public class TestTrieda {
         TestData testData4 = new TestData(integers4);
         TestData testData5 = new TestData(integers5);
         TestData testData6 = new TestData(integers6);
+        TestData testData7 = new TestData(integers7);
 
 
         this.kDStrom.insert(testData);
         this.kDStrom.insert(testData1);
         this.kDStrom.insert(testData2);
         this.kDStrom.insert(testData3);
-        this.kDStrom.delete(testData);
         this.kDStrom.insert(testData4);
         this.kDStrom.insert(testData5);
-        this.kDStrom.delete(testData2);
+        this.kDStrom.insert(testData6);
+        this.kDStrom.insert(testData7);
+        this.kDStrom.delete(testData);
+
+        this.kDStrom.delete(testData);
+        this.kDStrom.insert(testData3);
+        this.kDStrom.insert(testData4);
+        this.kDStrom.insert(testData5);
+        this.kDStrom.insert(testData6);
+        this.kDStrom.delete(testData1);
+
+        this.kDStrom.insert(testData4);
+        this.kDStrom.insert(testData5);
+        this.kDStrom.delete(testData);
+
         this.kDStrom.insert(testData6);
         this.kDStrom.delete(testData6);
 

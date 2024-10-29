@@ -35,9 +35,9 @@ public class TestDataComplex implements IData {
                 double epsilon = 1e-9;
 
                 if (Math.abs(porovnavaneS - porovnavajuce) < epsilon) {
-                    if (this.B.compareTo((String) paData.getDataAtD(dimension + 1)) < 0) {
+                    if (Math.signum(this.B.compareTo((String) paData.getDataAtD(dimension + 1))) < 0) {
                         return -1;
-                    } else if (this.B.compareTo((String) paData.getDataAtD(dimension + 1)) > 0) {
+                    } else if (Math.signum(this.B.compareTo((String) paData.getDataAtD(dimension + 1))) > 0) {
                         return 1;
                     } else {
                         return 0;

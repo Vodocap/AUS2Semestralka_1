@@ -10,8 +10,8 @@ public class Main {
     public static void main(String[] args) {
         TestTrieda testTrieda = new TestTrieda(2);
 
-//        testTrieda.generatorOperacii(10, true, false);
-        testTrieda.testovaciePripady();
+        testTrieda.generatorOperacii(100000, false, true);
+//        testTrieda.testovaciePripady();
 //        TrControl trControl = new TrControl();
 //        double [] suradnice = {10, 20, 30, 40};
 //        trControl.pridajParcelu(10, "Janova parcela", suradnice);
