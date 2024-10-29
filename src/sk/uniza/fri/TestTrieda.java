@@ -164,16 +164,16 @@ public class TestTrieda {
         System.out.println("Pocet prvkov na kontrolu");
         System.out.println(this.vkladanePrvky.size());
         System.out.println("Pocet prvkov v strome");
-        this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(this.kDStrom.getRoot(), false, false, false);
+        this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(this.kDStrom.getRoot(),this.kDStrom.getRoot() ,false, false, false);
     }
 
     public void reinsertujCelyStrom() {
         TrNode trNode = this.kDStrom.getRoot().getLeft();
         trNode.setParent(null);
-        this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(trNode, true, true, false);
+        this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(trNode, trNode ,true, true, false);
         System.out.println("____________________________________________________________________");
         System.out.println("Kontrolna prejliadka");
-        this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(this.kDStrom.getRoot(), false, false, true);
+        this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(this.kDStrom.getRoot(), trNode,false, false, true);
     }
 
 
@@ -223,13 +223,13 @@ public class TestTrieda {
 
     public void testovaciePripady() {
         this.kDStrom = new KDTree<>(2);
-        Integer[] integers = {3,4};
+        Integer[] integers = {0,3};
         Integer[] integers1 = {4,1};
-        Integer[] integers2 = {2,1};
-        Integer[] integers3 = {1,0};
-        Integer[] integers4 = {0,4};
-        Integer[] integers5 = {1,4};
-        Integer[] integers6 = {1,2};
+        Integer[] integers2 = {4,4};
+        Integer[] integers3 = {4,2};
+        Integer[] integers4 = {4,3};
+        Integer[] integers5 = {4,3};
+        Integer[] integers6 = {3,4};
 
         TestData testData = new TestData(integers);
         TestData testData1 = new TestData(integers1);
@@ -244,11 +244,20 @@ public class TestTrieda {
         this.kDStrom.insert(testData1);
         this.kDStrom.insert(testData2);
         this.kDStrom.insert(testData3);
+        this.kDStrom.delete(testData);
         this.kDStrom.insert(testData4);
         this.kDStrom.insert(testData5);
-        this.kDStrom.insert(testData6);
         this.kDStrom.delete(testData2);
-        this.kDStrom.delete(testData4);
+        this.kDStrom.insert(testData6);
+        this.kDStrom.delete(testData6);
+
+        this.kDStrom.insert(testData2);
+        this.kDStrom.insert(testData3);
+        this.kDStrom.insert(testData4);
+        this.kDStrom.insert(testData5);
+        this.kDStrom.delete(testData1);
+        this.kDStrom.delete(testData3);
+
 
 
 
