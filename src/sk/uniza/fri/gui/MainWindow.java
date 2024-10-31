@@ -40,14 +40,18 @@ public class MainWindow {
 
         Button najdiCelokButtom = new Button("Najdi uzemne celky");
         Button pridajCelokButton = new Button("Pridaj Uzemny celok");
-        Button upravParceluButton = new Button("Uprav parcelu");
-        Button upravnehnutelnost = new Button("Uprav nehnutelnost");
+        Button upravCelok = new Button("Uprav parcelu");
+        Button vygenerujCelky = new Button("Vygeneruj Uzemne celky");
         Button vyradCelok = new Button("Vyrad uzemny celok");
+        Button nacitajZoSuboru = new Button("Nacitaj databazu zo suborov");
+        Button ulozDoSuboru = new Button("Uloz databazu do suborov");
         this.leftPanel.add(najdiCelokButtom);
         this.leftPanel.add(pridajCelokButton);
-        this.leftPanel.add(upravnehnutelnost);
-        this.leftPanel.add(upravParceluButton);
+        this.leftPanel.add(vygenerujCelky);
+        this.leftPanel.add(upravCelok);
         this.leftPanel.add(vyradCelok);
+        this.leftPanel.add(nacitajZoSuboru);
+        this.leftPanel.add(ulozDoSuboru);
 
         najdiCelokButtom.addActionListener(new ActionListener() {
             @Override
@@ -94,9 +98,11 @@ public class MainWindow {
 
         najdiCelokButtom.setBackground(Color.WHITE);
         pridajCelokButton.setBackground(Color.WHITE);
-        upravnehnutelnost.setBackground(Color.WHITE);
-        upravParceluButton.setBackground(Color.WHITE);
+        vygenerujCelky.setBackground(Color.WHITE);
+        upravCelok.setBackground(Color.WHITE);
         vyradCelok.setBackground(Color.WHITE);
+        ulozDoSuboru.setBackground(Color.WHITE);
+        nacitajZoSuboru.setBackground(Color.WHITE);
     }
 
     public void show() {
