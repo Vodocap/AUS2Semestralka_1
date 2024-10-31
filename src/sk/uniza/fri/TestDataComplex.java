@@ -1,6 +1,7 @@
 package sk.uniza.fri;
 
 import sk.uniza.fri.struktura.IData;
+import sk.uniza.fri.struktura.TrNode;
 
 import java.util.Random;
 
@@ -15,6 +16,7 @@ public class TestDataComplex implements IData {
     private Integer C;
     private double D;
     private String ID;
+    private TrNode currentNode;
 
     public TestDataComplex(double a, String b, Integer c, double d) {
         Random rand = new Random();
@@ -142,5 +144,15 @@ public class TestDataComplex implements IData {
     @Override
     public String getID() {
         return this.ID;
+    }
+
+    @Override
+    public TrNode getCurrentNode() {
+        return this.currentNode;
+    }
+
+    @Override
+    public void setCurrentNode(TrNode paCurrentNode) {
+        this.currentNode = paCurrentNode;
     }
 }

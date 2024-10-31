@@ -26,7 +26,7 @@ public class TestTrieda {
     }
 
     public void generatorOperacii(int pocetoperacii, boolean inty, boolean testData) {
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100000; i++) {
             Random random = new Random(i);
             System.out.println("__________________________ SEED: (" + i + ") __________________________");
             this.kDStrom = new KDTree<IData>(2);
@@ -211,12 +211,15 @@ public class TestTrieda {
 
     public void testovaciePripady() {
         this.kDStrom = new KDTree<>(2);
-        Integer[] integers = {0,0};
-        Integer[] integers1 = {2,1};
-        Integer[] integers2 = {2,3};
-        Integer[] integers3 = {2,1};
-        Integer[] integers4 = {3,3};
-        Integer[] integers5 = {3,2};
+        Integer[] integers = {0,1};
+        Integer[] integers1 = {4,0};
+        Integer[] integers2 = {2,1}
+                ;
+        Integer[] integers3 = {4,1};
+        Integer[] integers4 = {2,4};
+
+        Integer[] integers5 = {3,2}
+                ;
         Integer[] integers6 = {3,3};
         Integer[] integers7 = {4,0};
 
@@ -233,10 +236,13 @@ public class TestTrieda {
         this.kDStrom.insert(testData);
         this.kDStrom.insert(testData1);
         this.kDStrom.insert(testData2);
+        this.kDStrom.delete(testData1);
+
         this.kDStrom.insert(testData3);
         this.kDStrom.insert(testData4);
-        this.kDStrom.insert(testData5);
-        this.kDStrom.insert(testData6);
+        this.kDStrom.delete(testData);
+
+
         this.kDStrom.insert(testData7);
         this.kDStrom.delete(testData);
 

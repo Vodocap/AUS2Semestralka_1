@@ -13,6 +13,8 @@
           <gridbag weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
+          <enabled value="false"/>
+          <font swing-font="Button.font"/>
           <minimumSize width="500" height="500"/>
           <name value="pridajCelokQueryPanel"/>
           <opaque value="true"/>
