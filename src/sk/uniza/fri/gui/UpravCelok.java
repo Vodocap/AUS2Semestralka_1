@@ -1,10 +1,20 @@
 package sk.uniza.fri.gui;
 
+import sk.uniza.fri.aplikacia.Nehnutelnost;
+import sk.uniza.fri.aplikacia.Parcela;
+import sk.uniza.fri.aplikacia.TrControl;
+import sk.uniza.fri.aplikacia.UzemnyCelok;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 import java.util.Locale;
 
 /**
@@ -12,7 +22,7 @@ import java.util.Locale;
  *
  * @author matus
  */
-public class UpravCelok {
+public class UpravCelok extends JFrame {
     private JPanel jPanel;
     private JPanel jPanel1;
     private JTextField textFieldSurYH;
@@ -21,10 +31,142 @@ public class UpravCelok {
     private JButton zrusitButton;
     private JCheckBox parcelaCheckBox;
     private JCheckBox nehnutelnostCheckBox;
-    private JList list1;
+    private JList<UzemnyCelok> list1;
     private JTextField textField1;
     private JTextField textField2;
     private JButton upravButton;
+    private MainWindow mainWindow;
+    private TrControl trControl;
+
+    public UpravCelok(MainWindow paMainWindow) {
+        this.createUIComponents();
+        this.mainWindow = paMainWindow;
+        this.trControl = this.mainWindow.getTrControl();
+        list1 = new JList<>();
+        list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        list1.setLayoutOrientation(JList.VERTICAL);
+        list1.setVisibleRowCount(-1);
+        $$$setupUI$$$();
+
+        this.mainWindow = paMainWindow;
+        this.trControl = paMainWindow.getTrControl();
+
+
+        this.zrusitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UpravCelok.this.dispose();
+            }
+        });
+
+        this.upravButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+
+                    UpravCelokPopup upravCelokPopup = new UpravCelokPopup(UpravCelok.this.trControl, UpravCelok.this.list1.getSelectedValue());
+                    upravCelokPopup.setContentPane(upravCelokPopup.$$$getRootComponent$$$());
+                    upravCelokPopup.pack();
+                    upravCelokPopup.setVisible(true);
+
+
+                } catch (NumberFormatException exception) {
+                    JOptionPane.showMessageDialog(null, "Nie je vybratý žiadny územný celok");
+                }
+            }
+        });
+
+
+        this.najdiButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    double[] suradnice = new double[2];
+                    suradnice[0] = Double.parseDouble(UpravCelok.this.textFieldSurXH.getText());
+                    suradnice[1] = Double.parseDouble(UpravCelok.this.textFieldSurYH.getText());
+
+                    ArrayList<Parcela> parcelas = new ArrayList<>();
+                    ArrayList<Nehnutelnost> nehnutelnosts = new ArrayList<>();
+                    ArrayList<UzemnyCelok> uzemnyCeloks1 = new ArrayList<>();
+                    ArrayList<UzemnyCelok> uzemnyCeloks2 = new ArrayList<>();
+                    ArrayList<Object> vysledky = new ArrayList<>();
+
+                    if (UpravCelok.this.parcelaCheckBox.isSelected() && UpravCelok.this.nehnutelnostCheckBox.isSelected()) {
+                        uzemnyCeloks1 = UpravCelok.this.trControl.najdiVsetkyObjekty(suradnice[0], suradnice[1]);
+                        uzemnyCeloks2 = UpravCelok.this.trControl.najdiVsetkyObjekty(Double.parseDouble(UpravCelok.this.textField1.getText()), Double.parseDouble(UpravCelok.this.textField2.getText()));
+                        vysledky.addAll(uzemnyCeloks2);
+                        vysledky.addAll(uzemnyCeloks1);
+
+                    }
+                    if (UpravCelok.this.parcelaCheckBox.isSelected() && !UpravCelok.this.nehnutelnostCheckBox.isSelected()) {
+                        parcelas = UpravCelok.this.trControl.najdiVsetkyParcely(suradnice[0], suradnice[1]);
+                        vysledky.addAll(parcelas);
+
+                    } else if (UpravCelok.this.nehnutelnostCheckBox.isSelected() && !UpravCelok.this.parcelaCheckBox.isSelected()) {
+                        nehnutelnosts = UpravCelok.this.trControl.najdiVsetkyNehnutelnosti(suradnice[0], suradnice[1]);
+                        vysledky.addAll(nehnutelnosts);
+                    }
+
+                    UpravCelok.this.list1.clearSelection();
+                    Object[] objektyArray = vysledky.toArray();
+                    UzemnyCelok[] vyslednyArray = new UzemnyCelok[objektyArray.length];
+                    for (int i = 0; i < vyslednyArray.length; i++) {
+                        vyslednyArray[i] = (UzemnyCelok) objektyArray[i];
+                    }
+                    UpravCelok.this.list1.setListData(vyslednyArray);
+
+
+                } catch (NumberFormatException exception) {
+                    JOptionPane.showMessageDialog(null, "Prosím zadajte platné hodnoty");
+                }
+            }
+        });
+
+
+        this.parcelaCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UpravCelok.this.skontrolujViditelnostTextFieldov();
+            }
+        });
+
+        this.nehnutelnostCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UpravCelok.this.skontrolujViditelnostTextFieldov();
+            }
+        });
+
+
+        this.list1.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                int index = UpravCelok.this.list1.locationToIndex(e.getPoint());
+                String prekryvy = "Ziadne prekryvajuce celky";
+                if (index > -1) {
+                    prekryvy = UpravCelok.this.list1.getModel().getElementAt(index).toStringObjektov();
+                    UpravCelok.this.list1.setToolTipText(prekryvy);
+
+                }
+            }
+        });
+
+    }
+
+    private void skontrolujViditelnostTextFieldov() {
+        if (UpravCelok.this.parcelaCheckBox.isSelected() && UpravCelok.this.nehnutelnostCheckBox.isSelected()) {
+            UpravCelok.this.textField1.setVisible(true);
+            UpravCelok.this.textField2.setVisible(true);
+        } else {
+            UpravCelok.this.textField1.setVisible(false);
+            UpravCelok.this.textField2.setVisible(false);
+        }
+    }
 
     private void createUIComponents() {
         this.jPanel = new JPanel();
@@ -36,12 +178,6 @@ public class UpravCelok {
         jPanel.setVisible(true);
     }
 
-    {
-// GUI initializer generated by IntelliJ IDEA GUI Designer
-// >>> IMPORTANT!! <<<
-// DO NOT EDIT OR ADD ANY CODE HERE!
-        $$$setupUI$$$();
-    }
 
     /**
      * Method generated by IntelliJ IDEA GUI Designer
@@ -221,4 +357,5 @@ public class UpravCelok {
     public JComponent $$$getRootComponent$$$() {
         return jPanel;
     }
+
 }

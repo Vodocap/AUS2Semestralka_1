@@ -121,6 +121,7 @@ public class NajdiCelok extends JFrame {
             }
         });
 
+
         this.list1.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
