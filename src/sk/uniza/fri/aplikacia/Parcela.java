@@ -15,7 +15,6 @@ public class Parcela extends UzemnyCelok {
         return  ("Parcela - cislo (" + super.getCislo() + ") " + "\n"
                 + "Popis: " + super.getPopis() + "\n"
                 + "Suradnice: " + "(" + (super.getSirka().getDataAtD(0)) + ", " + (super.getSirka().getDataAtD(1)) + ") "
-                + "(" + (super.getDlzka().getDataAtD(0)) + ", " + (super.getDlzka().getDataAtD(1)) + ") ") + "\n"
-                + super.toStringObjekotv();
+                + "(" + (super.getDlzka().getDataAtD(0)) + ", " + (super.getDlzka().getDataAtD(1)) + ") ") + "\n";
     }
 }

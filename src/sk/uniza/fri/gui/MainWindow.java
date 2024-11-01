@@ -40,7 +40,7 @@ public class MainWindow {
 
         Button najdiCelokButtom = new Button("Najdi uzemne celky");
         Button pridajCelokButton = new Button("Pridaj Uzemny celok");
-        Button upravCelok = new Button("Uprav parcelu");
+        Button upravCelok = new Button("Uprav Uzemny celok");
         Button vygenerujCelky = new Button("Vygeneruj Uzemne celky");
         Button vyradCelok = new Button("Vyrad uzemny celok");
         Button nacitajZoSuboru = new Button("Nacitaj databazu zo suborov");
@@ -52,6 +52,24 @@ public class MainWindow {
         this.leftPanel.add(vyradCelok);
         this.leftPanel.add(nacitajZoSuboru);
         this.leftPanel.add(ulozDoSuboru);
+
+
+        vygenerujCelky.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+
+                    VygenerujData vygenerujData = new VygenerujData(MainWindow.this);
+                    vygenerujData.setContentPane(vygenerujData.$$$getRootComponent$$$());
+                    vygenerujData.pack();
+                    vygenerujData.setVisible(true);
+
+
+                } catch (NumberFormatException exception) {
+                    JOptionPane.showMessageDialog(null, "Prosím zadajte platné hodnoty");
+                }
+            }
+        });
 
         najdiCelokButtom.addActionListener(new ActionListener() {
             @Override
