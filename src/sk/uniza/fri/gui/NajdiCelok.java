@@ -12,6 +12,8 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -34,7 +36,7 @@ public class NajdiCelok extends JFrame {
     private JTextField textFieldSurXH;
     private JButton najdiButton;
     private JButton zrusitButton;
-    private JList list1;
+    private JList<UzemnyCelok> list1;
     private JTextField textField1;
     private JTextField textField2;
 
@@ -80,17 +82,22 @@ public class NajdiCelok extends JFrame {
                         vysledky.addAll(uzemnyCeloks1);
 
                     }
-                    if (NajdiCelok.this.parcelaCheckBox.isSelected()) {
+                    if (NajdiCelok.this.parcelaCheckBox.isSelected() && !NajdiCelok.this.nehnutelnostCheckBox.isSelected()) {
                         parcelas = NajdiCelok.this.trControl.najdiVsetkyParcely(suradnice[0], suradnice[1]);
                         vysledky.addAll(parcelas);
 
-                    } else if (NajdiCelok.this.nehnutelnostCheckBox.isSelected()) {
+                    } else if (NajdiCelok.this.nehnutelnostCheckBox.isSelected() && !NajdiCelok.this.parcelaCheckBox.isSelected()) {
                         nehnutelnosts = NajdiCelok.this.trControl.najdiVsetkyNehnutelnosti(suradnice[0], suradnice[1]);
                         vysledky.addAll(nehnutelnosts);
                     }
 
                     NajdiCelok.this.list1.clearSelection();
-                    NajdiCelok.this.list1.setListData(vysledky.toArray());
+                    Object[] objektyArray = vysledky.toArray();
+                    UzemnyCelok[] vyslednyArray = new UzemnyCelok[objektyArray.length];
+                    for (int i = 0; i < vyslednyArray.length; i++) {
+                        vyslednyArray[i] = (UzemnyCelok) objektyArray[i];
+                    }
+                    NajdiCelok.this.list1.setListData(vyslednyArray);
 
 
                 } catch (NumberFormatException exception) {
@@ -98,6 +105,7 @@ public class NajdiCelok extends JFrame {
                 }
             }
         });
+
 
         this.parcelaCheckBox.addActionListener(new ActionListener() {
             @Override
@@ -113,7 +121,26 @@ public class NajdiCelok extends JFrame {
             }
         });
 
+        this.list1.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                int index = NajdiCelok.this.list1.locationToIndex(e.getPoint());
+                String prekryvy = "Ziadne prekryvajuce celky";
+                if (index > -1) {
+                    prekryvy = NajdiCelok.this.list1.getModel().getElementAt(index).toStringObjektov();
+                    NajdiCelok.this.list1.setToolTipText(prekryvy);
+
+                }
+            }
+        });
+
     }
+
 
     private void createUIComponents() {
         this.jPanel = new JPanel();

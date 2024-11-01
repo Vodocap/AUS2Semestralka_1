@@ -44,7 +44,7 @@ public class VymazCelokForm extends JFrame {
         this.list1.setLayoutOrientation(JList.VERTICAL);
         this.list1.setVisibleRowCount(-1);
         this.mainWindow = paMainWindow;
-        this.trControl = paMainWindow.getTrControl();
+        this.trControl = this.mainWindow.getTrControl();
 
         this.zrusitButton.addActionListener(new ActionListener() {
             @Override

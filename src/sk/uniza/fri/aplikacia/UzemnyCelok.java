@@ -73,10 +73,13 @@ public abstract class UzemnyCelok {
         return null;
     }
 
-    public String toStringObjekotv() {
-        return "UzemnyCelok{" +
-                "uzemneObjekty=" + uzemneObjekty +
-                '}';
+    public String toStringObjektov() {
+        String resultString = "<html>";
+        for (UzemnyCelok uzemnyCelok : this.uzemneObjekty) {
+            resultString += this.uzemneObjekty.toString() + "<br>";
+        }
+        resultString += "</html>";
+        return resultString;
     }
 
 
