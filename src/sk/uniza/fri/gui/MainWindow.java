@@ -53,6 +53,39 @@ public class MainWindow {
         this.leftPanel.add(nacitajZoSuboru);
         this.leftPanel.add(ulozDoSuboru);
 
+        nacitajZoSuboru.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+
+                    NacitajZoSubora nacitajZoSubora = new NacitajZoSubora(MainWindow.this);
+                    nacitajZoSubora.setContentPane(nacitajZoSubora.$$$getRootComponent$$$());
+                    nacitajZoSubora.pack();
+                    nacitajZoSubora.setVisible(true);
+
+
+                } catch (NumberFormatException exception) {
+                    JOptionPane.showMessageDialog(null, "Prosím zadajte platné hodnoty");
+                }
+            }
+        });
+
+        ulozDoSuboru.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+
+                    UlozDoSubora ulozDoSubora = new UlozDoSubora(MainWindow.this);
+                    ulozDoSubora.setContentPane(ulozDoSubora.getPanel1());
+                    ulozDoSubora.pack();
+                    ulozDoSubora.setVisible(true);
+
+
+                } catch (NumberFormatException exception) {
+                    JOptionPane.showMessageDialog(null, "Prosím zadajte platné hodnoty");
+                }
+            }
+        });
 
         vygenerujCelky.addActionListener(new ActionListener() {
             @Override

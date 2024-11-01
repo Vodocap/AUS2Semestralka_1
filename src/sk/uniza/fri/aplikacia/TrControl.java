@@ -141,6 +141,14 @@ public class TrControl {
         this.stromUzemnychCelkov.insert(dlzkoveData);
     }
 
+    public void upravParcelu() {
+
+    }
+
+    public void upravNehnutelnost() {
+
+    }
+
     public void vymazUzemnyCelok(UzemnyCelok uzemnyCelok) {
         if (uzemnyCelok instanceof Parcela) {
             this.stromGPSParciel.delete(uzemnyCelok.getSirka());
@@ -249,6 +257,7 @@ public class TrControl {
                     }
                     riadokN = readerNehnutelnosti.readLine();
                 }
+                readerNehnutelnosti.close();
 
                 while (riadokP != null) {
                     String[] parcelaString = riadokP.split(";");
@@ -258,6 +267,7 @@ public class TrControl {
                     }
                     riadokP = readerParciel.readLine();
                 }
+                readerParciel.close();
 
                 this.vyytvorVsetkyPrekryvy();
             } catch (IOException e) {
@@ -281,21 +291,34 @@ public class TrControl {
         }
     }
 
-    public void zapisDataDoSuboru(String suborparcielCesta, String suborNehnutelnostiCesta) throws IOException {
+    public void zapisDataDoSuboru(String suborparcielCesta, String suborNehnutelnostiCesta) {
         File parcelySubor = new File(suborparcielCesta);
         File nehnutelnostiSubor = new File(suborNehnutelnostiCesta);
-        BufferedWriter writerParciel = new BufferedWriter(new FileWriter(parcelySubor));
-        BufferedWriter writerNehnutelnosti = new BufferedWriter(new FileWriter(nehnutelnostiSubor));
+        BufferedWriter writerParciel = null;
+        BufferedWriter writerNehnutelnosti = null;
+        try {
+
+            writerParciel = new BufferedWriter(new FileWriter(parcelySubor));
+            writerNehnutelnosti = new BufferedWriter(new FileWriter(nehnutelnostiSubor));
 
         for (Parcela parcela : this.dajVsetkyParcely()) {
             String parcelaRiadok = "Parcela;" + parcela.getCislo() + ";" + parcela.getPopis() + ";" + parcela.getSirka().getDataAtD(0) + ";" + parcela.getSirka().getDataAtD(1) +
                     ";" + parcela.getDlzka().getDataAtD(0) + ";" + parcela.getDlzka().getDataAtD(1) + ";\n";
+            System.out.println("Zapisane:");
+            System.out.println(parcelaRiadok);
             writerParciel.write(parcelaRiadok);
         }
+        writerParciel.close();
         for (Nehnutelnost nehnutelnost : this.dajVsetkyNehnutelnosti()) {
             String nehnutelnostRiadok = "Nehnutelnost;" + nehnutelnost.getCislo() + ";" + nehnutelnost.getPopis() + ";" + nehnutelnost.getSirka().getDataAtD(0) + ";" + nehnutelnost.getSirka().getDataAtD(1) +
                     ";" + nehnutelnost.getDlzka().getDataAtD(0) + ";" + nehnutelnost.getDlzka().getDataAtD(1) + ";\n";
             writerNehnutelnosti.write(nehnutelnostRiadok);
+            System.out.println("Zapisane:");
+            System.out.println(nehnutelnostRiadok);
+        }
+        writerNehnutelnosti.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
     }
