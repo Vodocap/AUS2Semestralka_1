@@ -287,7 +287,7 @@ public class KDTree<T extends IData> {
         return nodesResult;
     }
 
-    // pridat enum ako parameter ktory bude odlisovat casy
+    // pridat enum ako parameter ktory bude odlisovat cases
     public TrNode<T> findExtremeOrDuplicates(TrNode<T> paNode, TrNode<T> paNodeMorris , boolean minOrMax, boolean findDuplicates, boolean printTree) {
         //this.proccessNode(paNode);
         TrNode<T> minNode = paNode;

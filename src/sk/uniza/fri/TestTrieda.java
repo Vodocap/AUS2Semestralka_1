@@ -26,10 +26,13 @@ public class TestTrieda {
     }
 
     public void generatorOperacii(int pocetoperacii, boolean inty, boolean testData) {
-        for (int i = 0; i < 1000; i++) {
-            Random random = new Random(i);
+        for (int i = 0; i < 1; i++) {
+            Random random = new Random(10);
             System.out.println("__________________________ SEED: (" + i + ") __________________________");
             this.kDStrom = new KDTree<IData>(2);
+            if (testData) {
+                this.kDStrom = new KDTree<IData>(4);
+            }
             this.vkladanePrvky = new ArrayList<TrNode<IData>>();
             for (int j = 0; j < pocetoperacii; j++) {
                 double cislo = random.nextDouble(0.0,1.0);
@@ -124,7 +127,7 @@ public class TestTrieda {
         Random rand = new Random();
 
         for (int i = 0; i < paPocetPrvkov; i++) {
-            TestDataComplex testDataComplex = new TestDataComplex(rand.nextDouble(), this.vygenerujRandomString(), rand.nextInt(3), rand.nextDouble());
+            TestDataComplex testDataComplex = new TestDataComplex(rand.nextDouble(), this.vygenerujRandomString(), rand.nextInt(5), rand.nextDouble());
             TrNode testnode = new TrNode(testDataComplex);
             this.vkladanePrvky.add(testnode);
             this.kDStrom.insert(testDataComplex);

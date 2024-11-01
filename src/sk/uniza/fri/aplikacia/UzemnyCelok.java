@@ -11,6 +11,8 @@ public abstract class UzemnyCelok {
 
     private int cislo;
     private String popis;
+
+
     private ArrayList<UzemnyCelok> uzemneObjekty;
 
     private GPSData sirka;
@@ -46,7 +48,13 @@ public abstract class UzemnyCelok {
     }
 
     public void pridajUzemnyCelok(UzemnyCelok paUzemnyCelok) {
-        this.uzemneObjekty.add(paUzemnyCelok);
+        if (!this.uzemneObjekty.contains(paUzemnyCelok)) {
+            this.uzemneObjekty.add(paUzemnyCelok);
+        }
+    }
+
+    public boolean prekryvaSaSCelkom(UzemnyCelok paUzemnyCelok) {
+        return this.uzemneObjekty.contains(paUzemnyCelok);
     }
 
     public void removeUzemnyObjekt(UzemnyCelok paUzemnyCelok) {
@@ -65,6 +73,11 @@ public abstract class UzemnyCelok {
         return null;
     }
 
+    public String toStringObjekotv() {
+        return "UzemnyCelok{" +
+                "uzemneObjekty=" + uzemneObjekty +
+                '}';
+    }
 
 
 
