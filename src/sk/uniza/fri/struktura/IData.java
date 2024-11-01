@@ -10,5 +10,7 @@ public interface IData<T> {
     public void printData();
     IData<T> deepCopyData(IData<T> paData);
     String getID();
+    public TrNode<T> getCurrentNode();
+    public void setCurrentNode(TrNode<T> currentNode);
 
 }

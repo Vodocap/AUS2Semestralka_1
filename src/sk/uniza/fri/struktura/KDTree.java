@@ -15,7 +15,6 @@ public class KDTree<T extends IData> {
     private TrNode<T> root;
     private final int dimensions;
     private ArrayList<IData> duplicateData;
-    private ArrayList<TrNode<T>> duplicateNodes;
 
     public KDTree(int paDimensions) {
         this.dimensions = paDimensions;
@@ -33,6 +32,7 @@ public class KDTree<T extends IData> {
 
     public boolean insert(T data) {
         TrNode<T> paNode = new TrNode<>(data);
+        data.setCurrentNode(paNode);
         System.out.println("INSERTING NODE (" + data.getDataAtD(0) + ", " + data.getDataAtD(1) + ")");
         if (this.root == null ) {
             this.emplaceRoot(paNode);
@@ -164,14 +164,11 @@ public class KDTree<T extends IData> {
 
 
         while (!this.duplicateData.isEmpty()) {
-            ArrayList<TrNode<T>> morris = this.inorderMorris(this.root);
-            for (TrNode<T> tTrNode : morris) {
-                if (this.duplicateData.contains(tTrNode.getData())) {
-                    TrNode<T> deletedNode = this.deleteNode(tTrNode);
-                    this.insert(deletedNode.getData());
-                    this.duplicateData.remove(deletedNode.getData());
-                }
-            }
+            TrNode<T> deletedNode = this.deleteNode(this.duplicateData.get(0).getCurrentNode());
+            this.insert(deletedNode.getData());
+            this.duplicateData.remove(deletedNode.getData());
+
+
         }
 
 
@@ -198,8 +195,12 @@ public class KDTree<T extends IData> {
             if (replacerNode != null) {
 
                 TrNode<T> temnode = new TrNode<>(nodeToRemove.getData());
+                temnode.getData().setCurrentNode(temnode);
+
                 nodeToRemove.setData(replacerNode.getData());
+                nodeToRemove.getData().setCurrentNode(nodeToRemove);
                 replacerNode.setData(temnode.getData());
+                replacerNode.getData().setCurrentNode(replacerNode);
                 nodeToRemove = replacerNode;
             }
 
@@ -238,8 +239,12 @@ public class KDTree<T extends IData> {
             if (replacerNode != null) {
 
                 TrNode<T> temnode = new TrNode<>(nodeToRemove.getData());
+                temnode.getData().setCurrentNode(temnode);
+
                 nodeToRemove.setData(replacerNode.getData());
+                nodeToRemove.getData().setCurrentNode(nodeToRemove);
                 replacerNode.setData(temnode.getData());
+                replacerNode.getData().setCurrentNode(replacerNode);
                 nodeToRemove = replacerNode;
 
             }

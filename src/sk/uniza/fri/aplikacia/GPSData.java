@@ -1,6 +1,7 @@
 package sk.uniza.fri.aplikacia;
 
 import sk.uniza.fri.struktura.IData;
+import sk.uniza.fri.struktura.TrNode;
 
 import java.util.Random;
 
@@ -8,6 +9,7 @@ public class GPSData implements IData<Double> {
     private double[] suradnice;
     private UzemnyCelok uzemnyCelok;
     private String ID;
+    private TrNode currentNode;
 
     
 
@@ -140,5 +142,13 @@ public class GPSData implements IData<Double> {
 
     public void setUzemnyObjekt(UzemnyCelok uzemnyCelok) {
         this.uzemnyCelok = uzemnyCelok;
+    }
+
+    public TrNode getCurrentNode() {
+        return currentNode;
+    }
+
+    public void setCurrentNode(TrNode currentNode) {
+        this.currentNode = currentNode;
     }
 }

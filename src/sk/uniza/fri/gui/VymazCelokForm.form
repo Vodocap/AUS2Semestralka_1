@@ -4,7 +4,9 @@
     <constraints>
       <xy x="20" y="20" width="514" height="514"/>
     </constraints>
-    <properties/>
+    <properties>
+      <enabled value="false"/>
+    </properties>
     <border type="none"/>
     <children>
       <grid id="f7b6f" binding="jPanel1" layout-manager="GridBagLayout">
@@ -13,6 +15,7 @@
           <gridbag weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
+          <enabled value="false"/>
           <minimumSize width="500" height="500"/>
           <name value="pridajCelokQueryPanel"/>
           <opaque value="true"/>

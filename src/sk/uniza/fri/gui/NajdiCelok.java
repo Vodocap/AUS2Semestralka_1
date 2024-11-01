@@ -147,6 +147,9 @@ public class NajdiCelok extends JFrame {
         jPanel.setLayout(new GridBagLayout());
         jPanel1 = new JPanel();
         jPanel1.setLayout(new GridBagLayout());
+        jPanel1.setEnabled(false);
+        Font jPanel1Font = UIManager.getFont("Button.font");
+        if (jPanel1Font != null) jPanel1.setFont(jPanel1Font);
         jPanel1.setMinimumSize(new Dimension(500, 500));
         jPanel1.setName("pridajCelokQueryPanel");
         jPanel1.setOpaque(true);

@@ -115,6 +115,7 @@ public class PridajCelokQuery extends JFrame {
     private void $$$setupUI$$$() {
         createUIComponents();
         jPanel.setLayout(new GridBagLayout());
+        jPanel.setEnabled(false);
         jPanel.setMinimumSize(new Dimension(500, 500));
         jPanel.setName("pridajCelokQueryPanel");
         jPanel.setOpaque(true);

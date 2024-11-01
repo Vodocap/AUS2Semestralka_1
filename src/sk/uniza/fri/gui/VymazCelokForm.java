@@ -163,8 +163,10 @@ public class VymazCelokForm extends JFrame {
     private void $$$setupUI$$$() {
         createUIComponents();
         panel1.setLayout(new GridBagLayout());
+        panel1.setEnabled(false);
         jPanel1 = new JPanel();
         jPanel1.setLayout(new GridBagLayout());
+        jPanel1.setEnabled(false);
         jPanel1.setMinimumSize(new Dimension(500, 500));
         jPanel1.setName("pridajCelokQueryPanel");
         jPanel1.setOpaque(true);
@@ -331,4 +333,5 @@ public class VymazCelokForm extends JFrame {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
+
 }

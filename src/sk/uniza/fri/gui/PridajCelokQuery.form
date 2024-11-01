@@ -5,6 +5,7 @@
       <xy x="5" y="110" width="722" height="500"/>
     </constraints>
     <properties>
+      <enabled value="false"/>
       <minimumSize width="500" height="500"/>
       <name value="pridajCelokQueryPanel"/>
       <opaque value="true"/>
