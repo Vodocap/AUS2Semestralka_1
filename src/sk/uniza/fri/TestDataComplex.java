@@ -93,7 +93,7 @@ public class TestDataComplex implements IData {
     }
 
     @Override
-    public boolean compareWholeTo(IData paData, boolean compareID) {
+    public boolean equals(IData paData, boolean compareID) {
         int rovneSuradnice = 0;
         for (int i = 0; i < 4; i++) {
             if (this.compareTo(paData, i) == 0) {

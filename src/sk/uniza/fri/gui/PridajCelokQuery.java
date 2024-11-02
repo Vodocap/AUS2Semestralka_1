@@ -65,14 +65,14 @@ public class PridajCelokQuery extends JFrame {
                         PridajCelokQuery.this.trControl.pridajParcelu(
                                 Integer.parseInt(PridajCelokQuery.this.textFieldCislo.getText()),
                                 PridajCelokQuery.this.textFieldPopis.getText(),
-                                suradnice
+                                suradnice, true
                         );
                         JOptionPane.showMessageDialog(null, "Úspešne pridané");
                     } else if (PridajCelokQuery.this.nehnutelnostCheckBox.isSelected()) {
                         PridajCelokQuery.this.trControl.pridajNehnutelnost(
                                 Integer.parseInt(PridajCelokQuery.this.textFieldCislo.getText()),
                                 PridajCelokQuery.this.textFieldPopis.getText(),
-                                suradnice
+                                suradnice, true
                         );
                         JOptionPane.showMessageDialog(null, "Úspešne pridané");
                     }

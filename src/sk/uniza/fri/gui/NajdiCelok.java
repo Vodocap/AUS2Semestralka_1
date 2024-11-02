@@ -39,6 +39,7 @@ public class NajdiCelok extends JFrame {
     private JList<UzemnyCelok> list1;
     private JTextField textField1;
     private JTextField textField2;
+    private JTextArea textArea1;
 
     private MainWindow mainWindow;
     private TrControl trControl;

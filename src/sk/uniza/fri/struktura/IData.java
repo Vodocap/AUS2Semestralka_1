@@ -5,7 +5,7 @@ public interface IData<T> {
 
 
     int compareTo(IData<T> paData, int dimension);
-    boolean compareWholeTo(IData<T> paData, boolean compareID);
+    boolean equals(IData<T> paData, boolean compareID);
     T getDataAtD(int dimension);
     public void printData();
     IData<T> deepCopyData(IData<T> paData);

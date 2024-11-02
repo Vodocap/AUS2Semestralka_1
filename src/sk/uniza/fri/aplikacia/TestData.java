@@ -38,7 +38,7 @@ public class TestData implements IData<Integer> {
     }
 
     @Override
-    public boolean compareWholeTo(IData<Integer> paData, boolean compareID) {
+    public boolean equals(IData<Integer> paData, boolean compareID) {
         int rovneSuradnice = 0;
         for (int i = 0; i < this.suradnice.length; i++) {
             if (this.compareTo(paData, i) == 0) {

@@ -222,7 +222,7 @@
               <text value="Y"/>
             </properties>
           </component>
-          <component id="35e9b" class="javax.swing.JButton" binding="pridatButton">
+          <component id="35e9b" class="javax.swing.JButton" binding="upravButton">
             <constraints>
               <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
               <gridbag weightx="0.0" weighty="0.0"/>

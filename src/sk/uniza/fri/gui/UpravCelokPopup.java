@@ -1,5 +1,7 @@
 package sk.uniza.fri.gui;
 
+import sk.uniza.fri.aplikacia.Nehnutelnost;
+import sk.uniza.fri.aplikacia.Parcela;
 import sk.uniza.fri.aplikacia.TrControl;
 import sk.uniza.fri.aplikacia.UzemnyCelok;
 
@@ -8,6 +10,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Locale;
 
 /**
@@ -26,7 +30,7 @@ public class UpravCelokPopup extends JFrame {
     private JTextField textFieldSmertXH;
     private JTextField textFieldSurXD;
     private JTextField textFieldSurXH;
-    private JButton pridatButton;
+    private JButton upravButton;
     private JButton zrusitButton;
     private UzemnyCelok upravovanyCelok;
     private TrControl trControl;
@@ -36,6 +40,37 @@ public class UpravCelokPopup extends JFrame {
         $$$setupUI$$$();
         this.trControl = paTrControl;
         this.upravovanyCelok = paUpravovanyCelok;
+        this.textFieldCislo.setText(String.valueOf(this.upravovanyCelok.getCislo()));
+        this.textFieldPopis.setText(this.upravovanyCelok.getPopis());
+        this.textFieldSurXH.setText(String.valueOf(this.upravovanyCelok.getSirka().getDataAtD(0)));
+        this.textFieldSurYH.setText(String.valueOf(this.upravovanyCelok.getSirka().getDataAtD(1)));
+        this.textFieldSurXD.setText(String.valueOf(this.upravovanyCelok.getDlzka().getDataAtD(0)));
+        this.textFieldSurYD.setText(String.valueOf(this.upravovanyCelok.getDlzka().getDataAtD(1)));
+        this.zrusitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UpravCelokPopup.this.dispose();
+            }
+        });
+
+
+        this.upravButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                double[] suradnice = new double[4];
+                suradnice[0] = Double.parseDouble(UpravCelokPopup.this.textFieldSurXH.getText());
+                suradnice[1] = Double.parseDouble(UpravCelokPopup.this.textFieldSurYH.getText());
+                suradnice[2] = Double.parseDouble(UpravCelokPopup.this.textFieldSurXD.getText());
+                suradnice[3] = Double.parseDouble(UpravCelokPopup.this.textFieldSurYD.getText());
+                if (UpravCelokPopup.this.upravovanyCelok instanceof Parcela) {
+                    UpravCelokPopup.this.trControl.upravParcelu((Parcela) UpravCelokPopup.this.upravovanyCelok,
+                            Integer.parseInt(UpravCelokPopup.this.textFieldCislo.getText()), UpravCelokPopup.this.textFieldPopis.getText(), suradnice);
+                } else if (UpravCelokPopup.this.upravovanyCelok instanceof Nehnutelnost) {
+                    UpravCelokPopup.this.trControl.upravNehnutelnost((Nehnutelnost) UpravCelokPopup.this.upravovanyCelok,
+                            Integer.parseInt(UpravCelokPopup.this.textFieldCislo.getText()), UpravCelokPopup.this.textFieldPopis.getText(), suradnice);
+                }
+            }
+        });
 
     }
 
@@ -233,13 +268,13 @@ public class UpravCelokPopup extends JFrame {
         gbc.gridx = 4;
         gbc.gridy = 0;
         jPanel.add(label11, gbc);
-        pridatButton = new JButton();
-        pridatButton.setText("Uprav");
+        upravButton = new JButton();
+        upravButton.setText("Uprav");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 7;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        jPanel.add(pridatButton, gbc);
+        jPanel.add(upravButton, gbc);
         zrusitButton = new JButton();
         zrusitButton.setText("Zrušiť");
         gbc = new GridBagConstraints();

@@ -1,6 +1,5 @@
 package sk.uniza.fri.aplikacia;
 
-import sk.uniza.fri.struktura.IData;
 import sk.uniza.fri.struktura.KDTree;
 import sk.uniza.fri.struktura.TrNode;
 
@@ -109,7 +108,7 @@ public class TrControl {
         }
     }
 
-    public void pridajNehnutelnost(int paCislo,String paPopis, double[] paSuradnice) {
+    public void pridajNehnutelnost(int paCislo,String paPopis, double[] paSuradnice, boolean urobPrekryvy) {
         double[] poleSirka = {paSuradnice[0], paSuradnice[1]};
         double[] poleDlzka = {paSuradnice[2], paSuradnice[3]};
         GPSData sirkoveData = new GPSData(poleSirka);
@@ -117,7 +116,10 @@ public class TrControl {
         Nehnutelnost pridavanaNehnutelnost = new Nehnutelnost(paCislo, paPopis, sirkoveData, dlzkoveData);
         sirkoveData.setUzemnyObjekt(pridavanaNehnutelnost);
         dlzkoveData.setUzemnyObjekt(pridavanaNehnutelnost);
-        this.pridajPrekryvajuce(pridavanaNehnutelnost, sirkoveData, dlzkoveData);
+
+        if (urobPrekryvy) {
+            this.pridajPrekryvajuce(pridavanaNehnutelnost, sirkoveData, dlzkoveData);
+        }
 
         this.stromGPSNehnutelnosti.insert(sirkoveData);
         this.stromGPSNehnutelnosti.insert(dlzkoveData);
@@ -125,7 +127,7 @@ public class TrControl {
         this.stromUzemnychCelkov.insert(dlzkoveData);
     }
 
-    public void pridajParcelu(int paCislo,String paPopis, double[] paSuradnice) {
+    public void pridajParcelu(int paCislo,String paPopis, double[] paSuradnice, boolean urobPrekryvy) {
         double[] poleSirka = {paSuradnice[0], paSuradnice[1]};
         double[] poleDlzka = {paSuradnice[2], paSuradnice[3]};
         GPSData sirkoveData = new GPSData(poleSirka);
@@ -133,7 +135,10 @@ public class TrControl {
         Parcela pridavanaParcela = new Parcela(paCislo, paPopis, sirkoveData, dlzkoveData);
         sirkoveData.setUzemnyObjekt(pridavanaParcela);
         dlzkoveData.setUzemnyObjekt(pridavanaParcela);
-        this.pridajPrekryvajuce(pridavanaParcela, sirkoveData, dlzkoveData);
+        if (urobPrekryvy) {
+            this.pridajPrekryvajuce(pridavanaParcela, sirkoveData, dlzkoveData);
+        }
+
 
         this.stromGPSParciel.insert(sirkoveData);
         this.stromGPSParciel.insert(dlzkoveData);
@@ -141,12 +146,47 @@ public class TrControl {
         this.stromUzemnychCelkov.insert(dlzkoveData);
     }
 
-    public void upravParcelu() {
 
+    public void upravParcelu(Parcela originalParcela, int noveCislo, String novyPopis, double[] noveSuradnice) {
+        if (noveCislo != originalParcela.getCislo()) {
+            originalParcela.setCislo(noveCislo);
+        }
+        if (!novyPopis.equals(originalParcela.getPopis())) {
+            originalParcela.setPopis(novyPopis);
+        }
+        double[] surSirka = {noveSuradnice[0], noveSuradnice[1]};
+        double[] surDlzka = {noveSuradnice[2], noveSuradnice[3]};
+        GPSData novaSirka = new GPSData(surSirka);
+        GPSData novaDlzka = new GPSData(surDlzka);
+//        novaSirka.setID(originalParcela.getSirka().getID());
+//        novaDlzka.setID(originalParcela.getDlzka().getID());
+
+        if (!novaSirka.equals(originalParcela.getSirka(), false) || !novaDlzka.equals(originalParcela.getDlzka(), false)) {
+            this.vymazUzemnyCelok(originalParcela);
+            this.pridajParcelu(noveCislo, novyPopis, noveSuradnice, true);
+
+        }
     }
 
-    public void upravNehnutelnost() {
+    public void upravNehnutelnost(Nehnutelnost originalNehnutelnost, int noveCislo, String novyPopis, double[] noveSuradnice) {
+        if (noveCislo != originalNehnutelnost.getCislo()) {
+            originalNehnutelnost.setCislo(noveCislo);
+        }
+        if (!novyPopis.equals(originalNehnutelnost.getPopis())) {
+            originalNehnutelnost.setPopis(novyPopis);
+        }
+        double[] surSirka = {noveSuradnice[0], noveSuradnice[1]};
+        double[] surDlzka = {noveSuradnice[2], noveSuradnice[3]};
+        GPSData novaSirka = new GPSData(surSirka);
+        GPSData novaDlzka = new GPSData(surDlzka);
+        novaSirka.setID(originalNehnutelnost.getSirka().getID());
+        novaDlzka.setID(originalNehnutelnost.getDlzka().getID());
 
+        if (!novaSirka.equals(originalNehnutelnost.getSirka(), false) || !novaDlzka.equals(originalNehnutelnost.getDlzka(), false)) {
+            this.vymazUzemnyCelok(originalNehnutelnost);
+            this.pridajNehnutelnost(noveCislo, novyPopis, noveSuradnice, false);
+
+        }
     }
 
     public void vymazUzemnyCelok(UzemnyCelok uzemnyCelok) {
@@ -197,10 +237,10 @@ public class TrControl {
             Random random = new Random();
             if (random.nextDouble() < (percentoPrekryvu / 100.0)) {
                 double[] suradnicePrekryvu = {random.nextDouble(-90, 90), random.nextDouble(-90, 90), 20, 30};
-                this.pridajParcelu(random.nextInt(), "Prekryvajuca parcela", suradnicePrekryvu);
+                this.pridajParcelu(random.nextInt(), "Prekryvajuca parcela", suradnicePrekryvu, false);
             } else {
                 double[] suradnice = {random.nextDouble(-90, 90), random.nextDouble(-90, 90), random.nextDouble(-90, 90), random.nextDouble(-90, 90)};
-                this.pridajParcelu(random.nextInt(), "Obycajna parcela " + (char) random.nextInt(127), suradnice);
+                this.pridajParcelu(random.nextInt(), "Obycajna parcela " + (char) (random.nextInt(25) + 65), suradnice, false);
             }
 
         }
@@ -209,10 +249,10 @@ public class TrControl {
             Random random = new Random();
             if (random.nextDouble() < (percentoPrekryvu / 100.0)) {
                 double[] suradnicePrekryvu = {20, 30, random.nextDouble(-90, 90), random.nextDouble(-90, 90)};
-                this.pridajNehnutelnost(random.nextInt(), "Prekryvajuca Nehnutelnost", suradnicePrekryvu);
+                this.pridajNehnutelnost(random.nextInt(), "Prekryvajuca Nehnutelnost", suradnicePrekryvu, false);
             } else {
                 double[] suradnice = {random.nextDouble(-90, 90), random.nextDouble(-90, 90), random.nextDouble(-90, 90), random.nextDouble(-90, 90)};
-                this.pridajNehnutelnost(random.nextInt(), "Obycajna Nehnutelnost " + (char) random.nextInt(127), suradnice);
+                this.pridajNehnutelnost(random.nextInt(), "Obycajna Nehnutelnost " + (char) (random.nextInt(25) + 65), suradnice, false);
             }
 
         }
@@ -253,7 +293,7 @@ public class TrControl {
                     String[] nehnutelnostString = riadokN.split(";");
                     if (nehnutelnostString[0].equals("Nehnutelnost")) {
                         double[] suradnice = {Double.parseDouble(nehnutelnostString[3]), Double.parseDouble(nehnutelnostString[4]), Double.parseDouble(nehnutelnostString[5]), Double.parseDouble(nehnutelnostString[6])};
-                        this.pridajNehnutelnost(Integer.parseInt(nehnutelnostString[1]), nehnutelnostString[2], suradnice);
+                        this.pridajNehnutelnost(Integer.parseInt(nehnutelnostString[1]), nehnutelnostString[2], suradnice, false);
                     }
                     riadokN = readerNehnutelnosti.readLine();
                 }
@@ -263,7 +303,7 @@ public class TrControl {
                     String[] parcelaString = riadokP.split(";");
                     if (parcelaString[0].equals("Parcela")) {
                         double[] suradnice = {Double.parseDouble(parcelaString[3]), Double.parseDouble(parcelaString[4]), Double.parseDouble(parcelaString[5]), Double.parseDouble(parcelaString[6])};
-                        this.pridajParcelu(Integer.parseInt(parcelaString[1]), parcelaString[2], suradnice);
+                        this.pridajParcelu(Integer.parseInt(parcelaString[1]), parcelaString[2], suradnice, false);
                     }
                     riadokP = readerParciel.readLine();
                 }

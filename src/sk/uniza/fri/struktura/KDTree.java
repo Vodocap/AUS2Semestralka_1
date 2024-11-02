@@ -102,7 +102,7 @@ public class KDTree<T extends IData> {
                 level++;
             } else if (paData.compareTo(currentNode.getData(), k) == 0) {
 
-                if (paData.compareWholeTo(currentNode.getData(), true)) {
+                if (paData.equals(currentNode.getData(), true)) {
                     return currentNode;
                 }
                 currentNode = currentNode.getLeft();
@@ -131,7 +131,7 @@ public class KDTree<T extends IData> {
                 level++;
             } else if (paData.compareTo(currentNode.getData(), k) == 0) {
 
-                if (paData.compareWholeTo(currentNode.getData(), false)) {
+                if (paData.equals(currentNode.getData(), false)) {
                     resultNodes.add(currentNode);
                 }
 
