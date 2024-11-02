@@ -62,7 +62,7 @@
           <preferredSize width="50" height="35"/>
         </properties>
       </component>
-      <component id="48df3" class="javax.swing.JTextField" binding="textFieldSmeryYH">
+      <component id="48df3" class="javax.swing.JTextField" binding="textFieldSmerYH">
         <constraints>
           <grid row="3" column="3" row-span="1" col-span="7" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
@@ -74,7 +74,7 @@
           <preferredSize width="50" height="35"/>
         </properties>
       </component>
-      <component id="549e0" class="javax.swing.JTextField" binding="textFieldSmertYD">
+      <component id="549e0" class="javax.swing.JTextField" binding="textFieldSmerYD">
         <constraints>
           <grid row="4" column="3" row-span="1" col-span="7" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
@@ -191,7 +191,7 @@
           <preferredSize width="50" height="35"/>
         </properties>
       </component>
-      <component id="619c3" class="javax.swing.JTextField" binding="textFieldSmertXH">
+      <component id="619c3" class="javax.swing.JTextField" binding="textFieldSmerXH">
         <constraints>
           <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>

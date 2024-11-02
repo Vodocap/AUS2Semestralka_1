@@ -70,7 +70,7 @@ public class TestData implements IData<Integer> {
     }
 
     @Override
-    public IData deepCopyData(IData<Integer> paData) {
+    public IData halfDeepCopyData() {
         return null;
     }
 

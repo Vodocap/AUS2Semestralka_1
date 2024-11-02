@@ -35,6 +35,10 @@ public class UpravCelok extends JFrame {
     private JTextField textField1;
     private JTextField textField2;
     private JButton upravButton;
+    private JTextField smerXSirka;
+    private JTextField smerYSirka;
+    private JTextField smerXDlzka;
+    private JTextField smerYDlzka;
     private MainWindow mainWindow;
     private TrControl trControl;
 
@@ -92,18 +96,19 @@ public class UpravCelok extends JFrame {
                     ArrayList<Object> vysledky = new ArrayList<>();
 
                     if (UpravCelok.this.parcelaCheckBox.isSelected() && UpravCelok.this.nehnutelnostCheckBox.isSelected()) {
-                        uzemnyCeloks1 = UpravCelok.this.trControl.najdiVsetkyObjekty(suradnice[0], suradnice[1]);
-                        uzemnyCeloks2 = UpravCelok.this.trControl.najdiVsetkyObjekty(Double.parseDouble(UpravCelok.this.textField1.getText()), Double.parseDouble(UpravCelok.this.textField2.getText()));
+                        uzemnyCeloks1 = UpravCelok.this.trControl.najdiVsetkyObjekty(suradnice[0], suradnice[1], UpravCelok.this.smerXSirka.getText().charAt(0), UpravCelok.this.smerYSirka.getText().charAt(0));
+                        uzemnyCeloks2 = UpravCelok.this.trControl.najdiVsetkyObjekty(Double.parseDouble(UpravCelok.this.textField1.getText()), Double.parseDouble(UpravCelok.this.textField2.getText()),
+                                UpravCelok.this.smerXDlzka.getText().charAt(0), UpravCelok.this.smerYDlzka.getText().charAt(0));
                         vysledky.addAll(uzemnyCeloks2);
                         vysledky.addAll(uzemnyCeloks1);
 
                     }
                     if (UpravCelok.this.parcelaCheckBox.isSelected() && !UpravCelok.this.nehnutelnostCheckBox.isSelected()) {
-                        parcelas = UpravCelok.this.trControl.najdiVsetkyParcely(suradnice[0], suradnice[1]);
+                        parcelas = UpravCelok.this.trControl.najdiVsetkyParcely(suradnice[0], suradnice[1], UpravCelok.this.smerXSirka.getText().charAt(0), UpravCelok.this.smerYSirka.getText().charAt(0));
                         vysledky.addAll(parcelas);
 
                     } else if (UpravCelok.this.nehnutelnostCheckBox.isSelected() && !UpravCelok.this.parcelaCheckBox.isSelected()) {
-                        nehnutelnosts = UpravCelok.this.trControl.najdiVsetkyNehnutelnosti(suradnice[0], suradnice[1]);
+                        nehnutelnosts = UpravCelok.this.trControl.najdiVsetkyNehnutelnosti(suradnice[0], suradnice[1], UpravCelok.this.smerXSirka.getText().charAt(0), UpravCelok.this.smerYSirka.getText().charAt(0));
                         vysledky.addAll(nehnutelnosts);
                     }
 
@@ -162,9 +167,13 @@ public class UpravCelok extends JFrame {
         if (UpravCelok.this.parcelaCheckBox.isSelected() && UpravCelok.this.nehnutelnostCheckBox.isSelected()) {
             UpravCelok.this.textField1.setVisible(true);
             UpravCelok.this.textField2.setVisible(true);
+            UpravCelok.this.smerXDlzka.setVisible(true);
+            UpravCelok.this.smerYDlzka.setVisible(true);
         } else {
             UpravCelok.this.textField1.setVisible(false);
             UpravCelok.this.textField2.setVisible(false);
+            UpravCelok.this.smerXDlzka.setVisible(false);
+            UpravCelok.this.smerYDlzka.setVisible(false);
         }
     }
 
@@ -247,14 +256,14 @@ public class UpravCelok extends JFrame {
         najdiButton.setText("Nájdi");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 5;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel1.add(najdiButton, gbc);
         zrusitButton = new JButton();
         zrusitButton.setText("Zrušiť");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 6;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel1.add(zrusitButton, gbc);
         final JLabel label4 = new JLabel();
@@ -268,21 +277,21 @@ public class UpravCelok extends JFrame {
         parcelaCheckBox.setText("Parcela");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 5;
+        gbc.gridy = 7;
         gbc.anchor = GridBagConstraints.WEST;
         jPanel1.add(parcelaCheckBox, gbc);
         nehnutelnostCheckBox = new JCheckBox();
         nehnutelnostCheckBox.setText("Nehnutelnosť");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 6;
+        gbc.gridy = 8;
         gbc.anchor = GridBagConstraints.WEST;
         jPanel1.add(nehnutelnostCheckBox, gbc);
         final JScrollPane scrollPane1 = new JScrollPane();
         scrollPane1.setPreferredSize(new Dimension(300, 300));
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 3;
+        gbc.gridy = 5;
         gbc.gridwidth = 9;
         gbc.gridheight = 4;
         gbc.fill = GridBagConstraints.BOTH;
@@ -312,9 +321,46 @@ public class UpravCelok extends JFrame {
         upravButton.setText("Uprav");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 7;
+        gbc.gridy = 9;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel1.add(upravButton, gbc);
+        final JLabel label5 = new JLabel();
+        label5.setText("Smery");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.anchor = GridBagConstraints.WEST;
+        jPanel1.add(label5, gbc);
+        smerXSirka = new JTextField();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 3;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        jPanel1.add(smerXSirka, gbc);
+        smerYSirka = new JTextField();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3;
+        gbc.gridy = 3;
+        gbc.gridwidth = 7;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        jPanel1.add(smerYSirka, gbc);
+        smerXDlzka = new JTextField();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3;
+        gbc.gridy = 4;
+        gbc.gridwidth = 7;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        jPanel1.add(smerXDlzka, gbc);
+        smerYDlzka = new JTextField();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 4;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        jPanel1.add(smerYDlzka, gbc);
         final JPanel spacer1 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;

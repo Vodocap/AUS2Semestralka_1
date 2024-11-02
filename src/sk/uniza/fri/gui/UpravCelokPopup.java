@@ -27,11 +27,13 @@ public class UpravCelokPopup extends JFrame {
     private JTextField textFieldCislo;
     private JTextField textFieldPopis;
     private JTextField textFieldSmerXD;
-    private JTextField textFieldSmertXH;
+    private JTextField textFieldSmerXH;
     private JTextField textFieldSurXD;
     private JTextField textFieldSurXH;
     private JButton upravButton;
     private JButton zrusitButton;
+    private JTextField textFieldSmerYD;
+    private JTextField textFieldSmerYH;
     private UzemnyCelok upravovanyCelok;
     private TrControl trControl;
 
@@ -46,6 +48,10 @@ public class UpravCelokPopup extends JFrame {
         this.textFieldSurYH.setText(String.valueOf(this.upravovanyCelok.getSirka().getDataAtD(1)));
         this.textFieldSurXD.setText(String.valueOf(this.upravovanyCelok.getDlzka().getDataAtD(0)));
         this.textFieldSurYD.setText(String.valueOf(this.upravovanyCelok.getDlzka().getDataAtD(1)));
+        this.textFieldSmerXH.setText(String.valueOf(this.upravovanyCelok.getSirka().getSmerAtD(0)));
+        this.textFieldSmerYH.setText(String.valueOf(this.upravovanyCelok.getSirka().getSmerAtD(1)));
+        this.textFieldSmerXD.setText(String.valueOf(this.upravovanyCelok.getDlzka().getSmerAtD(0)));
+        this.textFieldSmerYD.setText(String.valueOf(this.upravovanyCelok.getDlzka().getSmerAtD(1)));
         this.zrusitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -57,17 +63,28 @@ public class UpravCelokPopup extends JFrame {
         this.upravButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                double[] suradnice = new double[4];
-                suradnice[0] = Double.parseDouble(UpravCelokPopup.this.textFieldSurXH.getText());
-                suradnice[1] = Double.parseDouble(UpravCelokPopup.this.textFieldSurYH.getText());
-                suradnice[2] = Double.parseDouble(UpravCelokPopup.this.textFieldSurXD.getText());
-                suradnice[3] = Double.parseDouble(UpravCelokPopup.this.textFieldSurYD.getText());
-                if (UpravCelokPopup.this.upravovanyCelok instanceof Parcela) {
-                    UpravCelokPopup.this.trControl.upravParcelu((Parcela) UpravCelokPopup.this.upravovanyCelok,
-                            Integer.parseInt(UpravCelokPopup.this.textFieldCislo.getText()), UpravCelokPopup.this.textFieldPopis.getText(), suradnice);
-                } else if (UpravCelokPopup.this.upravovanyCelok instanceof Nehnutelnost) {
-                    UpravCelokPopup.this.trControl.upravNehnutelnost((Nehnutelnost) UpravCelokPopup.this.upravovanyCelok,
-                            Integer.parseInt(UpravCelokPopup.this.textFieldCislo.getText()), UpravCelokPopup.this.textFieldPopis.getText(), suradnice);
+
+                try {
+                    double[] suradnice = new double[4];
+                    char[] smery = new char[4];
+                    suradnice[0] = Double.parseDouble(UpravCelokPopup.this.textFieldSurXH.getText());
+                    suradnice[1] = Double.parseDouble(UpravCelokPopup.this.textFieldSurYH.getText());
+                    suradnice[2] = Double.parseDouble(UpravCelokPopup.this.textFieldSurXD.getText());
+                    suradnice[3] = Double.parseDouble(UpravCelokPopup.this.textFieldSurYD.getText());
+                    smery[0] = UpravCelokPopup.this.textFieldSmerXH.getText().charAt(0);
+                    smery[1] = UpravCelokPopup.this.textFieldSmerYH.getText().charAt(0);
+                    smery[2] = UpravCelokPopup.this.textFieldSmerXD.getText().charAt(0);
+                    smery[3] = UpravCelokPopup.this.textFieldSmerYD.getText().charAt(0);
+                    if (UpravCelokPopup.this.upravovanyCelok instanceof Parcela) {
+                        UpravCelokPopup.this.trControl.upravParcelu((Parcela) UpravCelokPopup.this.upravovanyCelok,
+                                Integer.parseInt(UpravCelokPopup.this.textFieldCislo.getText()), UpravCelokPopup.this.textFieldPopis.getText(), suradnice, smery);
+                    } else if (UpravCelokPopup.this.upravovanyCelok instanceof Nehnutelnost) {
+                        UpravCelokPopup.this.trControl.upravNehnutelnost((Nehnutelnost) UpravCelokPopup.this.upravovanyCelok,
+                                Integer.parseInt(UpravCelokPopup.this.textFieldCislo.getText()), UpravCelokPopup.this.textFieldPopis.getText(), suradnice, smery);
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Prosím zadajte platné hodnoty");
+
                 }
             }
         });
@@ -218,16 +235,16 @@ public class UpravCelokPopup extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel.add(textFieldSmerXD, gbc);
-        textFieldSmertXH = new JTextField();
-        textFieldSmertXH.setMinimumSize(new Dimension(50, 34));
-        textFieldSmertXH.setPreferredSize(new Dimension(50, 35));
-        textFieldSmertXH.setText("");
+        textFieldSmerXH = new JTextField();
+        textFieldSmerXH.setMinimumSize(new Dimension(50, 34));
+        textFieldSmerXH.setPreferredSize(new Dimension(50, 35));
+        textFieldSmerXH.setText("");
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        jPanel.add(textFieldSmertXH, gbc);
+        jPanel.add(textFieldSmerXH, gbc);
         textFieldSurXD = new JTextField();
         textFieldSurXD.setMinimumSize(new Dimension(50, 35));
         textFieldSurXD.setPreferredSize(new Dimension(50, 35));
@@ -282,6 +299,28 @@ public class UpravCelokPopup extends JFrame {
         gbc.gridy = 8;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel.add(zrusitButton, gbc);
+        textFieldSmerYH = new JTextField();
+        textFieldSmerYH.setMinimumSize(new Dimension(50, 34));
+        textFieldSmerYH.setPreferredSize(new Dimension(50, 35));
+        textFieldSmerYH.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3;
+        gbc.gridy = 3;
+        gbc.gridwidth = 7;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        jPanel.add(textFieldSmerYH, gbc);
+        textFieldSmerYD = new JTextField();
+        textFieldSmerYD.setMinimumSize(new Dimension(50, 34));
+        textFieldSmerYD.setPreferredSize(new Dimension(50, 35));
+        textFieldSmerYD.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3;
+        gbc.gridy = 4;
+        gbc.gridwidth = 7;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        jPanel.add(textFieldSmerYD, gbc);
         final JPanel spacer1 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;

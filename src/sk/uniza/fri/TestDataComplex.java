@@ -137,7 +137,7 @@ public class TestDataComplex implements IData {
     }
 
     @Override
-    public IData deepCopyData(IData paData) {
+    public IData halfDeepCopyData() {
         return null;
     }
 

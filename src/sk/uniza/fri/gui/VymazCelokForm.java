@@ -33,6 +33,10 @@ public class VymazCelokForm extends JFrame {
     private JButton vymazButton;
     private JPanel jPanel1;
     private JPanel panel1;
+    private JTextField smerXSirka;
+    private JTextField smerYSirka;
+    private JTextField smerXDlzka;
+    private JTextField smerYDlzka;
     private MainWindow mainWindow;
     private TrControl trControl;
 
@@ -71,18 +75,20 @@ public class VymazCelokForm extends JFrame {
                     ArrayList<Object> vysledky = new ArrayList<>();
 
                     if (VymazCelokForm.this.parcelaCheckBox.isSelected() && VymazCelokForm.this.nehnutelnostCheckBox.isSelected()) {
-                        uzemnyCeloks1 = VymazCelokForm.this.trControl.najdiVsetkyObjekty(suradnice[0], suradnice[1]);
-                        uzemnyCeloks2 = VymazCelokForm.this.trControl.najdiVsetkyObjekty(Double.parseDouble(VymazCelokForm.this.textField1.getText()), Double.parseDouble(VymazCelokForm.this.textField2.getText()));
+                        uzemnyCeloks1 = VymazCelokForm.this.trControl.najdiVsetkyObjekty(suradnice[0], suradnice[1],
+                                VymazCelokForm.this.smerXSirka.getText().charAt(0), VymazCelokForm.this.smerYSirka.getText().charAt(0));
+                        uzemnyCeloks2 = VymazCelokForm.this.trControl.najdiVsetkyObjekty(Double.parseDouble(VymazCelokForm.this.textField1.getText()), Double.parseDouble(VymazCelokForm.this.textField2.getText())
+                                , VymazCelokForm.this.smerXDlzka.getText().charAt(0), VymazCelokForm.this.smerYDlzka.getText().charAt(0));
                         vysledky.addAll(uzemnyCeloks2);
                         vysledky.addAll(uzemnyCeloks1);
 
                     }
-                    if (VymazCelokForm.this.parcelaCheckBox.isSelected()) {
-                        parcelas = VymazCelokForm.this.trControl.najdiVsetkyParcely(suradnice[0], suradnice[1]);
+                    if (VymazCelokForm.this.parcelaCheckBox.isSelected() && !VymazCelokForm.this.nehnutelnostCheckBox.isSelected()) {
+                        parcelas = VymazCelokForm.this.trControl.najdiVsetkyParcely(suradnice[0], suradnice[1], VymazCelokForm.this.smerXSirka.getText().charAt(0), VymazCelokForm.this.smerYSirka.getText().charAt(0));
                         vysledky.addAll(parcelas);
 
-                    } else if (VymazCelokForm.this.nehnutelnostCheckBox.isSelected()) {
-                        nehnutelnosts = VymazCelokForm.this.trControl.najdiVsetkyNehnutelnosti(suradnice[0], suradnice[1]);
+                    } else if (VymazCelokForm.this.nehnutelnostCheckBox.isSelected() && !VymazCelokForm.this.parcelaCheckBox.isSelected()) {
+                        nehnutelnosts = VymazCelokForm.this.trControl.najdiVsetkyNehnutelnosti(suradnice[0], suradnice[1], VymazCelokForm.this.smerXSirka.getText().charAt(0), VymazCelokForm.this.smerYSirka.getText().charAt(0));
                         vysledky.addAll(nehnutelnosts);
                     }
 
@@ -133,9 +139,13 @@ public class VymazCelokForm extends JFrame {
         if (VymazCelokForm.this.parcelaCheckBox.isSelected() && VymazCelokForm.this.nehnutelnostCheckBox.isSelected()) {
             VymazCelokForm.this.textField1.setVisible(true);
             VymazCelokForm.this.textField2.setVisible(true);
+            VymazCelokForm.this.smerXDlzka.setVisible(true);
+            VymazCelokForm.this.smerYDlzka.setVisible(true);
         } else {
             VymazCelokForm.this.textField1.setVisible(false);
             VymazCelokForm.this.textField2.setVisible(false);
+            VymazCelokForm.this.smerXDlzka.setVisible(false);
+            VymazCelokForm.this.smerYDlzka.setVisible(false);
         }
     }
 
@@ -223,14 +233,14 @@ public class VymazCelokForm extends JFrame {
         najdiButton.setText("Nájdi");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 5;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel1.add(najdiButton, gbc);
         zrusitButton = new JButton();
         zrusitButton.setText("Zrušiť");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 6;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel1.add(zrusitButton, gbc);
         final JLabel label4 = new JLabel();
@@ -244,21 +254,21 @@ public class VymazCelokForm extends JFrame {
         parcelaCheckBox.setText("Parcela");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 5;
+        gbc.gridy = 7;
         gbc.anchor = GridBagConstraints.WEST;
         jPanel1.add(parcelaCheckBox, gbc);
         nehnutelnostCheckBox = new JCheckBox();
         nehnutelnostCheckBox.setText("Nehnutelnosť");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 6;
+        gbc.gridy = 8;
         gbc.anchor = GridBagConstraints.WEST;
         jPanel1.add(nehnutelnostCheckBox, gbc);
         final JScrollPane scrollPane1 = new JScrollPane();
         scrollPane1.setPreferredSize(new Dimension(300, 300));
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 3;
+        gbc.gridy = 5;
         gbc.gridwidth = 9;
         gbc.gridheight = 4;
         gbc.fill = GridBagConstraints.BOTH;
@@ -288,9 +298,46 @@ public class VymazCelokForm extends JFrame {
         vymazButton.setText("vymaz");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 7;
+        gbc.gridy = 9;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel1.add(vymazButton, gbc);
+        final JLabel label5 = new JLabel();
+        label5.setText("Smery");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.anchor = GridBagConstraints.WEST;
+        jPanel1.add(label5, gbc);
+        smerXSirka = new JTextField();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 3;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        jPanel1.add(smerXSirka, gbc);
+        smerYSirka = new JTextField();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3;
+        gbc.gridy = 3;
+        gbc.gridwidth = 7;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        jPanel1.add(smerYSirka, gbc);
+        smerXDlzka = new JTextField();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 4;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        jPanel1.add(smerXDlzka, gbc);
+        smerYDlzka = new JTextField();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3;
+        gbc.gridy = 4;
+        gbc.gridwidth = 7;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        jPanel1.add(smerYDlzka, gbc);
         final JPanel spacer1 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;

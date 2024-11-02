@@ -89,14 +89,17 @@ public class TestTrieda {
         Random rand = new Random();
 
         for (int i = 0; i < paPocetPrvkov; i++) {
-            double[] tempPole = {rand.nextDouble(), rand.nextDouble()};
+            double[] tempPole = {rand.nextDouble(0, 90), rand.nextDouble(0, 90)};
             double[] dupPole = {0.3, 0.8};
+
+            char[] dupChary = {'N', 'E'};
+            char[] randChary = {(char) (74 + (rand.nextInt(2) * 9)), (char) (69 + (rand.nextInt(2) * 18))};
             if (paAllowDuplicates && i % 2 == 1) {
                 tempPole = dupPole;
             }
-            GPSData gpsData = new GPSData( tempPole);
+            GPSData gpsData = new GPSData( tempPole, randChary);
             if (paAllowDuplicates) {
-                gpsData = new GPSData(dupPole);
+                gpsData = new GPSData(dupPole, dupChary);
             }
 
 

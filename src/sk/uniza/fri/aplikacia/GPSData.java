@@ -10,13 +10,34 @@ public class GPSData implements IData<Double> {
     private UzemnyCelok uzemnyCelok;
     private String ID;
     private TrNode currentNode;
+    private char[] smery;
 
     
 
-    public GPSData( double[] paSuradnice) {
+    public GPSData(double[] paSuradnice, char[] paSmery) {
+        this.smery = new char[2];
+        this.smery[0] = paSmery[0];
+        this.smery[1] = paSmery[1];
         Random rand = new Random();
         this.ID = String.valueOf((char) (rand.nextInt(25) + 65) + " - " + rand.nextLong());
-        this.suradnice = paSuradnice;
+        this.suradnice = new double[2];
+        if (paSmery[0] == 'N') {
+            this.suradnice[0] = paSuradnice[0];
+        } else {
+            this.suradnice[0] = -1 * paSuradnice[0];
+            if (paSuradnice[0] < 0) {
+                this.suradnice[0] = paSuradnice[0];
+            }
+        }
+        if (paSmery[1] == 'E') {
+            this.suradnice[1] = paSuradnice[1];
+        } else {
+            this.suradnice[1] = -1 * paSuradnice[1];
+            if (paSuradnice[1] < 0) {
+                this.suradnice[1] = paSuradnice[1];
+            }
+
+        }
 
 
     }
@@ -69,37 +90,35 @@ public class GPSData implements IData<Double> {
         System.out.println("ID: " + this.ID);
 
         System.out.println("Suradnice: ");
-        for (double suradnica : this.suradnice) {
-            System.out.println(suradnica);
-        }
-        System.out.println("Smery: ");
+
+            if (this.smery[0] == 'N') {
+                System.out.println(this.suradnice[0] + " N ");
+            } else {
+                System.out.println(-1 * this.suradnice[0] + " S ");
+            }
+            if (this.smery[1] == 'E') {
+                System.out.println(this.suradnice[0] + " E ");
+            } else {
+                System.out.println(-1 * this.suradnice[1] + " W ");
+            }
+            System.out.println(this.suradnice[0]);
+
+
 
     }
 
     @Override
-    public IData<Double> deepCopyData(IData<Double> paData) {
-        paData = (GPSData) paData;
-        double[] tempSuradnice = ((GPSData) paData).getSuradnice();
-        UzemnyCelok tempUzemnyCelok = ((GPSData) paData).getUzemnyCelok();
-        String tempID = paData.getID();
+    public IData<Double> halfDeepCopyData() {
         double[] suradniceCopy;
         suradniceCopy = new double[2];
-        suradniceCopy[0] = paData.getDataAtD(0);
-        suradniceCopy[1] = paData.getDataAtD(1);
+        char[] smeryCopy = new char[2];
+        suradniceCopy[0] = this.getDataAtD(0);
+        suradniceCopy[1] = this.getDataAtD(1);
+        smeryCopy[0] = this.getSmerAtD(0);
+        smeryCopy[1] = this.getSmerAtD(1);
+        GPSData copiedData = new GPSData(suradniceCopy, smeryCopy);
+        copiedData.setID(this.getID());
 
-        GPSData copiedData = new GPSData(suradniceCopy);
-        copiedData.setID(paData.getID());
-        if (((GPSData) paData).getUzemnyObjekt() instanceof Parcela) {
-
-//            copiedData.setUzemnyObjekt(new Parcela());
-        }
-
-        ((GPSData) paData).setSuradnice(this.suradnice);
-        ((GPSData) paData).setUzemnyCelok(this.uzemnyCelok);
-        ((GPSData) paData).setID(this.ID);
-        this.suradnice = tempSuradnice;
-        this.uzemnyCelok = tempUzemnyCelok;
-        this.ID = tempID;
 
         return copiedData;
     }
@@ -150,5 +169,18 @@ public class GPSData implements IData<Double> {
 
     public void setCurrentNode(TrNode currentNode) {
         this.currentNode = currentNode;
+    }
+
+
+    public void setSmery(char[] smery) {
+        this.smery = smery;
+    }
+
+    public char getSmerAtD(int dimension) {
+        return this.smery[dimension];
+    }
+
+    public void setSmerAtD(int dimension, char smer) {
+        this.smery[dimension] = smer;
     }
 }

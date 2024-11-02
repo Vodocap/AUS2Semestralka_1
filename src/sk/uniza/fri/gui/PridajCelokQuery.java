@@ -24,10 +24,10 @@ public class PridajCelokQuery extends JFrame {
     private JCheckBox parcelaCheckBox;
     private JCheckBox nehnutelnostCheckBox;
     private JTextField textFieldCislo;
-    private JTextField textFieldSmertXH;
-    private JTextField textFieldSmeryYH;
+    private JTextField textFieldSmerXH;
+    private JTextField textFieldSmerYH;
     private JTextField textFieldSmerXD;
-    private JTextField textFieldSmertYD;
+    private JTextField textFieldSmerYD;
     private JTextField textFieldPopis;
     private JButton pridatButton;
     private JButton zrusitButton;
@@ -56,23 +56,28 @@ public class PridajCelokQuery extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     double[] suradnice = new double[4];
+                    char[] smery = new char[4];
                     suradnice[0] = Double.parseDouble(PridajCelokQuery.this.textFieldSurXH.getText());
                     suradnice[1] = Double.parseDouble(PridajCelokQuery.this.textFieldSurYH.getText());
                     suradnice[2] = Double.parseDouble(PridajCelokQuery.this.textFieldSurXD.getText());
                     suradnice[3] = Double.parseDouble(PridajCelokQuery.this.textFieldSurYD.getText());
+                    smery[0] = PridajCelokQuery.this.textFieldSmerXH.getText().charAt(0);
+                    smery[1] = PridajCelokQuery.this.textFieldSmerYH.getText().charAt(0);
+                    smery[2] = PridajCelokQuery.this.textFieldSmerXD.getText().charAt(0);
+                    smery[3] = PridajCelokQuery.this.textFieldSmerYD.getText().charAt(0);
 
                     if (PridajCelokQuery.this.parcelaCheckBox.isSelected()) {
                         PridajCelokQuery.this.trControl.pridajParcelu(
                                 Integer.parseInt(PridajCelokQuery.this.textFieldCislo.getText()),
                                 PridajCelokQuery.this.textFieldPopis.getText(),
-                                suradnice, true
+                                suradnice, smery, true
                         );
                         JOptionPane.showMessageDialog(null, "Úspešne pridané");
                     } else if (PridajCelokQuery.this.nehnutelnostCheckBox.isSelected()) {
                         PridajCelokQuery.this.trControl.pridajNehnutelnost(
                                 Integer.parseInt(PridajCelokQuery.this.textFieldCislo.getText()),
                                 PridajCelokQuery.this.textFieldPopis.getText(),
-                                suradnice, true
+                                suradnice, smery, true
                         );
                         JOptionPane.showMessageDialog(null, "Úspešne pridané");
                     }
@@ -160,26 +165,26 @@ public class PridajCelokQuery extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel.add(textFieldCislo, gbc);
-        textFieldSmeryYH = new JTextField();
-        textFieldSmeryYH.setMinimumSize(new Dimension(50, 34));
-        textFieldSmeryYH.setPreferredSize(new Dimension(50, 35));
+        textFieldSmerYH = new JTextField();
+        textFieldSmerYH.setMinimumSize(new Dimension(50, 34));
+        textFieldSmerYH.setPreferredSize(new Dimension(50, 35));
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 3;
         gbc.gridwidth = 7;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        jPanel.add(textFieldSmeryYH, gbc);
-        textFieldSmertYD = new JTextField();
-        textFieldSmertYD.setMinimumSize(new Dimension(50, 30));
-        textFieldSmertYD.setPreferredSize(new Dimension(50, 35));
+        jPanel.add(textFieldSmerYH, gbc);
+        textFieldSmerYD = new JTextField();
+        textFieldSmerYD.setMinimumSize(new Dimension(50, 30));
+        textFieldSmerYD.setPreferredSize(new Dimension(50, 35));
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 4;
         gbc.gridwidth = 7;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        jPanel.add(textFieldSmertYD, gbc);
+        jPanel.add(textFieldSmerYD, gbc);
         textFieldPopis = new JTextField();
         textFieldPopis.setMinimumSize(new Dimension(70, 35));
         textFieldPopis.setPreferredSize(new Dimension(70, 35));
@@ -262,16 +267,16 @@ public class PridajCelokQuery extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel.add(textFieldSmerXD, gbc);
-        textFieldSmertXH = new JTextField();
-        textFieldSmertXH.setMinimumSize(new Dimension(50, 34));
-        textFieldSmertXH.setPreferredSize(new Dimension(50, 35));
-        textFieldSmertXH.setText("");
+        textFieldSmerXH = new JTextField();
+        textFieldSmerXH.setMinimumSize(new Dimension(50, 34));
+        textFieldSmerXH.setPreferredSize(new Dimension(50, 35));
+        textFieldSmerXH.setText("");
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        jPanel.add(textFieldSmertXH, gbc);
+        jPanel.add(textFieldSmerXH, gbc);
         textFieldSurXD = new JTextField();
         textFieldSurXD.setMinimumSize(new Dimension(50, 35));
         textFieldSurXD.setPreferredSize(new Dimension(50, 35));
