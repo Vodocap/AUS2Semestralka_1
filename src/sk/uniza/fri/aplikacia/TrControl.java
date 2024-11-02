@@ -115,6 +115,7 @@ public class TrControl {
             returnCelok.setDlzka(returnSirka);
             returnCelok.setSirka(returnDlzka);
             returnCelok.setStringObjektov(uzemnyCelok.toStringObjektov());
+
             copyResult.add(returnCelok);
 
         }

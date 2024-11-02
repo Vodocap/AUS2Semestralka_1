@@ -81,7 +81,7 @@ public class NajdiCelok extends JFrame {
                     ArrayList<Nehnutelnost> nehnutelnosts = new ArrayList<>();
                     ArrayList<UzemnyCelok> uzemnyCeloks1 = new ArrayList<>();
                     ArrayList<UzemnyCelok> uzemnyCeloks2 = new ArrayList<>();
-                    ArrayList<Object> vysledky = new ArrayList<>();
+                    ArrayList<UzemnyCelok> vysledky = new ArrayList<>();
 
                     if (NajdiCelok.this.parcelaCheckBox.isSelected() && NajdiCelok.this.nehnutelnostCheckBox.isSelected()) {
                         uzemnyCeloks1 = NajdiCelok.this.trControl.najdiVsetkyObjekty(suradnice[0], suradnice[1],
