@@ -190,7 +190,10 @@
               </grid>
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
-            <properties/>
+            <properties>
+              <minimumSize width="50" height="35"/>
+              <preferredSize width="50" height="35"/>
+            </properties>
           </component>
           <component id="21d04" class="javax.swing.JTextField" binding="smerYSirka">
             <constraints>
@@ -199,7 +202,10 @@
               </grid>
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
-            <properties/>
+            <properties>
+              <minimumSize width="50" height="35"/>
+              <preferredSize width="50" height="35"/>
+            </properties>
           </component>
           <component id="d1a16" class="javax.swing.JTextField" binding="smerXDlzka">
             <constraints>
@@ -208,7 +214,10 @@
               </grid>
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
-            <properties/>
+            <properties>
+              <minimumSize width="50" height="35"/>
+              <preferredSize width="50" height="35"/>
+            </properties>
           </component>
           <component id="eda98" class="javax.swing.JTextField" binding="smerYDlzka">
             <constraints>
@@ -217,7 +226,11 @@
               </grid>
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
-            <properties/>
+            <properties>
+              <minimumSize width="50" height="35"/>
+              <preferredSize width="50" height="35"/>
+              <text value=""/>
+            </properties>
           </component>
           <component id="878ec" class="javax.swing.JLabel">
             <constraints>

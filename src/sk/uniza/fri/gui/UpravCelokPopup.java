@@ -227,7 +227,7 @@ public class UpravCelokPopup extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         jPanel.add(label8, gbc);
         textFieldSmerXD = new JTextField();
-        textFieldSmerXD.setMinimumSize(new Dimension(50, 30));
+        textFieldSmerXD.setMinimumSize(new Dimension(50, 35));
         textFieldSmerXD.setPreferredSize(new Dimension(50, 35));
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -236,7 +236,7 @@ public class UpravCelokPopup extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel.add(textFieldSmerXD, gbc);
         textFieldSmerXH = new JTextField();
-        textFieldSmerXH.setMinimumSize(new Dimension(50, 34));
+        textFieldSmerXH.setMinimumSize(new Dimension(50, 35));
         textFieldSmerXH.setPreferredSize(new Dimension(50, 35));
         textFieldSmerXH.setText("");
         gbc = new GridBagConstraints();
@@ -300,7 +300,7 @@ public class UpravCelokPopup extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel.add(zrusitButton, gbc);
         textFieldSmerYH = new JTextField();
-        textFieldSmerYH.setMinimumSize(new Dimension(50, 34));
+        textFieldSmerYH.setMinimumSize(new Dimension(50, 35));
         textFieldSmerYH.setPreferredSize(new Dimension(50, 35));
         textFieldSmerYH.setText("");
         gbc = new GridBagConstraints();
@@ -311,7 +311,7 @@ public class UpravCelokPopup extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel.add(textFieldSmerYH, gbc);
         textFieldSmerYD = new JTextField();
-        textFieldSmerYD.setMinimumSize(new Dimension(50, 34));
+        textFieldSmerYD.setMinimumSize(new Dimension(50, 35));
         textFieldSmerYD.setPreferredSize(new Dimension(50, 35));
         textFieldSmerYD.setText("");
         gbc = new GridBagConstraints();

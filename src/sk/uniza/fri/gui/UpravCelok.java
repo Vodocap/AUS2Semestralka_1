@@ -7,6 +7,8 @@ import sk.uniza.fri.aplikacia.UzemnyCelok;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
@@ -179,12 +181,12 @@ public class UpravCelok extends JFrame {
 
     private void createUIComponents() {
         this.jPanel = new JPanel();
-        jPanel.setLayout(new GridBagLayout());
-        jPanel.setMinimumSize(new Dimension(500, 500));
-        jPanel.setName("pridajCelokQueryPanel");
-        jPanel.setOpaque(true);
-        jPanel.setPreferredSize(new Dimension(500, 500));
-        jPanel.setVisible(true);
+        this.jPanel.setLayout(new GridBagLayout());
+        this.jPanel.setMinimumSize(new Dimension(500, 500));
+        this.jPanel.setName("pridajCelokQueryPanel");
+        this.jPanel.setOpaque(true);
+        this.jPanel.setPreferredSize(new Dimension(500, 500));
+        this.jPanel.setVisible(true);
     }
 
 
@@ -332,6 +334,8 @@ public class UpravCelok extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         jPanel1.add(label5, gbc);
         smerXSirka = new JTextField();
+        smerXSirka.setMinimumSize(new Dimension(50, 35));
+        smerXSirka.setPreferredSize(new Dimension(50, 35));
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 3;
@@ -339,6 +343,8 @@ public class UpravCelok extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel1.add(smerXSirka, gbc);
         smerYSirka = new JTextField();
+        smerYSirka.setMinimumSize(new Dimension(50, 35));
+        smerYSirka.setPreferredSize(new Dimension(50, 35));
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 3;
@@ -347,6 +353,8 @@ public class UpravCelok extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel1.add(smerYSirka, gbc);
         smerXDlzka = new JTextField();
+        smerXDlzka.setMinimumSize(new Dimension(50, 35));
+        smerXDlzka.setPreferredSize(new Dimension(50, 35));
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 4;
@@ -355,6 +363,8 @@ public class UpravCelok extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel1.add(smerXDlzka, gbc);
         smerYDlzka = new JTextField();
+        smerYDlzka.setMinimumSize(new Dimension(50, 35));
+        smerYDlzka.setPreferredSize(new Dimension(50, 35));
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 4;

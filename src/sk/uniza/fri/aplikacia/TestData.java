@@ -70,7 +70,7 @@ public class TestData implements IData<Integer> {
     }
 
     @Override
-    public IData halfDeepCopyData() {
+    public IData makeCopy() {
         return null;
     }
 

@@ -108,7 +108,7 @@ public class GPSData implements IData<Double> {
     }
 
     @Override
-    public IData<Double> halfDeepCopyData() {
+    public IData<Double> makeCopy() {
         double[] suradniceCopy;
         suradniceCopy = new double[2];
         char[] smeryCopy = new char[2];

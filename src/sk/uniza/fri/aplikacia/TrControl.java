@@ -27,13 +27,30 @@ public class TrControl {
         char[] tempChary = {charX, charY};
         GPSData tempData = new GPSData(tempSuradnice, tempChary);
         ArrayList<TrNode<GPSData>> tempList = this.stromGPSNehnutelnosti.findAll(tempData);
-        ArrayList<Nehnutelnost> resultList = new ArrayList<>();
+        ArrayList<Nehnutelnost> rawResult = new ArrayList<>();
+
         for (TrNode<GPSData> gpsDataTrNode : tempList) {
-            if (!resultList.contains((Nehnutelnost) gpsDataTrNode.getData().getUzemnyObjekt())) {
-                resultList.add((Nehnutelnost) gpsDataTrNode.getData().getUzemnyObjekt());
+            if (!rawResult.contains((Nehnutelnost) gpsDataTrNode.getData().getUzemnyObjekt())) {
+                rawResult.add((Nehnutelnost) gpsDataTrNode.getData().getUzemnyObjekt());
             }
+
         }
-        return resultList;
+
+        ArrayList<Nehnutelnost> copyResult = new ArrayList<>();
+        for (Nehnutelnost nehnutelnost : rawResult) {
+            Nehnutelnost returnNehnutelnost = nehnutelnost;
+            GPSData returnSirka = (GPSData) nehnutelnost.getSirka().makeCopy();
+            GPSData returnDlzka = (GPSData) nehnutelnost.getDlzka().makeCopy();
+            returnSirka.setUzemnyObjekt(returnNehnutelnost);
+            returnDlzka.setUzemnyObjekt(returnNehnutelnost);
+            returnNehnutelnost.setDlzka(returnSirka);
+            returnNehnutelnost.setSirka(returnDlzka);
+            returnNehnutelnost.setUzemneObjekty(nehnutelnost.getuzemneCelky());
+            copyResult.add(nehnutelnost);
+
+        }
+
+        return copyResult;
     }
 
     public ArrayList<Parcela> najdiVsetkyParcely(double poziciaX, double poziciaY, char charX, char charY) {
@@ -41,14 +58,30 @@ public class TrControl {
         char[] tempChary = {charX, charY};
         GPSData tempData = new GPSData(tempSuradnice, tempChary);
         ArrayList<TrNode<GPSData>> tempList = this.stromGPSParciel.findAll(tempData);
-        ArrayList<Parcela> resultList = new ArrayList<>();
+        ArrayList<Parcela> rawResult = new ArrayList<>();
+
         for (TrNode<GPSData> gpsDataTrNode : tempList) {
-            if (!resultList.contains((Parcela) gpsDataTrNode.getData().getUzemnyObjekt())) {
-                resultList.add((Parcela) gpsDataTrNode.getData().getUzemnyObjekt());
+            if (!rawResult.contains((Parcela) gpsDataTrNode.getData().getUzemnyObjekt())) {
+                rawResult.add((Parcela) gpsDataTrNode.getData().getUzemnyObjekt());
             }
 
         }
-        return resultList;
+
+        ArrayList<Parcela> copyResult = new ArrayList<>();
+        for (Parcela parcela : rawResult) {
+            Parcela returnParcela = parcela.makeCopy();
+            GPSData returnSirka = (GPSData) parcela.getSirka().makeCopy();
+            GPSData returnDlzka = (GPSData) parcela.getDlzka().makeCopy();
+            returnSirka.setUzemnyObjekt(returnParcela);
+            returnDlzka.setUzemnyObjekt(returnParcela);
+            returnParcela.setDlzka(returnSirka);
+            returnParcela.setSirka(returnDlzka);
+            returnParcela.setUzemneObjekty(parcela.getuzemneCelky());
+            copyResult.add(parcela);
+
+        }
+
+        return copyResult;
     }
 
     public ArrayList<UzemnyCelok> najdiVsetkyObjekty(double poziciaX, double poziciaY, char charX, char charY) {
@@ -56,15 +89,30 @@ public class TrControl {
         char[] tempChary = {charX, charY};
         GPSData tempData = new GPSData(tempSuradnice, tempChary);
         ArrayList<TrNode<GPSData>> tempList = this.stromUzemnychCelkov.findAll(tempData);
-        ArrayList<UzemnyCelok> resultList = new ArrayList<>();
+        ArrayList<UzemnyCelok> rawResult = new ArrayList<>();
+
         for (TrNode<GPSData> gpsDataTrNode : tempList) {
-
-            resultList.add(gpsDataTrNode.getData().getUzemnyObjekt());
-            System.out.println(gpsDataTrNode.getData().getUzemnyObjekt().toString());
-
+            if (!rawResult.contains((Parcela) gpsDataTrNode.getData().getUzemnyObjekt())) {
+                rawResult.add((Parcela) gpsDataTrNode.getData().getUzemnyObjekt());
+            }
 
         }
-        return resultList;
+
+        ArrayList<UzemnyCelok> copyResult = new ArrayList<>();
+        for (UzemnyCelok uzemnyCelok : rawResult) {
+            UzemnyCelok returnCelok = uzemnyCelok.makeCopy();
+            GPSData returnSirka = (GPSData) uzemnyCelok.getSirka().makeCopy();
+            GPSData returnDlzka = (GPSData) uzemnyCelok.getDlzka().makeCopy();
+            returnSirka.setUzemnyObjekt(returnCelok);
+            returnDlzka.setUzemnyObjekt(returnCelok);
+            returnCelok.setDlzka(returnSirka);
+            returnCelok.setSirka(returnDlzka);
+            returnCelok.setUzemneObjekty(uzemnyCelok.getuzemneCelky());
+            copyResult.add(returnCelok);
+
+        }
+
+        return copyResult;
     }
 
     private ArrayList<UzemnyCelok> najdiVsetkyCelky(GPSData paData) {
@@ -124,6 +172,7 @@ public class TrControl {
 
         if (urobPrekryvy) {
             this.pridajPrekryvajuce(pridavanaNehnutelnost, sirkoveData, dlzkoveData);
+            this.vyytvorVsetkyPrekryvy();
         }
 
         this.stromGPSNehnutelnosti.insert(sirkoveData);
@@ -144,6 +193,7 @@ public class TrControl {
         dlzkoveData.setUzemnyObjekt(pridavanaParcela);
         if (urobPrekryvy) {
             this.pridajPrekryvajuce(pridavanaParcela, sirkoveData, dlzkoveData);
+            this.vyytvorVsetkyPrekryvy();
         }
 
 

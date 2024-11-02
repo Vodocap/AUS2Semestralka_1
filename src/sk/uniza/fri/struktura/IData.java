@@ -8,7 +8,7 @@ public interface IData<T> {
     boolean equals(IData<T> paData, boolean compareID);
     T getDataAtD(int dimension);
     public void printData();
-    IData<T> halfDeepCopyData();
+    IData<T> makeCopy();
     String getID();
     public TrNode<T> getCurrentNode();
     public void setCurrentNode(TrNode<T> currentNode);

@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  * @author matus
  */
-public abstract class UzemnyCelok {
+public class UzemnyCelok {
 
     private int cislo;
     private String popis;
@@ -61,6 +61,14 @@ public abstract class UzemnyCelok {
         this.uzemneObjekty.removeIf(hladanaNehnutelnost -> hladanaNehnutelnost == paUzemnyCelok);
     }
 
+    public ArrayList<UzemnyCelok> getuzemneCelky() {
+        return this.uzemneObjekty;
+    }
+
+    public void setUzemneObjekty(ArrayList<UzemnyCelok> uzemneObjekty) {
+        this.uzemneObjekty = uzemneObjekty;
+    }
+
     public GPSData getSirka() {
         return this.sirka;
     }
@@ -74,13 +82,26 @@ public abstract class UzemnyCelok {
     }
 
     public String toStringObjektov() {
-        String resultString = "<html>";
+        String resultString = "";
         for (UzemnyCelok uzemnyCelok : this.uzemneObjekty) {
-            resultString += this.uzemneObjekty.toString() + "<br>";
+            resultString += this.uzemneObjekty.toString();
         }
-        resultString += "</html>";
         return resultString;
     }
+
+    public void setSirka(GPSData sirka) {
+        this.sirka = sirka;
+    }
+
+    public void setDlzka(GPSData dlzka) {
+        this.dlzka = dlzka;
+    }
+
+    public Parcela makeCopy() {
+        return new Parcela(this.getCislo(), this.getPopis(), this.getSirka(), this.getDlzka());
+    }
+
+
 
 
 

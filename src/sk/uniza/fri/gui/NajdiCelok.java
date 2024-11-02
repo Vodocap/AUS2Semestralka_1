@@ -7,6 +7,8 @@ import sk.uniza.fri.aplikacia.UzemnyCelok;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
@@ -146,6 +148,15 @@ public class NajdiCelok extends JFrame {
                 }
             }
         });
+
+//        this.list1.addListSelectionListener(new ListSelectionListener() {
+//            @Override
+//            public void valueChanged(ListSelectionEvent e) {
+//                if (e.getValueIsAdjusting() == false) {
+//                    NajdiCelok.this.textArea1.setText(NajdiCelok.this.list1.getSelectedValue().toStringObjektov());
+//                }
+//            }
+//        });
 
     }
 
@@ -322,6 +333,8 @@ public class NajdiCelok extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         jPanel1.add(label5, gbc);
         smerXSirka = new JTextField();
+        smerXSirka.setMinimumSize(new Dimension(50, 35));
+        smerXSirka.setPreferredSize(new Dimension(50, 35));
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 3;
@@ -329,6 +342,8 @@ public class NajdiCelok extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel1.add(smerXSirka, gbc);
         smerYSirka = new JTextField();
+        smerYSirka.setMinimumSize(new Dimension(50, 35));
+        smerYSirka.setPreferredSize(new Dimension(50, 35));
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 3;
@@ -337,6 +352,8 @@ public class NajdiCelok extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel1.add(smerYSirka, gbc);
         smerXDlzka = new JTextField();
+        smerXDlzka.setMinimumSize(new Dimension(50, 35));
+        smerXDlzka.setPreferredSize(new Dimension(50, 35));
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 4;
@@ -344,6 +361,9 @@ public class NajdiCelok extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel1.add(smerXDlzka, gbc);
         smerYDlzka = new JTextField();
+        smerYDlzka.setMinimumSize(new Dimension(50, 35));
+        smerYDlzka.setPreferredSize(new Dimension(50, 35));
+        smerYDlzka.setText("");
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 4;

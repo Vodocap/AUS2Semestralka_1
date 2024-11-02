@@ -152,7 +152,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <minimumSize width="50" height="30"/>
+              <minimumSize width="50" height="35"/>
               <preferredSize width="50" height="35"/>
             </properties>
           </component>
@@ -164,7 +164,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <minimumSize width="50" height="34"/>
+              <minimumSize width="50" height="35"/>
               <preferredSize width="50" height="35"/>
               <text value=""/>
             </properties>
@@ -248,7 +248,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <minimumSize width="50" height="34"/>
+              <minimumSize width="50" height="35"/>
               <preferredSize width="50" height="35"/>
               <text value=""/>
             </properties>
@@ -261,7 +261,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <minimumSize width="50" height="34"/>
+              <minimumSize width="50" height="35"/>
               <preferredSize width="50" height="35"/>
               <text value=""/>
             </properties>
