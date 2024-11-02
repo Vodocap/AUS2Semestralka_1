@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class GPSData implements IData<Double> {
     private double[] suradnice;
-    private UzemnyCelok uzemnyCelok;
+    private UzemnyCelok uzemnyObjekt;
     private String ID;
     private TrNode currentNode;
     private char[] smery;
@@ -131,13 +131,6 @@ public class GPSData implements IData<Double> {
         this.ID = ID;
     }
 
-    public UzemnyCelok getUzemnyCelok() {
-        return this.uzemnyCelok;
-    }
-
-    public void setUzemnyCelok(UzemnyCelok uzemnyCelok) {
-        this.uzemnyCelok = uzemnyCelok;
-    }
 
     public double[] getSuradnice() {
         return this.suradnice;
@@ -156,11 +149,11 @@ public class GPSData implements IData<Double> {
     }
 
     public UzemnyCelok getUzemnyObjekt() {
-        return uzemnyCelok;
+        return uzemnyObjekt;
     }
 
     public void setUzemnyObjekt(UzemnyCelok uzemnyCelok) {
-        this.uzemnyCelok = uzemnyCelok;
+        this.uzemnyObjekt = uzemnyCelok;
     }
 
     public TrNode getCurrentNode() {

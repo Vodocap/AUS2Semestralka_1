@@ -12,7 +12,7 @@ public class Parcela extends UzemnyCelok {
     }
 
     public String toString () {
-        return  ("Parcela - cislo (" + super.getCislo() + ") " + "\n"
+        return  ("Parcela - cislo (" + super.getCislo() + ") "
                 + "Popis: " + super.getPopis() + "\n"
                 + "Suradnice: " + "(" + (super.getSirka().getDataAtD(0)) + ", " + (super.getSirka().getDataAtD(1)) + ") "
                 + "(" + (super.getDlzka().getDataAtD(0)) + ", " + (super.getDlzka().getDataAtD(1)) + ") ") + "\n";

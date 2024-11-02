@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  * @author matus
  */
-public class UzemnyCelok {
+public abstract class UzemnyCelok {
 
     private int cislo;
     private String popis;
@@ -17,6 +17,7 @@ public class UzemnyCelok {
 
     private GPSData sirka;
     private GPSData dlzka;
+    private String stringObjektov;
 
     public UzemnyCelok(int paCislo, String paPopis, GPSData paSirka, GPSData paDlzka) {
         this.cislo = paCislo;
@@ -24,6 +25,8 @@ public class UzemnyCelok {
         this.sirka = paSirka;
         this.dlzka = paDlzka;
         this.uzemneObjekty = new ArrayList<>();
+        this.stringObjektov = this.toStringObjektov();
+
     }
 
     public int getCislo() {
@@ -84,7 +87,7 @@ public class UzemnyCelok {
     public String toStringObjektov() {
         String resultString = "";
         for (UzemnyCelok uzemnyCelok : this.uzemneObjekty) {
-            resultString += this.uzemneObjekty.toString();
+            resultString += uzemnyCelok.toString();
         }
         return resultString;
     }
@@ -97,12 +100,21 @@ public class UzemnyCelok {
         this.dlzka = dlzka;
     }
 
-    public Parcela makeCopy() {
-        return new Parcela(this.getCislo(), this.getPopis(), this.getSirka(), this.getDlzka());
+    public UzemnyCelok makeCopy() {
+        if (this instanceof Parcela) {
+            return new Parcela(this.getCislo(), this.getPopis(), this.getSirka(), this.getDlzka());
+        } else if (this instanceof Nehnutelnost) {
+            return new Nehnutelnost(this.getCislo(), this.getPopis(), this.getSirka(), this.getDlzka());
+        }
+        return null;
     }
 
 
+    public String getStringObjektov() {
+        return this.stringObjektov;
+    }
 
-
-
+    public void setStringObjektov(String stringObjektov) {
+        this.stringObjektov = stringObjektov;
+    }
 }

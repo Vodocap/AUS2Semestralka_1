@@ -145,23 +145,6 @@ public class UpravCelok extends JFrame {
         });
 
 
-        this.list1.addMouseMotionListener(new MouseMotionListener() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                int index = UpravCelok.this.list1.locationToIndex(e.getPoint());
-                String prekryvy = "Ziadne prekryvajuce celky";
-                if (index > -1) {
-                    prekryvy = UpravCelok.this.list1.getModel().getElementAt(index).toStringObjektov();
-                    UpravCelok.this.list1.setToolTipText(prekryvy);
-
-                }
-            }
-        });
 
     }
 

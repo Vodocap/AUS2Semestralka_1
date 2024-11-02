@@ -46,6 +46,7 @@ public class NajdiCelok extends JFrame {
     private JTextField smerYSirka;
     private JTextField smerXDlzka;
     private JTextField smerYDlzka;
+    private JTextPane textPane1;
 
     private MainWindow mainWindow;
     private TrControl trControl;
@@ -131,32 +132,19 @@ public class NajdiCelok extends JFrame {
         });
 
 
-        this.list1.addMouseMotionListener(new MouseMotionListener() {
+        this.list1.addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void mouseDragged(MouseEvent e) {
+            public void valueChanged(ListSelectionEvent e) {
 
-            }
-
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                int index = NajdiCelok.this.list1.locationToIndex(e.getPoint());
-                String prekryvy = "Ziadne prekryvajuce celky";
-                if (index > -1) {
-                    prekryvy = NajdiCelok.this.list1.getModel().getElementAt(index).toStringObjektov();
-                    NajdiCelok.this.list1.setToolTipText(prekryvy);
+                try {
+                    if (e.getValueIsAdjusting() == false && NajdiCelok.this.list1.getSelectedValue() != null) {
+                        NajdiCelok.this.textPane1.setText(NajdiCelok.this.list1.getSelectedValue().getStringObjektov());
+                    }
+                } finally {
 
                 }
             }
         });
-
-//        this.list1.addListSelectionListener(new ListSelectionListener() {
-//            @Override
-//            public void valueChanged(ListSelectionEvent e) {
-//                if (e.getValueIsAdjusting() == false) {
-//                    NajdiCelok.this.textArea1.setText(NajdiCelok.this.list1.getSelectedValue().toStringObjektov());
-//                }
-//            }
-//        });
 
     }
 
@@ -215,7 +203,7 @@ public class NajdiCelok extends JFrame {
         textFieldSurYH.setMinimumSize(new Dimension(50, 35));
         textFieldSurYH.setPreferredSize(new Dimension(50, 35));
         gbc = new GridBagConstraints();
-        gbc.gridx = 3;
+        gbc.gridx = 4;
         gbc.gridy = 1;
         gbc.gridwidth = 7;
         gbc.anchor = GridBagConstraints.WEST;
@@ -224,7 +212,7 @@ public class NajdiCelok extends JFrame {
         final JLabel label1 = new JLabel();
         label1.setText("X");
         gbc = new GridBagConstraints();
-        gbc.gridx = 2;
+        gbc.gridx = 3;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.WEST;
@@ -241,7 +229,7 @@ public class NajdiCelok extends JFrame {
         textFieldSurXH.setPreferredSize(new Dimension(50, 35));
         textFieldSurXH.setText("");
         gbc = new GridBagConstraints();
-        gbc.gridx = 2;
+        gbc.gridx = 3;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -249,7 +237,7 @@ public class NajdiCelok extends JFrame {
         final JLabel label3 = new JLabel();
         label3.setText("Y");
         gbc = new GridBagConstraints();
-        gbc.gridx = 4;
+        gbc.gridx = 5;
         gbc.gridy = 0;
         jPanel1.add(label3, gbc);
         najdiButton = new JButton();
@@ -269,7 +257,7 @@ public class NajdiCelok extends JFrame {
         final JLabel label4 = new JLabel();
         label4.setText("Súradnice");
         gbc = new GridBagConstraints();
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
         jPanel1.add(label4, gbc);
@@ -290,7 +278,7 @@ public class NajdiCelok extends JFrame {
         final JScrollPane scrollPane1 = new JScrollPane();
         scrollPane1.setPreferredSize(new Dimension(300, 300));
         gbc = new GridBagConstraints();
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.gridy = 5;
         gbc.gridwidth = 9;
         gbc.gridheight = 4;
@@ -302,7 +290,7 @@ public class NajdiCelok extends JFrame {
         textField1.setMinimumSize(new Dimension(50, 35));
         textField1.setPreferredSize(new Dimension(50, 35));
         gbc = new GridBagConstraints();
-        gbc.gridx = 2;
+        gbc.gridx = 3;
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -311,24 +299,16 @@ public class NajdiCelok extends JFrame {
         textField2.setMinimumSize(new Dimension(50, 35));
         textField2.setPreferredSize(new Dimension(50, 35));
         gbc = new GridBagConstraints();
-        gbc.gridx = 3;
+        gbc.gridx = 4;
         gbc.gridy = 2;
         gbc.gridwidth = 7;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel1.add(textField2, gbc);
-        textArea1 = new JTextArea();
-        textArea1.setMinimumSize(new Dimension(50, 100));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 10;
-        gbc.gridwidth = 9;
-        gbc.fill = GridBagConstraints.BOTH;
-        jPanel1.add(textArea1, gbc);
         final JLabel label5 = new JLabel();
         label5.setText("Prekryvy");
         gbc = new GridBagConstraints();
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.gridy = 9;
         gbc.anchor = GridBagConstraints.WEST;
         jPanel1.add(label5, gbc);
@@ -336,7 +316,7 @@ public class NajdiCelok extends JFrame {
         smerXSirka.setMinimumSize(new Dimension(50, 35));
         smerXSirka.setPreferredSize(new Dimension(50, 35));
         gbc = new GridBagConstraints();
-        gbc.gridx = 2;
+        gbc.gridx = 3;
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -345,7 +325,7 @@ public class NajdiCelok extends JFrame {
         smerYSirka.setMinimumSize(new Dimension(50, 35));
         smerYSirka.setPreferredSize(new Dimension(50, 35));
         gbc = new GridBagConstraints();
-        gbc.gridx = 3;
+        gbc.gridx = 4;
         gbc.gridy = 3;
         gbc.gridwidth = 7;
         gbc.anchor = GridBagConstraints.WEST;
@@ -355,7 +335,7 @@ public class NajdiCelok extends JFrame {
         smerXDlzka.setMinimumSize(new Dimension(50, 35));
         smerXDlzka.setPreferredSize(new Dimension(50, 35));
         gbc = new GridBagConstraints();
-        gbc.gridx = 2;
+        gbc.gridx = 3;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -365,7 +345,7 @@ public class NajdiCelok extends JFrame {
         smerYDlzka.setPreferredSize(new Dimension(50, 35));
         smerYDlzka.setText("");
         gbc = new GridBagConstraints();
-        gbc.gridx = 3;
+        gbc.gridx = 4;
         gbc.gridy = 4;
         gbc.gridwidth = 7;
         gbc.anchor = GridBagConstraints.WEST;
@@ -374,10 +354,21 @@ public class NajdiCelok extends JFrame {
         final JLabel label6 = new JLabel();
         label6.setText("Smery");
         gbc = new GridBagConstraints();
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.WEST;
         jPanel1.add(label6, gbc);
+        final JScrollPane scrollPane2 = new JScrollPane();
+        scrollPane2.setMinimumSize(new Dimension(100, 100));
+        scrollPane2.setPreferredSize(new Dimension(100, 100));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 10;
+        gbc.gridwidth = 10;
+        gbc.fill = GridBagConstraints.BOTH;
+        jPanel1.add(scrollPane2, gbc);
+        textPane1 = new JTextPane();
+        scrollPane2.setViewportView(textPane1);
         final JPanel spacer1 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;

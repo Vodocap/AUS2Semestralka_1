@@ -38,19 +38,23 @@ public class TrControl {
 
         ArrayList<Nehnutelnost> copyResult = new ArrayList<>();
         for (Nehnutelnost nehnutelnost : rawResult) {
-            Nehnutelnost returnNehnutelnost = nehnutelnost;
+            Nehnutelnost returnNehnutelnost = (Nehnutelnost) nehnutelnost.makeCopy();
             GPSData returnSirka = (GPSData) nehnutelnost.getSirka().makeCopy();
             GPSData returnDlzka = (GPSData) nehnutelnost.getDlzka().makeCopy();
             returnSirka.setUzemnyObjekt(returnNehnutelnost);
             returnDlzka.setUzemnyObjekt(returnNehnutelnost);
             returnNehnutelnost.setDlzka(returnSirka);
             returnNehnutelnost.setSirka(returnDlzka);
-            returnNehnutelnost.setUzemneObjekty(nehnutelnost.getuzemneCelky());
-            copyResult.add(nehnutelnost);
+            returnNehnutelnost.setStringObjektov(nehnutelnost.toStringObjektov());
+            copyResult.add(returnNehnutelnost);
 
         }
 
         return copyResult;
+    }
+
+    private UzemnyCelok najdiKonkretnyCelok(GPSData gpsData) {
+        return this.stromUzemnychCelkov.find(gpsData).getData().getUzemnyObjekt();
     }
 
     public ArrayList<Parcela> najdiVsetkyParcely(double poziciaX, double poziciaY, char charX, char charY) {
@@ -69,15 +73,16 @@ public class TrControl {
 
         ArrayList<Parcela> copyResult = new ArrayList<>();
         for (Parcela parcela : rawResult) {
-            Parcela returnParcela = parcela.makeCopy();
+            Parcela returnParcela = (Parcela) parcela.makeCopy();
             GPSData returnSirka = (GPSData) parcela.getSirka().makeCopy();
             GPSData returnDlzka = (GPSData) parcela.getDlzka().makeCopy();
             returnSirka.setUzemnyObjekt(returnParcela);
             returnDlzka.setUzemnyObjekt(returnParcela);
             returnParcela.setDlzka(returnSirka);
             returnParcela.setSirka(returnDlzka);
-            returnParcela.setUzemneObjekty(parcela.getuzemneCelky());
-            copyResult.add(parcela);
+            returnParcela.setStringObjektov(parcela.toStringObjektov());
+
+            copyResult.add(returnParcela);
 
         }
 
@@ -92,8 +97,8 @@ public class TrControl {
         ArrayList<UzemnyCelok> rawResult = new ArrayList<>();
 
         for (TrNode<GPSData> gpsDataTrNode : tempList) {
-            if (!rawResult.contains((Parcela) gpsDataTrNode.getData().getUzemnyObjekt())) {
-                rawResult.add((Parcela) gpsDataTrNode.getData().getUzemnyObjekt());
+            if (!rawResult.contains(gpsDataTrNode.getData().getUzemnyObjekt())) {
+                rawResult.add(gpsDataTrNode.getData().getUzemnyObjekt());
             }
 
         }
@@ -107,7 +112,7 @@ public class TrControl {
             returnDlzka.setUzemnyObjekt(returnCelok);
             returnCelok.setDlzka(returnSirka);
             returnCelok.setSirka(returnDlzka);
-            returnCelok.setUzemneObjekty(uzemnyCelok.getuzemneCelky());
+            returnCelok.setStringObjektov(uzemnyCelok.toStringObjektov());
             copyResult.add(returnCelok);
 
         }
@@ -134,12 +139,14 @@ public class TrControl {
             for (UzemnyCelok uzemnyCelok : duplikatySirka) {
                 if (uzemnyCelok instanceof Parcela) {
                     pridavanyCelok.pridajUzemnyCelok(uzemnyCelok);
+                    uzemnyCelok.pridajUzemnyCelok(pridavanyCelok);
                 }
             }
 
             for (UzemnyCelok uzemnyCelok : duplikatyDlzka) {
                 if (uzemnyCelok instanceof Parcela) {
                     pridavanyCelok.pridajUzemnyCelok(uzemnyCelok);
+                    uzemnyCelok.pridajUzemnyCelok(pridavanyCelok);
                 }
             }
         }
@@ -148,12 +155,14 @@ public class TrControl {
             for (UzemnyCelok uzemnyCelok : duplikatySirka) {
                 if (uzemnyCelok instanceof Nehnutelnost) {
                     pridavanyCelok.pridajUzemnyCelok(uzemnyCelok);
+                    uzemnyCelok.pridajUzemnyCelok(pridavanyCelok);
                 }
             }
 
             for (UzemnyCelok uzemnyCelok : duplikatyDlzka) {
                 if (uzemnyCelok instanceof Nehnutelnost) {
                     pridavanyCelok.pridajUzemnyCelok(uzemnyCelok);
+                    uzemnyCelok.pridajUzemnyCelok(pridavanyCelok);
                 }
             }
         }
@@ -193,7 +202,7 @@ public class TrControl {
         dlzkoveData.setUzemnyObjekt(pridavanaParcela);
         if (urobPrekryvy) {
             this.pridajPrekryvajuce(pridavanaParcela, sirkoveData, dlzkoveData);
-            this.vyytvorVsetkyPrekryvy();
+
         }
 
 
@@ -206,10 +215,10 @@ public class TrControl {
 
     public void upravParcelu(Parcela originalParcela, int noveCislo, String novyPopis, double[] noveSuradnice, char[] noveChary) {
         if (noveCislo != originalParcela.getCislo()) {
-            originalParcela.setCislo(noveCislo);
+            this.najdiKonkretnyCelok(originalParcela.getDlzka()).setCislo(noveCislo);
         }
         if (!novyPopis.equals(originalParcela.getPopis())) {
-            originalParcela.setPopis(novyPopis);
+            this.najdiKonkretnyCelok(originalParcela.getDlzka()).setPopis(novyPopis);
         }
         double[] surSirka = {noveSuradnice[0], noveSuradnice[1]};
         double[] surDlzka = {noveSuradnice[2], noveSuradnice[3]};
@@ -228,10 +237,10 @@ public class TrControl {
 
     public void upravNehnutelnost(Nehnutelnost originalNehnutelnost, int noveCislo, String novyPopis, double[] noveSuradnice, char[] noveChary) {
         if (noveCislo != originalNehnutelnost.getCislo()) {
-            originalNehnutelnost.setCislo(noveCislo);
+            this.najdiKonkretnyCelok(originalNehnutelnost.getDlzka()).setCislo(noveCislo);
         }
         if (!novyPopis.equals(originalNehnutelnost.getPopis())) {
-            originalNehnutelnost.setPopis(novyPopis);
+            this.najdiKonkretnyCelok(originalNehnutelnost.getDlzka()).setPopis(novyPopis);
         }
         double[] surSirka = {noveSuradnice[0], noveSuradnice[1]};
         double[] surDlzka = {noveSuradnice[2], noveSuradnice[3]};
@@ -249,47 +258,48 @@ public class TrControl {
     }
 
     public void vymazUzemnyCelok(UzemnyCelok uzemnyCelok) {
-        if (uzemnyCelok instanceof Parcela) {
-            this.stromGPSParciel.delete(uzemnyCelok.getSirka());
-            this.stromGPSParciel.delete(uzemnyCelok.getDlzka());
+        UzemnyCelok uzemnyCelokMazany = this.najdiKonkretnyCelok(uzemnyCelok.getDlzka());
+        if (uzemnyCelokMazany instanceof Parcela) {
+            this.stromGPSParciel.delete(uzemnyCelokMazany.getSirka());
+            this.stromGPSParciel.delete(uzemnyCelokMazany.getDlzka());
 
-            ArrayList<Nehnutelnost> nehnutelnostPrekryvS = najdiVsetkyNehnutelnosti(uzemnyCelok.getSirka().getDataAtD(0), uzemnyCelok.getSirka().getDataAtD(1),
-                    uzemnyCelok.getSirka().getSmerAtD(0), uzemnyCelok.getSirka().getSmerAtD(1));
-            ArrayList<Nehnutelnost> nehnutelnostPrekryvD = najdiVsetkyNehnutelnosti(uzemnyCelok.getDlzka().getDataAtD(0), uzemnyCelok.getDlzka().getDataAtD(1),
-                    uzemnyCelok.getDlzka().getSmerAtD(0), uzemnyCelok.getDlzka().getSmerAtD(1));
+            ArrayList<Nehnutelnost> nehnutelnostPrekryvS = najdiVsetkyNehnutelnosti(uzemnyCelokMazany.getSirka().getDataAtD(0), uzemnyCelokMazany.getSirka().getDataAtD(1),
+                    uzemnyCelokMazany.getSirka().getSmerAtD(0), uzemnyCelokMazany.getSirka().getSmerAtD(1));
+            ArrayList<Nehnutelnost> nehnutelnostPrekryvD = najdiVsetkyNehnutelnosti(uzemnyCelokMazany.getDlzka().getDataAtD(0), uzemnyCelokMazany.getDlzka().getDataAtD(1),
+                    uzemnyCelokMazany.getDlzka().getSmerAtD(0), uzemnyCelokMazany.getDlzka().getSmerAtD(1));
             for (Nehnutelnost nehnutelnost : nehnutelnostPrekryvS) {
-                if (nehnutelnost != null && nehnutelnost.prekryvaSaSCelkom(uzemnyCelok)) {
-                    nehnutelnost.removeUzemnyObjekt(uzemnyCelok);
+                if (nehnutelnost != null && this.najdiKonkretnyCelok(nehnutelnost.getDlzka()).prekryvaSaSCelkom(uzemnyCelokMazany)) {
+                    this.najdiKonkretnyCelok(nehnutelnost.getDlzka()).removeUzemnyObjekt(uzemnyCelokMazany);
                 }
             }
             for (Nehnutelnost nehnutelnost : nehnutelnostPrekryvD) {
-                if (nehnutelnost != null && nehnutelnost.prekryvaSaSCelkom(uzemnyCelok)) {
-                    nehnutelnost.removeUzemnyObjekt(uzemnyCelok);
+                if (nehnutelnost != null && this.najdiKonkretnyCelok(nehnutelnost.getDlzka()).prekryvaSaSCelkom(uzemnyCelokMazany)) {
+                    this.najdiKonkretnyCelok(nehnutelnost.getDlzka()).removeUzemnyObjekt(uzemnyCelokMazany);
                 }
             }
 
-        } else if (uzemnyCelok instanceof Nehnutelnost) {
-            this.stromGPSNehnutelnosti.delete(uzemnyCelok.getSirka());
-            this.stromGPSNehnutelnosti.delete(uzemnyCelok.getDlzka());
+        } else if (uzemnyCelokMazany instanceof Nehnutelnost) {
+            this.stromGPSNehnutelnosti.delete(uzemnyCelokMazany.getSirka());
+            this.stromGPSNehnutelnosti.delete(uzemnyCelokMazany.getDlzka());
 
-            ArrayList<Parcela> parcelaPrekryvS = najdiVsetkyParcely(uzemnyCelok.getSirka().getDataAtD(0), uzemnyCelok.getSirka().getDataAtD(1),
-                    uzemnyCelok.getSirka().getSmerAtD(0), uzemnyCelok.getSirka().getSmerAtD(1));
-            ArrayList<Parcela> parcelaPrekryvD = najdiVsetkyParcely(uzemnyCelok.getDlzka().getDataAtD(0), uzemnyCelok.getDlzka().getDataAtD(1),
-                    uzemnyCelok.getDlzka().getSmerAtD(0), uzemnyCelok.getDlzka().getSmerAtD(1));
+            ArrayList<Parcela> parcelaPrekryvS = najdiVsetkyParcely(uzemnyCelokMazany.getSirka().getDataAtD(0), uzemnyCelokMazany.getSirka().getDataAtD(1),
+                    uzemnyCelokMazany.getSirka().getSmerAtD(0), uzemnyCelokMazany.getSirka().getSmerAtD(1));
+            ArrayList<Parcela> parcelaPrekryvD = najdiVsetkyParcely(uzemnyCelokMazany.getDlzka().getDataAtD(0), uzemnyCelokMazany.getDlzka().getDataAtD(1),
+                    uzemnyCelokMazany.getDlzka().getSmerAtD(0), uzemnyCelokMazany.getDlzka().getSmerAtD(1));
             for (Parcela parcela : parcelaPrekryvS) {
-                if (parcela != null && parcela.prekryvaSaSCelkom(uzemnyCelok)) {
-                    parcela.removeUzemnyObjekt(uzemnyCelok);
+                if (parcela != null && this.najdiKonkretnyCelok(parcela.getDlzka()).prekryvaSaSCelkom(uzemnyCelokMazany)) {
+                    this.najdiKonkretnyCelok(parcela.getDlzka()).removeUzemnyObjekt(uzemnyCelokMazany);
                 }
             }
             for (Parcela parcela : parcelaPrekryvD) {
-                if (parcela != null && parcela.prekryvaSaSCelkom(uzemnyCelok)) {
-                    parcela.removeUzemnyObjekt(uzemnyCelok);
+                if (parcela != null && this.najdiKonkretnyCelok(parcela.getDlzka()).prekryvaSaSCelkom(uzemnyCelokMazany)) {
+                    this.najdiKonkretnyCelok(parcela.getDlzka()).removeUzemnyObjekt(uzemnyCelokMazany);
                 }
             }
 
         }
-        this.stromUzemnychCelkov.delete(uzemnyCelok.getSirka());
-        this.stromUzemnychCelkov.delete(uzemnyCelok.getDlzka());
+        this.stromUzemnychCelkov.delete(uzemnyCelokMazany.getSirka());
+        this.stromUzemnychCelkov.delete(uzemnyCelokMazany.getDlzka());
     }
 
     public void generujData(int pocetParciel, int pocetNehnutelnosti, double percentoPrekryvu) {
@@ -379,7 +389,6 @@ public class TrControl {
                 }
                 readerParciel.close();
 
-                this.vyytvorVsetkyPrekryvy();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -387,6 +396,7 @@ public class TrControl {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+        this.vyytvorVsetkyPrekryvy();
 
 
     }
@@ -408,13 +418,13 @@ public class TrControl {
     }
 
     private void vyytvorVsetkyPrekryvy() {
+        for (Nehnutelnost nehnutelnost : this.dajVsetkyNehnutelnosti()) {
+            this.pridajPrekryvajuce(nehnutelnost, nehnutelnost.getSirka(), nehnutelnost.getDlzka());
+        }
         for (Parcela parcela : this.dajVsetkyParcely()) {
             this.pridajPrekryvajuce(parcela, parcela.getSirka(), parcela.getDlzka());
         }
 
-        for (Nehnutelnost nehnutelnost : this.dajVsetkyNehnutelnosti()) {
-            this.pridajPrekryvajuce(nehnutelnost, nehnutelnost.getSirka(), nehnutelnost.getDlzka());
-        }
     }
 
     public void zapisDataDoSuboru(String suborparcielCesta, String suborNehnutelnostiCesta) {
