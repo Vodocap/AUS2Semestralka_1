@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+
+//TODO treba ine instancie GPSDATA aby sa pridavali do strmu kde su vsekty veci
 public class TrControl {
     private KDTree<GPSData> stromGPSParciel;
     private KDTree<GPSData> stromGPSNehnutelnosti;
@@ -175,9 +177,15 @@ public class TrControl {
         char[] charyDlzka = {paChary[2], paChary[3]};
         GPSData sirkoveData = new GPSData(poleSirka, charySirka);
         GPSData dlzkoveData = new GPSData(poleDlzka, charyDlzka);
+        GPSData sirkoveDataVseaob = new GPSData(poleSirka, charySirka);
+        GPSData dlzkoveDataVseaob = new GPSData(poleDlzka, charyDlzka);
+        sirkoveDataVseaob.setID(sirkoveData.getID());
+        dlzkoveDataVseaob.setID(dlzkoveData.getID());
         Nehnutelnost pridavanaNehnutelnost = new Nehnutelnost(paCislo, paPopis, sirkoveData, dlzkoveData);
         sirkoveData.setUzemnyObjekt(pridavanaNehnutelnost);
         dlzkoveData.setUzemnyObjekt(pridavanaNehnutelnost);
+        sirkoveDataVseaob.setUzemnyObjekt(pridavanaNehnutelnost);
+        dlzkoveDataVseaob.setUzemnyObjekt(pridavanaNehnutelnost);
 
         if (urobPrekryvy) {
             this.pridajPrekryvajuce(pridavanaNehnutelnost, sirkoveData, dlzkoveData);
@@ -186,8 +194,8 @@ public class TrControl {
 
         this.stromGPSNehnutelnosti.insert(sirkoveData);
         this.stromGPSNehnutelnosti.insert(dlzkoveData);
-        this.stromUzemnychCelkov.insert(sirkoveData);
-        this.stromUzemnychCelkov.insert(dlzkoveData);
+        this.stromUzemnychCelkov.insert(sirkoveDataVseaob);
+        this.stromUzemnychCelkov.insert(dlzkoveDataVseaob);
     }
 
     public void pridajParcelu(int paCislo,String paPopis, double[] paSuradnice, char[] paChary, boolean urobPrekryvy) {
@@ -197,9 +205,15 @@ public class TrControl {
         char[] charyDlzka = {paChary[2], paChary[3]};
         GPSData sirkoveData = new GPSData(poleSirka, charySirka);
         GPSData dlzkoveData = new GPSData(poleDlzka, charyDlzka);
+        GPSData sirkoveDataVseaob = new GPSData(poleSirka, charySirka);
+        GPSData dlzkoveDataVseaob = new GPSData(poleDlzka, charyDlzka);
+        sirkoveDataVseaob.setID(sirkoveData.getID());
+        dlzkoveDataVseaob.setID(dlzkoveData.getID());
         Parcela pridavanaParcela = new Parcela(paCislo, paPopis, sirkoveData, dlzkoveData);
         sirkoveData.setUzemnyObjekt(pridavanaParcela);
         dlzkoveData.setUzemnyObjekt(pridavanaParcela);
+        sirkoveDataVseaob.setUzemnyObjekt(pridavanaParcela);
+        dlzkoveDataVseaob.setUzemnyObjekt(pridavanaParcela);
         if (urobPrekryvy) {
             this.pridajPrekryvajuce(pridavanaParcela, sirkoveData, dlzkoveData);
 
@@ -208,8 +222,8 @@ public class TrControl {
 
         this.stromGPSParciel.insert(sirkoveData);
         this.stromGPSParciel.insert(dlzkoveData);
-        this.stromUzemnychCelkov.insert(sirkoveData);
-        this.stromUzemnychCelkov.insert(dlzkoveData);
+        this.stromUzemnychCelkov.insert(sirkoveDataVseaob);
+        this.stromUzemnychCelkov.insert(dlzkoveDataVseaob);
     }
 
 
