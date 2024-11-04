@@ -114,7 +114,7 @@ public class VymazCelokForm extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 try {
-                    VymazCelokForm.this.trControl.vymazUzemnyCelok((UzemnyCelok) VymazCelokForm.this.list1.getSelectedValue());
+                    VymazCelokForm.this.trControl.vyradUzemnyCelok((UzemnyCelok) VymazCelokForm.this.list1.getSelectedValue());
                     JOptionPane.showMessageDialog(null, "Vymazané" + VymazCelokForm.this.list1.getSelectedValue().toString());
                 } catch (NumberFormatException exception) {
                     JOptionPane.showMessageDialog(null, "Nie sú žiadne prvky na vymazanie");
