@@ -10,6 +10,7 @@ public interface IData<T> {
     public void printData();
     IData<T> makeCopy();
     String getID();
+    void setID(String ID);
     public TrNode<T> getCurrentNode();
     public void setCurrentNode(TrNode<T> currentNode);
 

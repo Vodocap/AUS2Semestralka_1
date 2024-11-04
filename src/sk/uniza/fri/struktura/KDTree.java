@@ -2,6 +2,7 @@ package sk.uniza.fri.struktura;
 
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * 8. 10. 2024 - 14:38
@@ -259,7 +260,50 @@ public class KDTree<T extends IData> {
     }
 
 
-    public ArrayList<TrNode<T>> inorderMorris(TrNode<T> paNode) {
+    public ArrayList<TrNode<T>> minOrMaxSearch(TrNode<T> paNode, boolean minOrMax) {
+        ArrayList<TrNode<T>> nodesResult = new ArrayList<>();
+        int level = paNode.getLevel() - 1;
+
+
+        Stack<TrNode<T>> stack = new Stack<>();
+        TrNode<T> currentNode = paNode;
+
+        while (currentNode != null || !stack.isEmpty()) {
+            while (currentNode != null) {
+
+                stack.push(currentNode);
+                if (minOrMax) {
+                    if ((level % this.dimensions) == (currentNode.getLevel() % this.dimensions)) {
+
+                        currentNode = currentNode.getRight();
+
+                    } else {
+                        currentNode = currentNode.getLeft();
+                    }
+
+                } else {
+                    currentNode = currentNode.getLeft();
+                }
+
+            }
+
+            TrNode<T> poppedNode = stack.pop();
+            nodesResult.add(poppedNode);
+
+            if ((level % this.dimensions) != (poppedNode.getLevel() % this.dimensions)) {
+                currentNode = poppedNode.getRight();
+            } else {
+                currentNode = null;
+            }
+
+        }
+
+
+        return nodesResult;
+    }
+
+
+    public ArrayList<TrNode<T>> inorder(TrNode<T> paNode) {
         ArrayList<TrNode<T>> nodesResult = new ArrayList<>();
         TrNode<T> currentNode = paNode;
 
@@ -287,69 +331,70 @@ public class KDTree<T extends IData> {
 
         }
 
-//        System.out.println("Amount of elements in the tree:");
-//        System.out.println(nodesResult.size());
 
         return nodesResult;
     }
 
-    // pridat enum ako parameter ktory bude odlisovat cases
-    public TrNode<T> findExtremeOrDuplicates(TrNode<T> paNode, TrNode<T> paNodeMorris , boolean minOrMax, boolean findDuplicates, boolean printTree) {
+    public TrNode<T> findExtremeOrDuplicates(TrNode<T> compareNode, TrNode<T> startNode , boolean minOrMax, boolean findDuplicates, boolean printTree) {
         //this.proccessNode(paNode);
-        TrNode<T> minNode = paNode;
-        TrNode<T> maxNode = paNode;
-        int level = paNode.getLevel() - 1;
-        if (paNode.isRoot()) {
-            level = paNode.getLevel();
+        TrNode<T> minNode = compareNode;
+        TrNode<T> maxNode = compareNode;
+        int level = compareNode.getLevel() - 1;
+        if (compareNode.isRoot()) {
+            level = compareNode.getLevel();
         }
 
-        ArrayList<TrNode<T>> morrisNodes = this.inorderMorris(paNode);
+        ArrayList<TrNode<T>> minMaxCandidates = this.minOrMaxSearch(startNode, minOrMax);
+//        System.out.println("Nova prehliadka");
+//        System.out.println(minMaxCandidates.size());
+//        System.out.println("Stara prehliadka");
+//        System.out.println(this.inorder(startNode).size());
 
         if (findDuplicates) {
-            ArrayList<TrNode<T>> duplicateCandidates = this.inorderMorris(paNodeMorris);
+            ArrayList<TrNode<T>> duplicateCandidates = this.inorder(startNode);
             for (TrNode<T> duplicateCandidate : duplicateCandidates) {
-                if (duplicateCandidate != paNode) {
-                    if (duplicateCandidate.getData().compareTo(paNode.getData(), paNodeMorris.getLevel() % this.dimensions) == 0) {
-                        System.out.println("FOUND DUPLICATE");
-                        duplicateCandidate.getData().printData();
+                if (duplicateCandidate != compareNode) {
+                    if (duplicateCandidate.getData().compareTo(compareNode.getData(), startNode.getLevel() % this.dimensions) == 0) {
+//                        System.out.println("FOUND DUPLICATE");
+//                        duplicateCandidate.getData().printData();
                         this.duplicateData.add(duplicateCandidate.getData());
                     }
                 }
             }
-            this.duplicateData.remove(paNodeMorris.getData());
+            this.duplicateData.remove(startNode.getData());
 
 
 
 
         }
 
-        for (TrNode<T> morrisNode : morrisNodes) {
+        for (TrNode<T> minMaxCandidate : minMaxCandidates) {
 
             if (printTree) {
                 System.out.println("-------------------------------------------------");
-                morrisNode.printNode();
-                morrisNode.getData().printData();
+                minMaxCandidate.printNode();
+                minMaxCandidate.getData().printData();
             }
 
 
 
-            if (morrisNode != paNode) {
+            if (minMaxCandidate != compareNode) {
 
 
-                if (morrisNode.getData().compareTo(minNode.getData(), level % this.dimensions) <= 0) {
+                if (minMaxCandidate.getData().compareTo(minNode.getData(), level % this.dimensions) <= 0) {
 
-                    minNode = morrisNode;
+                    minNode = minMaxCandidate;
                 }
 
-                if (morrisNode.getData().compareTo(maxNode.getData(), level % this.dimensions) >= 0) {
+                if (minMaxCandidate.getData().compareTo(maxNode.getData(), level % this.dimensions) >= 0) {
 
                     if (printTree) {
                         System.out.println("Novy maxnode");
-                        System.out.println("Urovne " + paNode.getLevel());
-                        morrisNode.printNode();
-                        morrisNode.getData().printData();
+                        System.out.println("Urovne " + compareNode.getLevel());
+                        minMaxCandidate.printNode();
+                        minMaxCandidate.getData().printData();
                     }
-                    maxNode = morrisNode;
+                    maxNode = minMaxCandidate;
                 }
             }
 

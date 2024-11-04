@@ -19,7 +19,7 @@ public class TestData implements IData<Integer> {
 
     public TestData( Integer[] ciselka) {
         Random rand = new Random();
-        this.ID = String.valueOf((char) (rand.nextInt(25) + 65) + " - " + rand.nextLong());
+
         this.suradnice = ciselka;
 
 
@@ -65,8 +65,9 @@ public class TestData implements IData<Integer> {
     @Override
     public void printData() {
         for (Integer i : this.suradnice) {
-            System.out.println("Datka - " + i);
+            System.out.println("Data - " + i);
         }
+        System.out.println("ID: " + this.ID);
     }
 
     @Override
@@ -77,6 +78,11 @@ public class TestData implements IData<Integer> {
     @Override
     public String getID() {
         return this.ID;
+    }
+
+    @Override
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
     @Override

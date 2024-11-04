@@ -147,6 +147,11 @@ public class TestDataComplex implements IData {
     }
 
     @Override
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    @Override
     public TrNode getCurrentNode() {
         return this.currentNode;
     }

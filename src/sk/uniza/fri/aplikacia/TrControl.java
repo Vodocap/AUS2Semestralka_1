@@ -18,11 +18,16 @@ public class TrControl {
     private KDTree<GPSData> stromGPSParciel;
     private KDTree<GPSData> stromGPSNehnutelnosti;
     private KDTree<GPSData> stromUzemnychCelkov;
+    private IDGenerator idGenerator;
+
     public TrControl () {
+        this.idGenerator = new IDGenerator();
         this.stromGPSParciel = new KDTree<GPSData>(2);
         this.stromGPSNehnutelnosti = new KDTree<GPSData>(2);
         this.stromUzemnychCelkov = new KDTree<GPSData>(2);
     }
+
+
     public ArrayList<Nehnutelnost> najdiVsetkyNehnutelnosti(double poziciaX, double poziciaY, char charX, char charY) {
         double[] tempSuradnice = {poziciaX, poziciaY};
         char[] tempChary = {charX, charY};
@@ -177,6 +182,8 @@ public class TrControl {
         char[] charyDlzka = {paChary[2], paChary[3]};
         GPSData sirkoveData = new GPSData(poleSirka, charySirka);
         GPSData dlzkoveData = new GPSData(poleDlzka, charyDlzka);
+        sirkoveData.setID(this.idGenerator.generateUniqueID());
+        dlzkoveData.setID(this.idGenerator.generateUniqueID());
         GPSData sirkoveDataVseaob = new GPSData(poleSirka, charySirka);
         GPSData dlzkoveDataVseaob = new GPSData(poleDlzka, charyDlzka);
         sirkoveDataVseaob.setID(sirkoveData.getID());
@@ -205,6 +212,8 @@ public class TrControl {
         char[] charyDlzka = {paChary[2], paChary[3]};
         GPSData sirkoveData = new GPSData(poleSirka, charySirka);
         GPSData dlzkoveData = new GPSData(poleDlzka, charyDlzka);
+        sirkoveData.setID(this.idGenerator.generateUniqueID());
+        dlzkoveData.setID(this.idGenerator.generateUniqueID());
         GPSData sirkoveDataVseaob = new GPSData(poleSirka, charySirka);
         GPSData dlzkoveDataVseaob = new GPSData(poleDlzka, charyDlzka);
         sirkoveDataVseaob.setID(sirkoveData.getID());
@@ -327,7 +336,7 @@ public class TrControl {
                 char[] randChary = {(char) (74 + (random.nextInt(2) * 9)), (char) (69 + (random.nextInt(2) * 18)),
                         (char) (74 + (random.nextInt(2) * 9)), (char) (69 + (random.nextInt(2) * 18))};
                 double[] suradnice = {random.nextDouble(0, 90), random.nextDouble(0, 90), random.nextDouble(0, 90), random.nextDouble(0, 90)};
-                this.pridajParcelu(random.nextInt(), "Obycajna parcela " + (char) (random.nextInt(25) + 65), suradnice, randChary,false);
+                this.pridajParcelu(random.nextInt(), "Obycajna parcela " + (char) (random.nextInt(25) + 65), suradnice, randChary,true);
             }
 
         }
@@ -342,7 +351,7 @@ public class TrControl {
                 char[] randChary = {(char) (74 + (random.nextInt(2) * 9)), (char) (69 + (random.nextInt(2) * 18)),
                         (char) (74 + (random.nextInt(2) * 9)), (char) (69 + (random.nextInt(2) * 18))};
                 double[] suradnice = {random.nextDouble(-90, 90), random.nextDouble(-90, 90), random.nextDouble(-90, 90), random.nextDouble(-90, 90)};
-                this.pridajNehnutelnost(random.nextInt(), "Obycajna Nehnutelnost " + (char) (random.nextInt(25) + 65), suradnice,randChary,false);
+                this.pridajNehnutelnost(random.nextInt(), "Obycajna Nehnutelnost " + (char) (random.nextInt(25) + 65), suradnice,randChary,true);
             }
 
         }
@@ -353,7 +362,7 @@ public class TrControl {
 
     private ArrayList<Parcela> dajVsetkyParcely() {
         ArrayList<Parcela> parcely = new ArrayList<>();
-        for (TrNode<GPSData> parcelaNode : this.stromGPSParciel.inorderMorris(this.stromGPSParciel.getRoot())) {
+        for (TrNode<GPSData> parcelaNode : this.stromGPSParciel.inorder(this.stromGPSParciel.getRoot())) {
             if (!parcely.contains((Parcela) parcelaNode.getData().getUzemnyObjekt())) {
                 parcely.add((Parcela) parcelaNode.getData().getUzemnyObjekt());
             }
@@ -363,7 +372,7 @@ public class TrControl {
 
     private ArrayList<Nehnutelnost> dajVsetkyNehnutelnosti() {
         ArrayList<Nehnutelnost> nehnutelnosti = new ArrayList<>();
-        for (TrNode<GPSData> parcelaNode : this.stromGPSNehnutelnosti.inorderMorris(this.stromGPSNehnutelnosti.getRoot())) {
+        for (TrNode<GPSData> parcelaNode : this.stromGPSNehnutelnosti.inorder(this.stromGPSNehnutelnosti.getRoot())) {
             if (!nehnutelnosti.contains((Nehnutelnost) parcelaNode.getData().getUzemnyObjekt())) {
                 nehnutelnosti.add((Nehnutelnost) parcelaNode.getData().getUzemnyObjekt());
             }

@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
         TestTrieda testTrieda = new TestTrieda(2);
 
-        testTrieda.generatorOperacii(100000, false, true);
+        testTrieda.generatorOperacii(10000, true, false);
 //        testTrieda.testovaciePripady();
 //        TrControl trControl = new TrControl();
 //        double [] suradnice = {10, 20, 30, 40};

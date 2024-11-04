@@ -1,6 +1,7 @@
 package sk.uniza.fri;
 
 import sk.uniza.fri.aplikacia.GPSData;
+import sk.uniza.fri.aplikacia.IDGenerator;
 import sk.uniza.fri.aplikacia.TestData;
 import sk.uniza.fri.struktura.IData;
 import sk.uniza.fri.struktura.KDTree;
@@ -17,28 +18,37 @@ import java.util.Random;
  */
 public class TestTrieda {
 
+
+    private IDGenerator generator;
     private ArrayList<TrNode<IData>> vkladanePrvky;
     private KDTree<IData> kDStrom;
 
     public TestTrieda (int paPocetDimenziVStrome) {
+        this.generator = new IDGenerator();
         this.kDStrom = new KDTree<IData>(paPocetDimenziVStrome);
         this.vkladanePrvky = new ArrayList<TrNode<IData>>();
     }
 
     public void generatorOperacii(int pocetoperacii, boolean inty, boolean testData) {
+        this.kDStrom = new KDTree<IData>(2);
+        this.vkladanePrvky = new ArrayList<TrNode<IData>>();
+        for (int i = 0; i < 20000; i++) {
+            this.naplnStromAVypisInty(1);
+        }
         for (int i = 0; i < 1; i++) {
             Random random = new Random(10);
             System.out.println("__________________________ SEED: (" + i + ") __________________________");
-            this.kDStrom = new KDTree<IData>(2);
+
             if (testData) {
                 this.kDStrom = new KDTree<IData>(4);
             }
-            this.vkladanePrvky = new ArrayList<TrNode<IData>>();
+
             for (int j = 0; j < pocetoperacii; j++) {
                 double cislo = random.nextDouble(0.0,1.0);
-                if (cislo < 0.5) {
+                if (cislo < 0.33) {
                     if (inty) {
                         this.naplnStromAVypisInty(1);
+                        this.skontrolujStrom();
                     } else {
                         if (testData) {
                             this.naplnStromAVypisTestTrieda(1);
@@ -47,11 +57,19 @@ public class TestTrieda {
                         }
 
                     }
-                } else if (cislo > 0.5 ) {
+                } else if (cislo > 0.33 && cislo < 0.66) {
                     if (!(this.vkladanePrvky.isEmpty())) {
                         this.deletujAVypisSkontroluj(1);
+                        this.skontrolujStrom();
                     }
 
+                } else if (cislo > 0.66) {
+
+                    if (this.kDStrom.find(this.vkladanePrvky.get(random.nextInt(this.vkladanePrvky.size())).getData()) != null) {
+                        continue;
+                    } else {
+                        throw new RuntimeException("Nenasiel sa hladany prvok");
+                    }
                 }
             }
             this.skontrolujStrom();
@@ -62,14 +80,14 @@ public class TestTrieda {
 
     public void skontrolujStrom() {
         long najdene = 0;
-        System.out.println("VKLADANE PRVKY:");
-        for (TrNode<IData> iDataTrNode : this.vkladanePrvky) {
-            System.out.println(iDataTrNode.getData().toString());
-        }
-        System.out.println("STROM");
-        for (TrNode<IData> trNode : this.kDStrom.inorderMorris(this.kDStrom.getRoot())) {
-            System.out.println(trNode.getData().toString());
-        }
+//        System.out.println("VKLADANE PRVKY:");
+//        for (TrNode<IData> iDataTrNode : this.vkladanePrvky) {
+//            System.out.println(iDataTrNode.getData().toString());
+//        }
+//        System.out.println("STROM");
+//        for (TrNode<IData> trNode : this.kDStrom.inorder(this.kDStrom.getRoot())) {
+//            System.out.println(trNode.getData().toString());
+//        }
 
         for (TrNode<IData> iDataTrNode : this.vkladanePrvky) {
             if (this.kDStrom.find(iDataTrNode.getData()) == null) {
@@ -81,12 +99,13 @@ public class TestTrieda {
 
         System.out.println("Pocet hladanych " + this.vkladanePrvky.size() + " Pocet najdenych - " + najdene);
         if (najdene != this.vkladanePrvky.size()) {
-            throw new RuntimeException("dovidenia");
+            throw new RuntimeException("Nepodarilo sa nájsť všetky kontrolné prvky");
         }
     }
 
     public void naplnStromAVypis(int paPocetPrvkov, boolean paAllowDuplicates) {
         Random rand = new Random();
+
 
         for (int i = 0; i < paPocetPrvkov; i++) {
             double[] tempPole = {rand.nextDouble(0, 90), rand.nextDouble(0, 90)};
@@ -98,9 +117,11 @@ public class TestTrieda {
                 tempPole = dupPole;
             }
             GPSData gpsData = new GPSData( tempPole, randChary);
+
             if (paAllowDuplicates) {
                 gpsData = new GPSData(dupPole, dupChary);
             }
+            gpsData.setID(this.generator.generateUniqueID());
 
 
 
@@ -145,8 +166,10 @@ public class TestTrieda {
         Random rand = new Random();
 
         for (int i = 0; i < paPocetPrvkov; i++) {
-            Integer[] tempPole = {rand.nextInt(5), rand.nextInt(5)};
+            Integer[] tempPole = {rand.nextInt(51), rand.nextInt(51)};
             TestData gpsData = new TestData(tempPole);
+            gpsData.setID(this.generator.generateUniqueID());
+            gpsData.printData();
             TrNode testnode = new TrNode(gpsData);
             this.vkladanePrvky.add(testnode);
             this.kDStrom.insert(gpsData);
