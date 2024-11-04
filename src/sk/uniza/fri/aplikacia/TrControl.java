@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-//TODO treba ine instancie GPSDATA aby sa pridavali do strmu kde su vsekty veci
 public class TrControl {
     private KDTree<GPSData> stromGPSParciel;
     private KDTree<GPSData> stromGPSNehnutelnosti;

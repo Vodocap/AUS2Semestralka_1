@@ -48,6 +48,10 @@ public class PridajCelokQuery extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(500, 500);
         setLocationRelativeTo(null);
+        this.textFieldSmerXH.setText(String.valueOf('N'));
+        this.textFieldSmerYH.setText(String.valueOf('E'));
+        this.textFieldSmerXD.setText(String.valueOf('N'));
+        this.textFieldSmerYD.setText(String.valueOf('E'));
 
         this.mainWindow = paMainWindow;
         this.trControl = paMainWindow.getTrControl();

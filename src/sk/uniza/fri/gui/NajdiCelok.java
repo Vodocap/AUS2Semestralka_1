@@ -53,11 +53,11 @@ public class NajdiCelok extends JFrame {
 
     public NajdiCelok(MainWindow paMainWindow) {
         this.createUIComponents();
-        list1 = new JList<>();
-        list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        list1.setLayoutOrientation(JList.VERTICAL);
-        list1.setVisibleRowCount(-1);
-        $$$setupUI$$$();
+        this.$$$setupUI$$$();
+        this.smerXSirka.setText(String.valueOf('N'));
+        this.smerYSirka.setText(String.valueOf('E'));
+        this.smerXDlzka.setText(String.valueOf('N'));
+        this.smerYDlzka.setText(String.valueOf('E'));
 
         this.mainWindow = paMainWindow;
         this.trControl = paMainWindow.getTrControl();

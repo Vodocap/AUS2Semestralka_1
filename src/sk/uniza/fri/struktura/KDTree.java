@@ -117,7 +117,7 @@ public class KDTree<T extends IData> {
 
     public ArrayList<TrNode<T>> findAll(T paData) {
 
-        ArrayList<TrNode<T>> resultNodes = new ArrayList<TrNode<T>>();
+        ArrayList<TrNode<T>> resultNodes = new ArrayList<>();
         TrNode<T> currentNode = this.root;
         int level = 0;
 
@@ -136,6 +136,7 @@ public class KDTree<T extends IData> {
                 }
 
                 currentNode = currentNode.getLeft();
+                level++;
 
 
             }

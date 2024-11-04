@@ -49,6 +49,10 @@ public class VymazCelokForm extends JFrame {
         this.list1.setVisibleRowCount(-1);
         this.mainWindow = paMainWindow;
         this.trControl = this.mainWindow.getTrControl();
+        this.smerXSirka.setText(String.valueOf('N'));
+        this.smerYSirka.setText(String.valueOf('E'));
+        this.smerXDlzka.setText(String.valueOf('N'));
+        this.smerYDlzka.setText(String.valueOf('E'));
 
         this.zrusitButton.addActionListener(new ActionListener() {
             @Override
