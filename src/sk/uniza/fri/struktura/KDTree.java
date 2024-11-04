@@ -97,19 +97,20 @@ public class KDTree<T extends IData> {
             int k = level % this.dimensions;
             if (paData.compareTo(currentNode.getData(), k) == 1) {
                 currentNode = currentNode.getRight();
-                level++;
+
             } else if (paData.compareTo(currentNode.getData(), k) == -1) {
                 currentNode = currentNode.getLeft();
-                level++;
+
             } else if (paData.compareTo(currentNode.getData(), k) == 0) {
 
                 if (paData.equals(currentNode.getData(), true)) {
                     return currentNode;
                 }
                 currentNode = currentNode.getLeft();
-                level++;
+
 
             }
+            level++;
 
         }
 //
@@ -126,10 +127,10 @@ public class KDTree<T extends IData> {
             int k = level % this.dimensions;
             if (paData.compareTo(currentNode.getData(), k) == 1) {
                 currentNode = currentNode.getRight();
-                level++;
+
             } else if (paData.compareTo(currentNode.getData(), k) == -1) {
                 currentNode = currentNode.getLeft();
-                level++;
+
             } else if (paData.compareTo(currentNode.getData(), k) == 0) {
 
                 if (paData.equals(currentNode.getData(), false)) {
@@ -137,11 +138,11 @@ public class KDTree<T extends IData> {
                 }
 
                 currentNode = currentNode.getLeft();
-                level++;
+
 
 
             }
-
+            level++;
         }
         return resultNodes;
     }
@@ -162,7 +163,7 @@ public class KDTree<T extends IData> {
 
 
     private void reinsertDuplicates() {
-        System.out.println("---------------------REINSERTING DUPLICATES---------------------");
+//        System.out.println("---------------------REINSERTING DUPLICATES---------------------");
 
 
         while (!this.duplicateData.isEmpty()) {
@@ -187,10 +188,10 @@ public class KDTree<T extends IData> {
 
             TrNode<T> replacerNode = null;
             if (nodeToRemove.hasLeft()) {
-                replacerNode = this.findExtremeOrDuplicates(nodeToRemove.getLeft(), nodeToRemove.getLeft(),true, false, false);
+                replacerNode = this.findExtremeOrDuplicates(nodeToRemove.getLeft(), nodeToRemove.getLeft(),true, false, true);
             }
             if (nodeToRemove.hasRight()) {
-                replacerNode = this.findExtremeOrDuplicates(nodeToRemove.getRight(), nodeToRemove.getRight(), false, false, false);
+                replacerNode = this.findExtremeOrDuplicates(nodeToRemove.getRight(), nodeToRemove.getRight(), false, false, true);
                 this.findExtremeOrDuplicates(replacerNode, nodeToRemove ,  false, true, false);
             }
 
@@ -232,10 +233,10 @@ public class KDTree<T extends IData> {
         while (!nodeToRemove.isLeaf()) {
 
             if (nodeToRemove.hasLeft()) {
-                replacerNode = this.findExtremeOrDuplicates(nodeToRemove.getLeft(), nodeToRemove.getLeft(),true, false, false);
+                replacerNode = this.findExtremeOrDuplicates(nodeToRemove.getLeft(), nodeToRemove.getLeft(),true, false, true);
             }
             if (nodeToRemove.hasRight()) {
-                replacerNode = this.findExtremeOrDuplicates(nodeToRemove.getRight(), nodeToRemove.getRight(), false, false, false);
+                replacerNode = this.findExtremeOrDuplicates(nodeToRemove.getRight(), nodeToRemove.getRight(), false, false, true);
                 this.findExtremeOrDuplicates(replacerNode, nodeToRemove ,  false, true, false);
             }
             if (replacerNode != null) {
@@ -260,7 +261,7 @@ public class KDTree<T extends IData> {
     }
 
 
-    public ArrayList<TrNode<T>> minOrMaxSearch(TrNode<T> paNode, boolean minOrMax) {
+    private ArrayList<TrNode<T>> minOrMaxSearch(TrNode<T> paNode, boolean minOrMax) {
         ArrayList<TrNode<T>> nodesResult = new ArrayList<>();
         int level = paNode.getLevel() - 1;
 
@@ -335,7 +336,7 @@ public class KDTree<T extends IData> {
         return nodesResult;
     }
 
-    public TrNode<T> findExtremeOrDuplicates(TrNode<T> compareNode, TrNode<T> startNode , boolean minOrMax, boolean findDuplicates, boolean printTree) {
+    private TrNode<T> findExtremeOrDuplicates(TrNode<T> compareNode, TrNode<T> startNode , boolean minOrMax, boolean findDuplicates, boolean searchExtremes) {
         //this.proccessNode(paNode);
         TrNode<T> minNode = compareNode;
         TrNode<T> maxNode = compareNode;
@@ -344,19 +345,13 @@ public class KDTree<T extends IData> {
             level = compareNode.getLevel();
         }
 
-        ArrayList<TrNode<T>> minMaxCandidates = this.minOrMaxSearch(startNode, minOrMax);
-//        System.out.println("Nova prehliadka");
-//        System.out.println(minMaxCandidates.size());
-//        System.out.println("Stara prehliadka");
-//        System.out.println(this.inorder(startNode).size());
 
         if (findDuplicates) {
             ArrayList<TrNode<T>> duplicateCandidates = this.inorder(startNode);
             for (TrNode<T> duplicateCandidate : duplicateCandidates) {
                 if (duplicateCandidate != compareNode) {
                     if (duplicateCandidate.getData().compareTo(compareNode.getData(), startNode.getLevel() % this.dimensions) == 0) {
-//                        System.out.println("FOUND DUPLICATE");
-//                        duplicateCandidate.getData().printData();
+
                         this.duplicateData.add(duplicateCandidate.getData());
                     }
                 }
@@ -368,35 +363,33 @@ public class KDTree<T extends IData> {
 
         }
 
-        for (TrNode<T> minMaxCandidate : minMaxCandidates) {
+        if (searchExtremes) {
+            ArrayList<TrNode<T>> minMaxCandidates = this.minOrMaxSearch(startNode, minOrMax);
+//        System.out.println("Nova prehliadka");
+//        System.out.println(minMaxCandidates.size());
+//        System.out.println("Stara prehliadka");
+//        System.out.println(this.inorder(startNode).size());
 
-            if (printTree) {
-                System.out.println("-------------------------------------------------");
-                minMaxCandidate.printNode();
-                minMaxCandidate.getData().printData();
-            }
-
-
-
-            if (minMaxCandidate != compareNode) {
+            for (TrNode<T> minMaxCandidate : minMaxCandidates) {
 
 
-                if (minMaxCandidate.getData().compareTo(minNode.getData(), level % this.dimensions) <= 0) {
 
-                    minNode = minMaxCandidate;
-                }
+                if (minMaxCandidate != compareNode) {
 
-                if (minMaxCandidate.getData().compareTo(maxNode.getData(), level % this.dimensions) >= 0) {
 
-                    if (printTree) {
-                        System.out.println("Novy maxnode");
-                        System.out.println("Urovne " + compareNode.getLevel());
-                        minMaxCandidate.printNode();
-                        minMaxCandidate.getData().printData();
+                    if (minMaxCandidate.getData().compareTo(minNode.getData(), level % this.dimensions) <= 0) {
+
+                        minNode = minMaxCandidate;
                     }
-                    maxNode = minMaxCandidate;
+
+                    if (minMaxCandidate.getData().compareTo(maxNode.getData(), level % this.dimensions) >= 0) {
+
+                        maxNode = minMaxCandidate;
+                    }
                 }
-            }
+        }
+
+
 
 
 

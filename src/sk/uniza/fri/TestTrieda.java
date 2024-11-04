@@ -181,17 +181,9 @@ public class TestTrieda {
         System.out.println("Pocet prvkov na kontrolu");
         System.out.println(this.vkladanePrvky.size());
         System.out.println("Pocet prvkov v strome");
-        this.kDStrom.findExtremeOrDuplicates(this.kDStrom.getRoot(),this.kDStrom.getRoot() ,false, false, false);
+        this.kDStrom.inorder(this.kDStrom.getRoot());
     }
 
-    public void reinsertujCelyStrom() {
-        TrNode trNode = this.kDStrom.getRoot().getLeft();
-        trNode.setParent(null);
-        this.kDStrom.findExtremeOrDuplicates(trNode, trNode ,true, true, false);
-        System.out.println("____________________________________________________________________");
-        System.out.println("Kontrolna prejliadka");
-        this.kDStrom.findExtremeOrDuplicates(this.kDStrom.getRoot(), trNode,false, false, true);
-    }
 
 
     public void deletujAVypisSkontroluj(int paPocetPrvkov) {
