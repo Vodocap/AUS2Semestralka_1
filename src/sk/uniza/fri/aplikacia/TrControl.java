@@ -326,16 +326,23 @@ public class TrControl {
     }
 
     public void generujData(int pocetParciel, int pocetNehnutelnosti, double percentoPrekryvu) {
+        ArrayList<double[]> pouzite = new ArrayList<>();
+        Random rand = new Random();
         for (int i = 0; i < pocetParciel; i++) {
             Random random = new Random();
             if (random.nextDouble() < (percentoPrekryvu / 100.0)) {
-                double[] suradnicePrekryvu = {random.nextDouble(0, 90), random.nextDouble(0, 90), 20, 30};
+                double[] pouziteSirky = {Math.round(random.nextDouble(-90, 90)*100.0)/100.0, Math.round(random.nextDouble(-90, 90)*100.0)/100.0};
+                double[] pouziteDlzky = {Math.round(random.nextDouble(-90, 90)*100.0)/100.0, Math.round(random.nextDouble(-90, 90)*100.0)/100.0};
+                pouzite.add(pouziteSirky);
+                pouzite.add(pouziteDlzky);
+                double[] suradnicePrekryvu = {pouziteSirky[0], pouziteSirky[1], pouziteDlzky[0], pouziteDlzky[1]};
                 char[] dupChary = {'N', 'E', 'N', 'E'};
                 this.pridajParcelu(random.nextInt(), "Prekryvajuca parcela", suradnicePrekryvu, dupChary , false);
             } else {
                 char[] randChary = {(char) (74 + (random.nextInt(2) * 9)), (char) (69 + (random.nextInt(2) * 18)),
                         (char) (74 + (random.nextInt(2) * 9)), (char) (69 + (random.nextInt(2) * 18))};
-                double[] suradnice = {random.nextDouble(0, 90), random.nextDouble(0, 90), random.nextDouble(0, 90), random.nextDouble(0, 90)};
+                double[] suradnice = {Math.round(random.nextDouble(-90, 90)*100.0)/100.0, Math.round(random.nextDouble(-90, 90)*100.0)/100.0,
+                        Math.round(random.nextDouble(-90, 90)*100.0)/100.0, Math.round(random.nextDouble(-90, 90)*100.0)/100.0};
                 this.pridajParcelu(random.nextInt(), "Obycajna parcela " + (char) (random.nextInt(25) + 65), suradnice, randChary,true);
             }
 
@@ -343,15 +350,19 @@ public class TrControl {
 
         for (int i = 0; i < pocetNehnutelnosti; i++) {
             Random random = new Random();
+
             if (random.nextDouble() < (percentoPrekryvu / 100.0)) {
-                double[] suradnicePrekryvu = {20, 30, random.nextDouble(-90, 90), random.nextDouble(-90, 90)};
+                int indexPouzitychS = random.nextInt(pouzite.size());
+                int indexPouzitychD = random.nextInt(pouzite.size());
+                double[] suradnicePrekryvu = {pouzite.get(indexPouzitychS)[0], pouzite.get(indexPouzitychS)[1], pouzite.get(indexPouzitychD)[0], pouzite.get(indexPouzitychD)[1]};
                 char[] dupChary = {'N', 'E', 'N', 'E'};
                 this.pridajNehnutelnost(random.nextInt(), "Prekryvajuca Nehnutelnost", suradnicePrekryvu, dupChary,false);
             } else {
                 char[] randChary = {(char) (74 + (random.nextInt(2) * 9)), (char) (69 + (random.nextInt(2) * 18)),
                         (char) (74 + (random.nextInt(2) * 9)), (char) (69 + (random.nextInt(2) * 18))};
-                double[] suradnice = {random.nextDouble(-90, 90), random.nextDouble(-90, 90), random.nextDouble(-90, 90), random.nextDouble(-90, 90)};
-                this.pridajNehnutelnost(random.nextInt(), "Obycajna Nehnutelnost " + (char) (random.nextInt(25) + 65), suradnice,randChary,true);
+                double[] suradnice = {Math.round(random.nextDouble(-90, 90)*100.0)/100.0, Math.round(random.nextDouble(-90, 90)*100.0)/100.0,
+                        Math.round(random.nextDouble(-90, 90)*100.0)/100.0, Math.round(random.nextDouble(-90, 90)*100.0)/100.0};
+                this.pridajNehnutelnost(random.nextInt(), "Obycajna Nehnutelnost " + (char) (random.nextInt(25) + 65), suradnice,randChary,false);
             }
 
         }
