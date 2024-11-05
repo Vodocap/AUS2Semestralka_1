@@ -1,9 +1,7 @@
 package sk.uniza.fri;
 
 
-import sk.uniza.fri.aplikacia.Parcela;
-import sk.uniza.fri.aplikacia.TrControl;
-import sk.uniza.fri.aplikacia.UzemnyCelok;
+import sk.uniza.fri.testovanie.TestTrieda;
 
 public class Main {
 

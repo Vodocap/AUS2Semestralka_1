@@ -16,7 +16,7 @@ import java.util.Locale;
  *
  * @author matus
  */
-public class PridajCelokQuery extends JFrame {
+public class PridajCelok extends JFrame {
     private JTextField textFieldSurXD;
     private JTextField textFieldSurYD;
     private JTextField textFieldSurYH;
@@ -41,7 +41,7 @@ public class PridajCelokQuery extends JFrame {
     private final TrControl trControl;
 
 
-    public PridajCelokQuery(MainWindow paMainWindow) {
+    public PridajCelok(MainWindow paMainWindow) {
         this.createUIComponents();
         $$$setupUI$$$();
         setTitle("Zadajte dáta");
@@ -61,26 +61,26 @@ public class PridajCelokQuery extends JFrame {
                 try {
                     double[] suradnice = new double[4];
                     char[] smery = new char[4];
-                    suradnice[0] = Double.parseDouble(PridajCelokQuery.this.textFieldSurXH.getText());
-                    suradnice[1] = Double.parseDouble(PridajCelokQuery.this.textFieldSurYH.getText());
-                    suradnice[2] = Double.parseDouble(PridajCelokQuery.this.textFieldSurXD.getText());
-                    suradnice[3] = Double.parseDouble(PridajCelokQuery.this.textFieldSurYD.getText());
-                    smery[0] = PridajCelokQuery.this.textFieldSmerXH.getText().charAt(0);
-                    smery[1] = PridajCelokQuery.this.textFieldSmerYH.getText().charAt(0);
-                    smery[2] = PridajCelokQuery.this.textFieldSmerXD.getText().charAt(0);
-                    smery[3] = PridajCelokQuery.this.textFieldSmerYD.getText().charAt(0);
+                    suradnice[0] = Double.parseDouble(PridajCelok.this.textFieldSurXH.getText());
+                    suradnice[1] = Double.parseDouble(PridajCelok.this.textFieldSurYH.getText());
+                    suradnice[2] = Double.parseDouble(PridajCelok.this.textFieldSurXD.getText());
+                    suradnice[3] = Double.parseDouble(PridajCelok.this.textFieldSurYD.getText());
+                    smery[0] = PridajCelok.this.textFieldSmerXH.getText().charAt(0);
+                    smery[1] = PridajCelok.this.textFieldSmerYH.getText().charAt(0);
+                    smery[2] = PridajCelok.this.textFieldSmerXD.getText().charAt(0);
+                    smery[3] = PridajCelok.this.textFieldSmerYD.getText().charAt(0);
 
-                    if (PridajCelokQuery.this.parcelaCheckBox.isSelected()) {
-                        PridajCelokQuery.this.trControl.pridajParcelu(
-                                Integer.parseInt(PridajCelokQuery.this.textFieldCislo.getText()),
-                                PridajCelokQuery.this.textFieldPopis.getText(),
+                    if (PridajCelok.this.parcelaCheckBox.isSelected()) {
+                        PridajCelok.this.trControl.pridajParcelu(
+                                Integer.parseInt(PridajCelok.this.textFieldCislo.getText()),
+                                PridajCelok.this.textFieldPopis.getText(),
                                 suradnice, smery, true
                         );
                         JOptionPane.showMessageDialog(null, "Úspešne pridané");
-                    } else if (PridajCelokQuery.this.nehnutelnostCheckBox.isSelected()) {
-                        PridajCelokQuery.this.trControl.pridajNehnutelnost(
-                                Integer.parseInt(PridajCelokQuery.this.textFieldCislo.getText()),
-                                PridajCelokQuery.this.textFieldPopis.getText(),
+                    } else if (PridajCelok.this.nehnutelnostCheckBox.isSelected()) {
+                        PridajCelok.this.trControl.pridajNehnutelnost(
+                                Integer.parseInt(PridajCelok.this.textFieldCislo.getText()),
+                                PridajCelok.this.textFieldPopis.getText(),
                                 suradnice, smery, true
                         );
                         JOptionPane.showMessageDialog(null, "Úspešne pridané");
@@ -92,21 +92,21 @@ public class PridajCelokQuery extends JFrame {
         });
 
         this.parcelaCheckBox.addItemListener(e -> {
-            if (PridajCelokQuery.this.parcelaCheckBox.isSelected()) {
-                PridajCelokQuery.this.nehnutelnostCheckBox.setSelected(false);
+            if (PridajCelok.this.parcelaCheckBox.isSelected()) {
+                PridajCelok.this.nehnutelnostCheckBox.setSelected(false);
             }
         });
 
         this.nehnutelnostCheckBox.addItemListener(e -> {
-            if (PridajCelokQuery.this.nehnutelnostCheckBox.isSelected()) {
-                PridajCelokQuery.this.parcelaCheckBox.setSelected(false);
+            if (PridajCelok.this.nehnutelnostCheckBox.isSelected()) {
+                PridajCelok.this.parcelaCheckBox.setSelected(false);
             }
         });
 
         this.zrusitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PridajCelokQuery.this.dispose();
+                PridajCelok.this.dispose();
             }
         });
 

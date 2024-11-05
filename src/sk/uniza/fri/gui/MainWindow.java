@@ -1,6 +1,5 @@
 package sk.uniza.fri.gui;
 
-import sk.uniza.fri.aplikacia.Parcela;
 import sk.uniza.fri.aplikacia.TrControl;
 
 import javax.swing.*;
@@ -145,10 +144,10 @@ public class MainWindow {
         pridajCelokButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PridajCelokQuery pridajCelokQuery = new PridajCelokQuery(MainWindow.this);
-                pridajCelokQuery.setContentPane(pridajCelokQuery.getjPanel());
-                pridajCelokQuery.pack();
-                pridajCelokQuery.setVisible(true);
+                PridajCelok pridajCelok = new PridajCelok(MainWindow.this);
+                pridajCelok.setContentPane(pridajCelok.getjPanel());
+                pridajCelok.pack();
+                pridajCelok.setVisible(true);
 
             }
         });
@@ -156,7 +155,7 @@ public class MainWindow {
         vyradCelok.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                VymazCelokForm vyradCelok = new VymazCelokForm(MainWindow.this);
+                VymazCelok vyradCelok = new VymazCelok(MainWindow.this);
                 vyradCelok.setContentPane(vyradCelok.getjPanel());
                 vyradCelok.pack();
                 vyradCelok.setVisible(true);

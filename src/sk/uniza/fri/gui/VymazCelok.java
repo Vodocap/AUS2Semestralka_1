@@ -20,7 +20,7 @@ import java.util.Locale;
  *
  * @author matus
  */
-public class VymazCelokForm extends JFrame {
+public class VymazCelok extends JFrame {
     private JTextField textFieldSurYH;
     private JTextField textFieldSurXH;
     private JButton najdiButton;
@@ -41,7 +41,7 @@ public class VymazCelokForm extends JFrame {
     private TrControl trControl;
 
 
-    public VymazCelokForm(MainWindow paMainWindow) {
+    public VymazCelok(MainWindow paMainWindow) {
         this.createUIComponents();
         $$$setupUI$$$();
         this.list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -57,7 +57,7 @@ public class VymazCelokForm extends JFrame {
         this.zrusitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                VymazCelokForm.this.dispose();
+                VymazCelok.this.dispose();
             }
 
         });
@@ -67,8 +67,8 @@ public class VymazCelokForm extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     double[] suradnice = new double[4];
-                    suradnice[0] = Double.parseDouble(VymazCelokForm.this.textFieldSurXH.getText());
-                    suradnice[1] = Double.parseDouble(VymazCelokForm.this.textFieldSurYH.getText());
+                    suradnice[0] = Double.parseDouble(VymazCelok.this.textFieldSurXH.getText());
+                    suradnice[1] = Double.parseDouble(VymazCelok.this.textFieldSurYH.getText());
 
                     ArrayList<Parcela> parcelas = new ArrayList<>();
                     ArrayList<Nehnutelnost> nehnutelnosts = new ArrayList<>();
@@ -78,26 +78,26 @@ public class VymazCelokForm extends JFrame {
 
                     ArrayList<Object> vysledky = new ArrayList<>();
 
-                    if (VymazCelokForm.this.parcelaCheckBox.isSelected() && VymazCelokForm.this.nehnutelnostCheckBox.isSelected()) {
-                        uzemnyCeloks1 = VymazCelokForm.this.trControl.najdiVsetkyObjekty(suradnice[0], suradnice[1],
-                                VymazCelokForm.this.smerXSirka.getText().charAt(0), VymazCelokForm.this.smerYSirka.getText().charAt(0));
-                        uzemnyCeloks2 = VymazCelokForm.this.trControl.najdiVsetkyObjekty(Double.parseDouble(VymazCelokForm.this.textField1.getText()), Double.parseDouble(VymazCelokForm.this.textField2.getText())
-                                , VymazCelokForm.this.smerXDlzka.getText().charAt(0), VymazCelokForm.this.smerYDlzka.getText().charAt(0));
+                    if (VymazCelok.this.parcelaCheckBox.isSelected() && VymazCelok.this.nehnutelnostCheckBox.isSelected()) {
+                        uzemnyCeloks1 = VymazCelok.this.trControl.najdiVsetkyObjekty(suradnice[0], suradnice[1],
+                                VymazCelok.this.smerXSirka.getText().charAt(0), VymazCelok.this.smerYSirka.getText().charAt(0));
+                        uzemnyCeloks2 = VymazCelok.this.trControl.najdiVsetkyObjekty(Double.parseDouble(VymazCelok.this.textField1.getText()), Double.parseDouble(VymazCelok.this.textField2.getText())
+                                , VymazCelok.this.smerXDlzka.getText().charAt(0), VymazCelok.this.smerYDlzka.getText().charAt(0));
                         vysledky.addAll(uzemnyCeloks2);
                         vysledky.addAll(uzemnyCeloks1);
 
                     }
-                    if (VymazCelokForm.this.parcelaCheckBox.isSelected() && !VymazCelokForm.this.nehnutelnostCheckBox.isSelected()) {
-                        parcelas = VymazCelokForm.this.trControl.najdiVsetkyParcely(suradnice[0], suradnice[1], VymazCelokForm.this.smerXSirka.getText().charAt(0), VymazCelokForm.this.smerYSirka.getText().charAt(0));
+                    if (VymazCelok.this.parcelaCheckBox.isSelected() && !VymazCelok.this.nehnutelnostCheckBox.isSelected()) {
+                        parcelas = VymazCelok.this.trControl.najdiVsetkyParcely(suradnice[0], suradnice[1], VymazCelok.this.smerXSirka.getText().charAt(0), VymazCelok.this.smerYSirka.getText().charAt(0));
                         vysledky.addAll(parcelas);
 
-                    } else if (VymazCelokForm.this.nehnutelnostCheckBox.isSelected() && !VymazCelokForm.this.parcelaCheckBox.isSelected()) {
-                        nehnutelnosts = VymazCelokForm.this.trControl.najdiVsetkyNehnutelnosti(suradnice[0], suradnice[1], VymazCelokForm.this.smerXSirka.getText().charAt(0), VymazCelokForm.this.smerYSirka.getText().charAt(0));
+                    } else if (VymazCelok.this.nehnutelnostCheckBox.isSelected() && !VymazCelok.this.parcelaCheckBox.isSelected()) {
+                        nehnutelnosts = VymazCelok.this.trControl.najdiVsetkyNehnutelnosti(suradnice[0], suradnice[1], VymazCelok.this.smerXSirka.getText().charAt(0), VymazCelok.this.smerYSirka.getText().charAt(0));
                         vysledky.addAll(nehnutelnosts);
                     }
 
-                    VymazCelokForm.this.list1.clearSelection();
-                    VymazCelokForm.this.list1.setListData(vysledky.toArray());
+                    VymazCelok.this.list1.clearSelection();
+                    VymazCelok.this.list1.setListData(vysledky.toArray());
 
 
                 } catch (NumberFormatException exception) {
@@ -114,8 +114,8 @@ public class VymazCelokForm extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 try {
-                    VymazCelokForm.this.trControl.vyradUzemnyCelok((UzemnyCelok) VymazCelokForm.this.list1.getSelectedValue());
-                    JOptionPane.showMessageDialog(null, "Vymazané" + VymazCelokForm.this.list1.getSelectedValue().toString());
+                    VymazCelok.this.trControl.vyradUzemnyCelok((UzemnyCelok) VymazCelok.this.list1.getSelectedValue());
+                    JOptionPane.showMessageDialog(null, "Vymazané" + VymazCelok.this.list1.getSelectedValue().toString());
                 } catch (NumberFormatException exception) {
                     JOptionPane.showMessageDialog(null, "Nie sú žiadne prvky na vymazanie");
                 }
@@ -140,16 +140,16 @@ public class VymazCelokForm extends JFrame {
     }
 
     private void skontrolujViditelnostTextFieldov() {
-        if (VymazCelokForm.this.parcelaCheckBox.isSelected() && VymazCelokForm.this.nehnutelnostCheckBox.isSelected()) {
-            VymazCelokForm.this.textField1.setVisible(true);
-            VymazCelokForm.this.textField2.setVisible(true);
-            VymazCelokForm.this.smerXDlzka.setVisible(true);
-            VymazCelokForm.this.smerYDlzka.setVisible(true);
+        if (VymazCelok.this.parcelaCheckBox.isSelected() && VymazCelok.this.nehnutelnostCheckBox.isSelected()) {
+            VymazCelok.this.textField1.setVisible(true);
+            VymazCelok.this.textField2.setVisible(true);
+            VymazCelok.this.smerXDlzka.setVisible(true);
+            VymazCelok.this.smerYDlzka.setVisible(true);
         } else {
-            VymazCelokForm.this.textField1.setVisible(false);
-            VymazCelokForm.this.textField2.setVisible(false);
-            VymazCelokForm.this.smerXDlzka.setVisible(false);
-            VymazCelokForm.this.smerYDlzka.setVisible(false);
+            VymazCelok.this.textField1.setVisible(false);
+            VymazCelok.this.textField2.setVisible(false);
+            VymazCelok.this.smerXDlzka.setVisible(false);
+            VymazCelok.this.smerYDlzka.setVisible(false);
         }
     }
 

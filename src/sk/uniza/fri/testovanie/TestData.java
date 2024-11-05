@@ -1,4 +1,4 @@
-package sk.uniza.fri.aplikacia;
+package sk.uniza.fri.testovanie;
 
 import sk.uniza.fri.struktura.IData;
 import sk.uniza.fri.struktura.TrNode;

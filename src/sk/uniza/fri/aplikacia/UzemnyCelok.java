@@ -80,10 +80,6 @@ public abstract class UzemnyCelok {
         return this.dlzka;
     }
 
-    public UzemnyCelok makeDeepCopy() {
-        return null;
-    }
-
     public String toStringObjektov() {
         String resultString = "";
         for (UzemnyCelok uzemnyCelok : this.uzemneObjekty) {

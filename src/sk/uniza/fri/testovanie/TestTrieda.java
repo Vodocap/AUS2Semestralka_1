@@ -1,8 +1,7 @@
-package sk.uniza.fri;
+package sk.uniza.fri.testovanie;
 
 import sk.uniza.fri.aplikacia.GPSData;
 import sk.uniza.fri.aplikacia.IDGenerator;
-import sk.uniza.fri.aplikacia.TestData;
 import sk.uniza.fri.struktura.IData;
 import sk.uniza.fri.struktura.KDTree;
 import sk.uniza.fri.struktura.TrNode;
