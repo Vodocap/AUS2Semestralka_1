@@ -176,13 +176,6 @@ public class TestTrieda {
         }
     }
 
-    private void dajPocetPrvkovVKontrolnomErejLitse() {
-        System.out.println("Pocet prvkov na kontrolu");
-        System.out.println(this.vkladanePrvky.size());
-        System.out.println("Pocet prvkov v strome");
-        this.kDStrom.inorder(this.kDStrom.getRoot());
-    }
-
 
 
     public void deletujAVypisSkontroluj(int paPocetPrvkov) {
@@ -195,17 +188,6 @@ public class TestTrieda {
             this.vkladanePrvky.remove(this.vkladanePrvky.get(rand_index));
 
         }
-//        this.skontrolujStrom();
-//        int index = 0;
-//        for (TrNode<IData> doubleTrNode : this.vkladanePrvky) {
-//            System.out.println("Index: " + index + " Prvok");
-//            doubleTrNode.getData().printData();
-//            index++;
-//        }
-//        System.out.println("____________________________________________________________________");
-//        System.out.println("Kontrolna prejliadka");
-//        this.kDStrom.inOrderOrFindMinMaxOrInsertSubtree(this.kDStrom.getRoot(), false, false, true);
-//        this.dajPocetPrvkovVKontrolnomErejLitse();
     }
 
     public void najdiNahodnePrvky(int pocetNahodnychPrvkov) {
@@ -220,14 +202,6 @@ public class TestTrieda {
         }
     }
 
-    public void najdiSetkyPrvky () {
-        Random rand = new Random(10);
-        ArrayList<TrNode<IData>> zoznamDup = this.kDStrom.findAll(this.vkladanePrvky.get(rand.nextInt(this.vkladanePrvky.size())).getData());
-        for (TrNode<IData> iDataTrNode : zoznamDup) {
-            iDataTrNode.printNode();
-            iDataTrNode.getData().printData();
-        }
-    }
 
     public void testovaciePripady() {
         this.kDStrom = new KDTree<>(2);
