@@ -394,7 +394,7 @@ public class TrControl {
 
     }
 
-    private ArrayList<Parcela> dajVsetkyParcely() {
+    public ArrayList<Parcela> dajVsetkyParcely() {
         ArrayList<Parcela> parcely = new ArrayList<>();
         for (TrNode<GPSData> parcelaNode : this.stromGPSParciel.inorder(this.stromGPSParciel.getRoot())) {
             if (!parcely.contains((Parcela) parcelaNode.getData().getUzemnyObjekt())) {
@@ -404,7 +404,7 @@ public class TrControl {
         return parcely;
     }
 
-    private ArrayList<Nehnutelnost> dajVsetkyNehnutelnosti() {
+    public ArrayList<Nehnutelnost> dajVsetkyNehnutelnosti() {
         ArrayList<Nehnutelnost> nehnutelnosti = new ArrayList<>();
         for (TrNode<GPSData> parcelaNode : this.stromGPSNehnutelnosti.inorder(this.stromGPSNehnutelnosti.getRoot())) {
             if (!nehnutelnosti.contains((Nehnutelnost) parcelaNode.getData().getUzemnyObjekt())) {

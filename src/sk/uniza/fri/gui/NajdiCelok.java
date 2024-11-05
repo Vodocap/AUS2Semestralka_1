@@ -14,8 +14,6 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -47,6 +45,7 @@ public class NajdiCelok extends JFrame {
     private JTextField smerXDlzka;
     private JTextField smerYDlzka;
     private JTextPane textPane1;
+    private JButton kontrolnyVypisButton;
 
     private MainWindow mainWindow;
     private TrControl trControl;
@@ -116,6 +115,30 @@ public class NajdiCelok extends JFrame {
             }
         });
 
+        this.kontrolnyVypisButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (NajdiCelok.this.parcelaCheckBox.isSelected() && NajdiCelok.this.nehnutelnostCheckBox.isSelected()) {
+                    for (Nehnutelnost nehnutelnost : NajdiCelok.this.trControl.dajVsetkyNehnutelnosti()) {
+                        System.out.println(nehnutelnost.toString());
+                    }
+                    for (Parcela parcela : NajdiCelok.this.trControl.dajVsetkyParcely()) {
+                        System.out.println(parcela.toString());
+                    }
+
+                }
+                if (NajdiCelok.this.parcelaCheckBox.isSelected() && !NajdiCelok.this.nehnutelnostCheckBox.isSelected()) {
+                    for (Parcela parcela : NajdiCelok.this.trControl.dajVsetkyParcely()) {
+                        System.out.println(parcela.toString());
+                    }
+
+                } else if (NajdiCelok.this.nehnutelnostCheckBox.isSelected() && !NajdiCelok.this.parcelaCheckBox.isSelected()) {
+                    for (Nehnutelnost nehnutelnost : NajdiCelok.this.trControl.dajVsetkyNehnutelnosti()) {
+                        System.out.println(nehnutelnost.toString());
+                    }
+                }
+            }
+        });
 
         this.parcelaCheckBox.addActionListener(new ActionListener() {
             @Override
@@ -369,6 +392,13 @@ public class NajdiCelok extends JFrame {
         jPanel1.add(scrollPane2, gbc);
         textPane1 = new JTextPane();
         scrollPane2.setViewportView(textPane1);
+        kontrolnyVypisButton = new JButton();
+        kontrolnyVypisButton.setText("kontrolny vypis");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 10;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        jPanel1.add(kontrolnyVypisButton, gbc);
         final JPanel spacer1 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
