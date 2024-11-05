@@ -14,6 +14,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
+
+/**
+ * Trieda reprezentujúca jadro aplikácie,
+ * je zodpovedná za správu troch stromov obsahujúcich územné celky.
+ * Poskytuje metódy ktoré plnia úlohy mazania, pridávania a vyhľadávania v systéme
+ */
+
 public class TrControl {
     private KDTree<GPSData> stromGPSParciel;
     private KDTree<GPSData> stromGPSNehnutelnosti;
@@ -28,6 +35,14 @@ public class TrControl {
     }
 
 
+    /**
+     * metóda najdiVestkyNehnutelnosti podľa zadaných súradníc vráti kópie všetkých nehnuteľností pre výpis na GUI
+     * @param poziciaX vyhľadávaná pozícia x nehnuteľnosti
+     * @param poziciaY vyhľadávaná pozícia y nehnuteľnosti
+     * @param charX vyhľadávaný smer pozície x nehnuteľnosti (Ak N tak pozícia x * 1 a ak E tak pozícia x * (-1))
+     * @param charY vyhľadávaný smer pozície y nehnuteľnosti (Ak E tak pozícia y * 1 a ak W tak pozícia y * (-1))
+     * @return zoznam kópií nájdených nehnuteľností
+     */
     public ArrayList<Nehnutelnost> najdiVsetkyNehnutelnosti(double poziciaX, double poziciaY, char charX, char charY) {
         double[] tempSuradnice = {poziciaX, poziciaY};
         char[] tempChary = {charX, charY};
@@ -63,6 +78,14 @@ public class TrControl {
         return this.stromUzemnychCelkov.find(gpsData).getData().getUzemnyObjekt();
     }
 
+    /**
+     * metóda najdiVestkyParcely podľa zadaných súradníc vráti kópie všetkých parciel pre výpis na GUI
+     * @param poziciaX vyhľadávaná pozícia x parcely
+     * @param poziciaY vyhľadávaná pozícia y parcely
+     * @param charX vyhľadávaný smer pozície x parcely (Ak N tak pozícia x * 1 a ak E tak pozícia x * (-1))
+     * @param charY vyhľadávaný smer pozície y parcely (Ak E tak pozícia y * 1 a ak W tak pozícia y * (-1))
+     * @return zoznam kópií nájdených parciel
+     */
     public ArrayList<Parcela> najdiVsetkyParcely(double poziciaX, double poziciaY, char charX, char charY) {
         double[] tempSuradnice = {poziciaX, poziciaY};
         char[] tempChary = {charX, charY};
@@ -95,6 +118,14 @@ public class TrControl {
         return copyResult;
     }
 
+    /**
+     * metóda najdiVestkyObjekty podľa zadaných súradníc vráti kópie všetkých nádjených územných celkov pre výpis na GUI
+     * @param poziciaX vyhľadávaná pozícia x územného celku
+     * @param poziciaY vyhľadávaná pozícia y územného celku
+     * @param charX vyhľadávaný smer pozície x územného celku (Ak N tak pozícia x * 1 a ak E tak pozícia x * (-1))
+     * @param charY vyhľadávaný smer pozície y územného celku (Ak E tak pozícia y * 1 a ak W tak pozícia y * (-1))
+     * @return zoznam kópií nájdených územných celkov
+     */
     public ArrayList<UzemnyCelok> najdiVsetkyObjekty(double poziciaX, double poziciaY, char charX, char charY) {
         double[] tempSuradnice = {poziciaX, poziciaY};
         char[] tempChary = {charX, charY};
@@ -198,6 +229,18 @@ public class TrControl {
         }
     }
 
+
+    /**
+     *
+     * metóda pridajNehnutelnost podľa zadaných informácií pridá do systému novú nehnuteľnosť, ak sa nehnuteľnosť prekrýva s dákymi parcelami,
+     * pridá sa im do zoznamu a ona si ich pridá do zoznamu tiež
+     * @param paCislo číslo pridávanej nehnuteľnosti
+     * @param paPopis popis pridávanej nehnuteľnosti
+     * @param paSuradnice pole všetkých súradníc novej nehnuteľnosti
+     * @param paChary pole všetkých smerov súradníc novej nehnuteľnosti
+     * @param urobPrekryvy ak je true tak sa pri pridávaní zavolá aj metóda na pridanie parciel s ktorými sa prekrýva a pridá sa tiež aj im do ich zoznamov
+     *
+     */
     public void pridajNehnutelnost(int paCislo,String paPopis, double[] paSuradnice, char[] paChary, boolean urobPrekryvy) {
         double[] poleSirka = {paSuradnice[0], paSuradnice[1]};
         double[] poleDlzka = {paSuradnice[2], paSuradnice[3]};
@@ -228,6 +271,17 @@ public class TrControl {
         this.stromUzemnychCelkov.insert(dlzkoveDataVseaob);
     }
 
+    /**
+     *
+     * metóda pridajparcelu podľa zadaných informácií pridá do systému novú parcelu, ak sa parcela prekrýva s dákymi nehnuteoľnosťami,
+     * pridá sa im do zoznamu a ona si ich pridá do zoznamu tiež
+     * @param paCislo číslo pridávanej parcely
+     * @param paPopis popis pridávanej parcely
+     * @param paSuradnice pole všetkých súradníc novej parcely
+     * @param paChary pole všetkých smerov súradníc novej parcely
+     * @param urobPrekryvy ak je true tak sa pri pridávaní zavolá aj metóda na pridanie nehnuteľností s ktorými sa prekrýva a pridá sa tiež aj im do ich zoznamov
+     *
+     */
     public void pridajParcelu(int paCislo,String paPopis, double[] paSuradnice, char[] paChary, boolean urobPrekryvy) {
         double[] poleSirka = {paSuradnice[0], paSuradnice[1]};
         double[] poleDlzka = {paSuradnice[2], paSuradnice[3]};
@@ -258,7 +312,17 @@ public class TrControl {
         this.stromUzemnychCelkov.insert(dlzkoveDataVseaob);
     }
 
-
+    /**
+     *
+     * metóda upravParcelu upraví používateľom vybranú parcelu, ak sa nezmenia kľúčové parametre (súradnice) tak sa hodnoty len zmenia v systéme,
+     * ak sa však zmení aspoň jedna zo súradníc tak sa parcela zo systému vymaže a upravená za insertne naspäť
+     * @param noveCislo nové číslo parcely
+     * @param originalParcela referencia na originálnu parcelu
+     * @param novyPopis nový popis parcely
+     * @param noveSuradnice nové pole všetkých súradníc parcely
+     * @param noveChary nové pole všetkých smerov súradníc parcely
+     *
+     */
     public void upravParcelu(Parcela originalParcela, int noveCislo, String novyPopis, double[] noveSuradnice, char[] noveChary) {
         if (noveCislo != originalParcela.getCislo()) {
             this.najdiKonkretnyCelok(originalParcela.getDlzka()).setCislo(noveCislo);
@@ -281,6 +345,17 @@ public class TrControl {
         }
     }
 
+    /**
+     *
+     * metóda upravNehnutelnost upraví používateľom vybranú nehnuteľnosť, ak sa nezmenia kľúčové parametre (súradnice) tak sa hodnoty len zmenia v systéme,
+     * ak sa však zmení aspoň jedna zo súradníc tak sa nehnuteľnosť zo systému vymaže a upravená za insertne naspäť
+     * @param noveCislo nové číslo nehnuteľnosti
+     * @param originalNehnutelnost referencia na originálnu nehnuteľnosť
+     * @param novyPopis nový popis nehnuteľnosti
+     * @param noveSuradnice nové pole všetkých súradníc nehnuteľnosti
+     * @param noveChary nové pole všetkých smerov súradníc nehnuteľnosti
+     *
+     */
     public void upravNehnutelnost(Nehnutelnost originalNehnutelnost, int noveCislo, String novyPopis, double[] noveSuradnice, char[] noveChary) {
         if (noveCislo != originalNehnutelnost.getCislo()) {
             this.najdiKonkretnyCelok(originalNehnutelnost.getDlzka()).setCislo(noveCislo);
@@ -303,6 +378,12 @@ public class TrControl {
         }
     }
 
+    /**
+     *
+     * metóda vyradUzemnyCelok upraví používateľom vybraný územný celok zo všetkých miest na ktorých sa nachádza teda aj zo zonamov územných celkov s ktorými sa prekrýva
+     * @param uzemnyCelok referencia na územný celok ktorý sa vymaže
+     *
+     */
     public void vyradUzemnyCelok(UzemnyCelok uzemnyCelok) {
         UzemnyCelok uzemnyCelokMazany = this.najdiKonkretnyCelok(uzemnyCelok.getDlzka());
         if (uzemnyCelokMazany instanceof Parcela) {
@@ -348,6 +429,14 @@ public class TrControl {
         this.stromUzemnychCelkov.delete(uzemnyCelokMazany.getDlzka());
     }
 
+    /**
+     *
+     * metóda generujData vygeneruje dáta podľa zadaných parametrov
+     * @param pocetParciel počet parciel na vygenerovanie
+     * @param pocetNehnutelnosti počet nehnuteľností na vygenerovanie
+     * @param percentoPrekryvu percento vygenerovaných celkov ktoré sa budú prekrývať s ďalšími
+     *
+     */
     public void generujData(int pocetParciel, int pocetNehnutelnosti, double percentoPrekryvu) {
         ArrayList<double[]> pouzite = new ArrayList<>();
         Random rand = new Random();
@@ -394,6 +483,11 @@ public class TrControl {
 
     }
 
+    /**
+     *
+     * metóda dajVsetkyParcely slúži na účely overenia správnosti fungovania systému, vráti všetky parcely kotré sa nachádzajú v systéme
+     *
+     */
     public ArrayList<Parcela> dajVsetkyParcely() {
         ArrayList<Parcela> parcely = new ArrayList<>();
         for (TrNode<GPSData> parcelaNode : this.stromGPSParciel.inorder(this.stromGPSParciel.getRoot())) {
@@ -404,6 +498,11 @@ public class TrControl {
         return parcely;
     }
 
+    /**
+     *
+     * metóda dajVsetkyNehnutelnosti slúži na účely overenia správnosti fungovania systému, vráti všetky nehnuteľnosti kotré sa nachádzajú v systéme
+     *
+     */
     public ArrayList<Nehnutelnost> dajVsetkyNehnutelnosti() {
         ArrayList<Nehnutelnost> nehnutelnosti = new ArrayList<>();
         for (TrNode<GPSData> parcelaNode : this.stromGPSNehnutelnosti.inorder(this.stromGPSNehnutelnosti.getRoot())) {
@@ -414,6 +513,12 @@ public class TrControl {
         return nehnutelnosti;
     }
 
+    /**
+     *
+     * metóda nacitajDataZoSuboru zo zadaných súborov načíta a rozparsuje dáta ktoré potom vloží do systému
+     * @param suborNehnutelnosti string cesta k súboru nehnuteľností
+     * @param suborParcely string cesta k súboru parciel
+     */
     public void nacitajDataZoSuboru(String suborParcely, String suborNehnutelnosti)  {
         try {
             BufferedReader readerParciel = new BufferedReader(new FileReader(suborParcely));
@@ -484,6 +589,12 @@ public class TrControl {
 
     }
 
+    /**
+     *
+     * metóda zapisDataDoSuboru do zadaných súborov zapíše všetky dáta zo systému csv formáte
+     * @param suborNehnutelnostiCesta string cesta k súboru nehnuteľností
+     * @param suborparcielCesta string cesta k súboru parciel
+     */
     public void zapisDataDoSuboru(String suborparcielCesta, String suborNehnutelnostiCesta) {
         File parcelySubor = new File(suborparcielCesta);
         File nehnutelnostiSubor = new File(suborNehnutelnostiCesta);

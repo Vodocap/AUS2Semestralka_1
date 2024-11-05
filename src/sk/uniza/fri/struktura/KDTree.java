@@ -11,7 +11,14 @@ import java.util.Stack;
  */
 
 
-
+/**
+ * Trieda reprezentujúca K-D strom,
+ * v konštruktore prijíma jeden paremeter,
+ * int ktorý reprezentuje počet dimenzií v strome,
+ * ako atribúty si uchováva ešte aj root a zoznam duplicitných dát pre neskoršie vymazanie a reinserciu.
+ * V jeho nodoch sa nachádzajú sa v ňom prvky ktoré dedia interface IData
+ *
+ */
 public class KDTree<T extends IData> {
     private TrNode<T> root;
     private final int dimensions;
@@ -22,14 +29,32 @@ public class KDTree<T extends IData> {
         this.duplicateData = new ArrayList<>();
 
     }
+
+    /**
+     * metóda emplaceRoot vloží do stromu prvok a nastací ho ako root
+     * @param paNode nový node
+     *
+     */
     public void emplaceRoot(TrNode<T> paNode) {
         this.root = paNode;
     }
 
+    /**
+     * metóda getRoot vracia root stromu
+     * @return vráti root
+     *
+     */
     public TrNode<T> getRoot() {
         return this.root;
     }
 
+
+    /**
+     * metóda insert vloží do stromu dáta, zaobalí ich do nodu a správne ho umiestni do stromu podľa pravidiel k-d stromu
+     * @param data vkladané dáta
+     * @return ak sa prvok správne umiestni vráti true
+     *
+     */
 
     public boolean insert(T data) {
         TrNode<T> paNode = new TrNode<>(data);
@@ -87,6 +112,13 @@ public class KDTree<T extends IData> {
 
     }
 
+    /**
+     * metóda find v strome nájde node s konkrétnymi dátami podľa ich interného ID
+     * @param paData hľadané dáta
+     * @return node s hľadanými dátami, ak sa však nenašli vráti null
+     *
+     */
+
     public TrNode<T> find(T paData) {
         TrNode<T> currentNode = this.root;
         int level = 0;
@@ -116,6 +148,13 @@ public class KDTree<T extends IData> {
 //
         return null;
     }
+
+    /**
+     * metóda findAll v strome nájde zoznam nodov s hľadanými dátami zhodnými na všetkých dimenziách
+     * @param paData hľadané dáta
+     * @return zoznam nodov s hľadanými dátami
+     *
+     */
 
     public ArrayList<TrNode<T>> findAll(T paData) {
 
@@ -177,6 +216,13 @@ public class KDTree<T extends IData> {
 
     }
 
+    /**
+     * metóda delete v strome nájde node s konkrétnymi dátami na vymazanie a odstráni ho postupným prehadzovaním dát až do listu, ak sa strom pokazí tak
+     * ho vybratím a reinsertovaním duplikátov opraví
+     * @param paData hľadané dáta
+     * @return true ak sa node mohol odstrániť, false ak sa v strome nenašiel
+     *
+     */
 
     public boolean delete(T paData) {
         TrNode<T> nodeToRemove = this.find(paData);
@@ -303,6 +349,13 @@ public class KDTree<T extends IData> {
         return nodesResult;
     }
 
+
+    /**
+     * metóda inorder urobí prehliadku stromu podľa morrisovho algoritmu a vráti všetky nody stromu
+     * @param paNode node od ktorého začne prehliadka
+     * @return ArrayList všetkých nodov v strome
+     *
+     */
 
     public ArrayList<TrNode<T>> inorder(TrNode<T> paNode) {
         ArrayList<TrNode<T>> nodesResult = new ArrayList<>();

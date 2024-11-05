@@ -6,6 +6,7 @@ import sk.uniza.fri.struktura.IData;
 import sk.uniza.fri.struktura.KDTree;
 import sk.uniza.fri.struktura.TrNode;
 
+import java.awt.image.AreaAveragingScaleFilter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Random;
@@ -63,12 +64,32 @@ public class TestTrieda {
                     }
 
                 } else if (cislo > 0.66) {
-
-                    if (this.kDStrom.find(this.vkladanePrvky.get(random.nextInt(this.vkladanePrvky.size())).getData()) != null) {
-                        continue;
-                    } else {
-                        throw new RuntimeException("Nenasiel sa hladany prvok");
+                    IData hladaneData = this.vkladanePrvky.get(random.nextInt(this.vkladanePrvky.size())).getData();
+                    ArrayList<IData> hladaneDataControl = new ArrayList<>();
+                    for (TrNode<IData> iDataTrNode : this.vkladanePrvky) {
+                        if (hladaneData.equals(iDataTrNode.getData(), false)) {
+                            hladaneDataControl.add(iDataTrNode.getData());
+                        }
                     }
+
+                    ArrayList<TrNode<IData>> vysledneNody = this.kDStrom.findAll(hladaneData);
+                    ArrayList<IData> vysledneData = new ArrayList<>();
+                    for (TrNode<IData> iDataTrNode : vysledneNody) {
+                        vysledneData.add(iDataTrNode.getData());
+                    }
+
+                    int hldane = 0;
+                    for (IData iData : hladaneDataControl) {
+                        if (vysledneData.contains(iData)) {
+                            hldane++;
+                        } else {
+                            throw new RuntimeException("Nenasiel sa hladany prvok");
+                        }
+                    }
+                    if (hldane != hladaneDataControl.size()) {
+                        throw new RuntimeException("Nenasli sa vsetky prvky co sa mali");
+                    }
+
                 }
             }
             this.skontrolujStrom();

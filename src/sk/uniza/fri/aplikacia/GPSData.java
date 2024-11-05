@@ -5,6 +5,14 @@ import sk.uniza.fri.struktura.TrNode;
 
 import java.util.Random;
 
+
+/**
+ * Trieda reprezentujúca súradnicu parcely,
+ * udržuje si informácie o súčastnom node,
+ * Unikátnom ID atribúte,
+ * územnom objekte ktorému prislúcha,
+ * samotných súradniciach a ich smeroch.
+ */
 public class GPSData implements IData<Double> {
     private double[] suradnice;
     private UzemnyCelok uzemnyObjekt;
@@ -38,6 +46,7 @@ public class GPSData implements IData<Double> {
             }
 
         }
+
 
 
     }
