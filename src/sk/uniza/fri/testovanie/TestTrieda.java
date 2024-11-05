@@ -15,6 +15,8 @@ import java.util.Random;
  * 8. 10. 2024 - 14:38
  *
  * @author matus
+ *
+ *
  */
 public class TestTrieda {
 

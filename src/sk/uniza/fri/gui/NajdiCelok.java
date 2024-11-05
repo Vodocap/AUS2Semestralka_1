@@ -118,25 +118,35 @@ public class NajdiCelok extends JFrame {
         this.kontrolnyVypisButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                ArrayList<Parcela> parcelas = new ArrayList<>();
+                ArrayList<Nehnutelnost> nehnutelnosts = new ArrayList<>();
+                ArrayList<UzemnyCelok> vysledky = new ArrayList<>();
+
                 if (NajdiCelok.this.parcelaCheckBox.isSelected() && NajdiCelok.this.nehnutelnostCheckBox.isSelected()) {
-                    for (Nehnutelnost nehnutelnost : NajdiCelok.this.trControl.dajVsetkyNehnutelnosti()) {
-                        System.out.println(nehnutelnost.toString());
-                    }
-                    for (Parcela parcela : NajdiCelok.this.trControl.dajVsetkyParcely()) {
-                        System.out.println(parcela.toString());
-                    }
+                    parcelas = NajdiCelok.this.trControl.dajVsetkyParcely(true);
+                    nehnutelnosts = NajdiCelok.this.trControl.dajVsetkyNehnutelnosti(true);
+                    vysledky.addAll(parcelas);
+                    vysledky.addAll(nehnutelnosts);
 
                 }
                 if (NajdiCelok.this.parcelaCheckBox.isSelected() && !NajdiCelok.this.nehnutelnostCheckBox.isSelected()) {
-                    for (Parcela parcela : NajdiCelok.this.trControl.dajVsetkyParcely()) {
-                        System.out.println(parcela.toString());
-                    }
+                    parcelas = NajdiCelok.this.trControl.dajVsetkyParcely(true);
+                    vysledky.addAll(parcelas);
 
                 } else if (NajdiCelok.this.nehnutelnostCheckBox.isSelected() && !NajdiCelok.this.parcelaCheckBox.isSelected()) {
-                    for (Nehnutelnost nehnutelnost : NajdiCelok.this.trControl.dajVsetkyNehnutelnosti()) {
-                        System.out.println(nehnutelnost.toString());
-                    }
+                    nehnutelnosts = NajdiCelok.this.trControl.dajVsetkyNehnutelnosti(true);
+                    vysledky.addAll(nehnutelnosts);
                 }
+
+                NajdiCelok.this.list1.clearSelection();
+                Object[] objektyArray = vysledky.toArray();
+                UzemnyCelok[] vyslednyArray = new UzemnyCelok[objektyArray.length];
+                for (int i = 0; i < vyslednyArray.length; i++) {
+                    vyslednyArray[i] = (UzemnyCelok) objektyArray[i];
+                }
+                NajdiCelok.this.list1.setListData(vyslednyArray);
+
             }
         });
 

@@ -486,29 +486,70 @@ public class TrControl {
     /**
      *
      * metóda dajVsetkyParcely slúži na účely overenia správnosti fungovania systému, vráti všetky parcely kotré sa nachádzajú v systéme
+     * @param copies ak je true tak vráti iba kópie inak vráti priamo objekty
      *
      */
-    public ArrayList<Parcela> dajVsetkyParcely() {
+    public ArrayList<Parcela> dajVsetkyParcely(boolean copies) {
         ArrayList<Parcela> parcely = new ArrayList<>();
-        for (TrNode<GPSData> parcelaNode : this.stromGPSParciel.inorder(this.stromGPSParciel.getRoot())) {
+        ArrayList<Parcela> parcelyKopie = new ArrayList<>();
+        ArrayList<TrNode<GPSData>> parcelyGPS = this.stromGPSParciel.inorder(this.stromGPSParciel.getRoot());
+        for (TrNode<GPSData> parcelaNode : parcelyGPS) {
             if (!parcely.contains((Parcela) parcelaNode.getData().getUzemnyObjekt())) {
                 parcely.add((Parcela) parcelaNode.getData().getUzemnyObjekt());
             }
+        }
+
+        if (copies) {
+            for (Parcela parcelaOriginal : parcely) {
+                Parcela returnParcela = (Parcela) parcelaOriginal.makeCopy();
+                GPSData returnSirka = (GPSData) parcelaOriginal.getSirka().makeCopy();
+                GPSData returnDlzka = (GPSData) parcelaOriginal.getDlzka().makeCopy();
+                returnSirka.setUzemnyObjekt(returnParcela);
+                returnDlzka.setUzemnyObjekt(returnParcela);
+                returnParcela.setDlzka(returnSirka);
+                returnParcela.setSirka(returnDlzka);
+                returnParcela.setStringObjektov(parcelaOriginal.toStringObjektov());
+
+                parcelyKopie.add(returnParcela);
+
+            }
+            return parcelyKopie;
+
         }
         return parcely;
     }
 
     /**
      *
-     * metóda dajVsetkyNehnutelnosti slúži na účely overenia správnosti fungovania systému, vráti všetky nehnuteľnosti kotré sa nachádzajú v systéme
+     * metóda dajVsetkyNehnutelnosti slúži na účely overenia správnosti fungovania systému, vráti všetky nehnuteľnosti ktoré sa nachádzajú v systéme
+     * @param copies ak je true tak vráti iba kópie inak vráti priamo objekty
      *
      */
-    public ArrayList<Nehnutelnost> dajVsetkyNehnutelnosti() {
+    public ArrayList<Nehnutelnost> dajVsetkyNehnutelnosti(boolean copies) {
         ArrayList<Nehnutelnost> nehnutelnosti = new ArrayList<>();
-        for (TrNode<GPSData> parcelaNode : this.stromGPSNehnutelnosti.inorder(this.stromGPSNehnutelnosti.getRoot())) {
+        ArrayList<Nehnutelnost> nehnutelnostiKopie = new ArrayList<>();
+        ArrayList<TrNode<GPSData>> nehnutelnostiGPS = this.stromGPSNehnutelnosti.inorder(this.stromGPSNehnutelnosti.getRoot());
+        for (TrNode<GPSData> parcelaNode : nehnutelnostiGPS) {
             if (!nehnutelnosti.contains((Nehnutelnost) parcelaNode.getData().getUzemnyObjekt())) {
                 nehnutelnosti.add((Nehnutelnost) parcelaNode.getData().getUzemnyObjekt());
             }
+        }
+        if (copies) {
+            for (Nehnutelnost nehnutelnostOriginal : nehnutelnosti) {
+                Nehnutelnost returnNehnutelnost = (Nehnutelnost) nehnutelnostOriginal.makeCopy();
+                GPSData returnSirka = (GPSData) nehnutelnostOriginal.getSirka().makeCopy();
+                GPSData returnDlzka = (GPSData) nehnutelnostOriginal.getDlzka().makeCopy();
+                returnSirka.setUzemnyObjekt(returnNehnutelnost);
+                returnDlzka.setUzemnyObjekt(returnNehnutelnost);
+                returnNehnutelnost.setDlzka(returnSirka);
+                returnNehnutelnost.setSirka(returnDlzka);
+                returnNehnutelnost.setStringObjektov(nehnutelnostOriginal.toStringObjektov());
+
+                nehnutelnostiKopie.add(returnNehnutelnost);
+
+            }
+            return nehnutelnostiKopie;
+
         }
         return nehnutelnosti;
     }
@@ -580,10 +621,10 @@ public class TrControl {
     }
 
     private void vyytvorVsetkyPrekryvy() {
-        for (Nehnutelnost nehnutelnost : this.dajVsetkyNehnutelnosti()) {
+        for (Nehnutelnost nehnutelnost : this.dajVsetkyNehnutelnosti(false)) {
             this.pridajPrekryvajuce(nehnutelnost, nehnutelnost.getSirka(), nehnutelnost.getDlzka());
         }
-        for (Parcela parcela : this.dajVsetkyParcely()) {
+        for (Parcela parcela : this.dajVsetkyParcely(false)) {
             this.pridajPrekryvajuce(parcela, parcela.getSirka(), parcela.getDlzka());
         }
 
@@ -605,7 +646,7 @@ public class TrControl {
             writerParciel = new BufferedWriter(new FileWriter(parcelySubor));
             writerNehnutelnosti = new BufferedWriter(new FileWriter(nehnutelnostiSubor));
 
-        for (Parcela parcela : this.dajVsetkyParcely()) {
+        for (Parcela parcela : this.dajVsetkyParcely(false)) {
             String parcelaRiadok = "Parcela;" + parcela.getCislo() + ";" + parcela.getPopis() + ";" + parcela.getSirka().getDataAtD(0) + ";" + parcela.getSirka().getDataAtD(1) +
                     ";" + parcela.getDlzka().getDataAtD(0) + ";" + parcela.getDlzka().getDataAtD(1) + ";\n";
             System.out.println("Zapisane:");
@@ -613,7 +654,7 @@ public class TrControl {
             writerParciel.write(parcelaRiadok);
         }
         writerParciel.close();
-        for (Nehnutelnost nehnutelnost : this.dajVsetkyNehnutelnosti()) {
+        for (Nehnutelnost nehnutelnost : this.dajVsetkyNehnutelnosti(false)) {
             String nehnutelnostRiadok = "Nehnutelnost;" + nehnutelnost.getCislo() + ";" + nehnutelnost.getPopis() + ";" + nehnutelnost.getSirka().getDataAtD(0) + ";" + nehnutelnost.getSirka().getDataAtD(1) +
                     ";" + nehnutelnost.getDlzka().getDataAtD(0) + ";" + nehnutelnost.getDlzka().getDataAtD(1) + ";\n";
             writerNehnutelnosti.write(nehnutelnostRiadok);
