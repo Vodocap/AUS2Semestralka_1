@@ -14,8 +14,8 @@ public class Nehnutelnost extends UzemnyCelok {
     public String toString () {
         return  ("Nehnutelnosť - cislo (" + super.getCislo() + ") " +
                 "Popis: " + super.getPopis() + "\n"
-                + "Suradnice: " + "(" + (super.getSirka().getDataAtD(0)) + ", " + (super.getSirka().getDataAtD(1)) + ") "
-                + "(" + (super.getDlzka().getDataAtD(0)) + ", " + (super.getDlzka().getDataAtD(1)) + ") ") + "\n";
+                + "Suradnice: " + "(" + (super.getSirka().getDataAtD(0)) + ", " + (super.getSirka().getDataAtD(2)) + ") "
+                + "(" + (super.getDlzka().getDataAtD(0)) + ", " + (super.getDlzka().getDataAtD(2)) + ") ") + "\n";
     }
 
 }

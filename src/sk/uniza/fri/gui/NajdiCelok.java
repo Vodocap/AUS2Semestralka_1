@@ -40,12 +40,12 @@ public class NajdiCelok extends JFrame {
     private JTextField textField1;
     private JTextField textField2;
     private JTextArea textArea1;
-    private JTextField smerXSirka;
-    private JTextField smerYSirka;
-    private JTextField smerXDlzka;
-    private JTextField smerYDlzka;
     private JTextPane textPane1;
     private JButton kontrolnyVypisButton;
+    private JComboBox comboSmerXSirka;
+    private JComboBox comboSmerYSirka;
+    private JComboBox comboSmerXDlzka;
+    private JComboBox comboSmerYDlzka;
 
     private MainWindow mainWindow;
     private TrControl trControl;
@@ -53,14 +53,9 @@ public class NajdiCelok extends JFrame {
     public NajdiCelok(MainWindow paMainWindow) {
         this.createUIComponents();
         this.$$$setupUI$$$();
-        this.smerXSirka.setText(String.valueOf('N'));
-        this.smerYSirka.setText(String.valueOf('E'));
-        this.smerXDlzka.setText(String.valueOf('N'));
-        this.smerYDlzka.setText(String.valueOf('E'));
 
         this.mainWindow = paMainWindow;
         this.trControl = paMainWindow.getTrControl();
-
 
         this.zrusitButton.addActionListener(new ActionListener() {
             @Override
@@ -84,19 +79,21 @@ public class NajdiCelok extends JFrame {
 
                     if (NajdiCelok.this.parcelaCheckBox.isSelected() && NajdiCelok.this.nehnutelnostCheckBox.isSelected()) {
                         uzemnyCeloks1 = NajdiCelok.this.trControl.najdiVsetkyObjekty(suradnice[0], suradnice[1],
-                                NajdiCelok.this.smerXSirka.getText().charAt(0), NajdiCelok.this.smerYSirka.getText().charAt(0));
+                                ((String) NajdiCelok.this.comboSmerXSirka.getSelectedItem()).charAt(0), ((String) NajdiCelok.this.comboSmerYSirka.getSelectedItem()).charAt(0));
                         uzemnyCeloks2 = NajdiCelok.this.trControl.najdiVsetkyObjekty(Double.parseDouble(NajdiCelok.this.textField1.getText()), Double.parseDouble(NajdiCelok.this.textField2.getText())
-                                , NajdiCelok.this.smerXDlzka.getText().charAt(0), NajdiCelok.this.smerYDlzka.getText().charAt(0));
+                                , ((String) NajdiCelok.this.comboSmerXDlzka.getSelectedItem()).charAt(0), ((String) NajdiCelok.this.comboSmerYDlzka.getSelectedItem()).charAt(0));
                         vysledky.addAll(uzemnyCeloks2);
                         vysledky.addAll(uzemnyCeloks1);
 
                     }
                     if (NajdiCelok.this.parcelaCheckBox.isSelected() && !NajdiCelok.this.nehnutelnostCheckBox.isSelected()) {
-                        parcelas = NajdiCelok.this.trControl.najdiVsetkyParcely(suradnice[0], suradnice[1], NajdiCelok.this.smerXSirka.getText().charAt(0), NajdiCelok.this.smerYSirka.getText().charAt(0));
+                        parcelas = NajdiCelok.this.trControl.najdiVsetkyParcely(suradnice[0], suradnice[1]
+                                , ((String) NajdiCelok.this.comboSmerXSirka.getSelectedItem()).charAt(0), ((String) NajdiCelok.this.comboSmerYSirka.getSelectedItem()).charAt(0));
                         vysledky.addAll(parcelas);
 
                     } else if (NajdiCelok.this.nehnutelnostCheckBox.isSelected() && !NajdiCelok.this.parcelaCheckBox.isSelected()) {
-                        nehnutelnosts = NajdiCelok.this.trControl.najdiVsetkyNehnutelnosti(suradnice[0], suradnice[1], NajdiCelok.this.smerXSirka.getText().charAt(0), NajdiCelok.this.smerYSirka.getText().charAt(0));
+                        nehnutelnosts = NajdiCelok.this.trControl.najdiVsetkyNehnutelnosti(suradnice[0], suradnice[1],
+                                ((String) NajdiCelok.this.comboSmerXSirka.getSelectedItem()).charAt(0), ((String) NajdiCelok.this.comboSmerYSirka.getSelectedItem()).charAt(0));
                         vysledky.addAll(nehnutelnosts);
                     }
 
@@ -196,13 +193,10 @@ public class NajdiCelok extends JFrame {
         if (NajdiCelok.this.parcelaCheckBox.isSelected() && NajdiCelok.this.nehnutelnostCheckBox.isSelected()) {
             NajdiCelok.this.textField1.setVisible(true);
             NajdiCelok.this.textField2.setVisible(true);
-            NajdiCelok.this.smerXDlzka.setVisible(true);
-            NajdiCelok.this.smerYDlzka.setVisible(true);
+
         } else {
             NajdiCelok.this.textField1.setVisible(false);
             NajdiCelok.this.textField2.setVisible(false);
-            NajdiCelok.this.smerXDlzka.setVisible(false);
-            NajdiCelok.this.smerYDlzka.setVisible(false);
         }
     }
 
@@ -345,45 +339,6 @@ public class NajdiCelok extends JFrame {
         gbc.gridy = 9;
         gbc.anchor = GridBagConstraints.WEST;
         jPanel1.add(label5, gbc);
-        smerXSirka = new JTextField();
-        smerXSirka.setMinimumSize(new Dimension(50, 35));
-        smerXSirka.setPreferredSize(new Dimension(50, 35));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3;
-        gbc.gridy = 3;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        jPanel1.add(smerXSirka, gbc);
-        smerYSirka = new JTextField();
-        smerYSirka.setMinimumSize(new Dimension(50, 35));
-        smerYSirka.setPreferredSize(new Dimension(50, 35));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 4;
-        gbc.gridy = 3;
-        gbc.gridwidth = 7;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        jPanel1.add(smerYSirka, gbc);
-        smerXDlzka = new JTextField();
-        smerXDlzka.setMinimumSize(new Dimension(50, 35));
-        smerXDlzka.setPreferredSize(new Dimension(50, 35));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3;
-        gbc.gridy = 4;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        jPanel1.add(smerXDlzka, gbc);
-        smerYDlzka = new JTextField();
-        smerYDlzka.setMinimumSize(new Dimension(50, 35));
-        smerYDlzka.setPreferredSize(new Dimension(50, 35));
-        smerYDlzka.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 4;
-        gbc.gridy = 4;
-        gbc.gridwidth = 7;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        jPanel1.add(smerYDlzka, gbc);
         final JLabel label6 = new JLabel();
         label6.setText("Smery");
         gbc = new GridBagConstraints();
@@ -409,6 +364,52 @@ public class NajdiCelok extends JFrame {
         gbc.gridy = 10;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel1.add(kontrolnyVypisButton, gbc);
+        comboSmerXSirka = new JComboBox();
+        final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
+        defaultComboBoxModel1.addElement("N");
+        defaultComboBoxModel1.addElement("S");
+        comboSmerXSirka.setModel(defaultComboBoxModel1);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3;
+        gbc.gridy = 3;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        jPanel1.add(comboSmerXSirka, gbc);
+        comboSmerYSirka = new JComboBox();
+        final DefaultComboBoxModel defaultComboBoxModel2 = new DefaultComboBoxModel();
+        defaultComboBoxModel2.addElement("E");
+        defaultComboBoxModel2.addElement("W");
+        comboSmerYSirka.setModel(defaultComboBoxModel2);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 4;
+        gbc.gridy = 3;
+        gbc.gridwidth = 4;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        jPanel1.add(comboSmerYSirka, gbc);
+        comboSmerXDlzka = new JComboBox();
+        final DefaultComboBoxModel defaultComboBoxModel3 = new DefaultComboBoxModel();
+        defaultComboBoxModel3.addElement("N");
+        defaultComboBoxModel3.addElement("S");
+        comboSmerXDlzka.setModel(defaultComboBoxModel3);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3;
+        gbc.gridy = 4;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        jPanel1.add(comboSmerXDlzka, gbc);
+        comboSmerYDlzka = new JComboBox();
+        final DefaultComboBoxModel defaultComboBoxModel4 = new DefaultComboBoxModel();
+        defaultComboBoxModel4.addElement("E");
+        defaultComboBoxModel4.addElement("W");
+        comboSmerYDlzka.setModel(defaultComboBoxModel4);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 4;
+        gbc.gridy = 4;
+        gbc.gridwidth = 4;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        jPanel1.add(comboSmerYDlzka, gbc);
         final JPanel spacer1 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;

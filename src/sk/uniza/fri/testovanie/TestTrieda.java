@@ -33,6 +33,10 @@ public class TestTrieda {
 
     public void generatorOperacii(int pocetoperacii, boolean inty, boolean testData) {
         this.kDStrom = new KDTree<IData>(2);
+        if (!inty && !testData) {
+            this.kDStrom = new KDTree<IData>(4);
+        }
+
         this.vkladanePrvky = new ArrayList<TrNode<IData>>();
         for (int i = 0; i < 20000; i++) {
             this.naplnStromAVypisInty(1);
