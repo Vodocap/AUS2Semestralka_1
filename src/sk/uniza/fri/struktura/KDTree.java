@@ -59,7 +59,7 @@ public class KDTree<T extends IData> {
     public boolean insert(T data) {
         TrNode<T> paNode = new TrNode<>(data);
         data.setCurrentNode(paNode);
-        System.out.println("INSERTING NODE (" + data.getDataAtD(0) + ", " + data.getDataAtD(1) + ")");
+        System.out.println("INSERTING NODE (" + data.getDataAtD(0) + ", " + data.getDataAtD(2) + ")");
         if (this.root == null ) {
             this.emplaceRoot(paNode);
             paNode.setLevel(0);

@@ -31,7 +31,16 @@ public class GPSData implements IData {
         this.suradnice = new double[2];
         this.suradnice[0] = paSuradnice[0];
         this.suradnice[1] = paSuradnice[1];
-
+        if (this.smery[0] == 'S' && this.suradnice[0] > 0) {
+            this.suradnice[0] = this.suradnice[0] * (-1);
+        } else if (this.smery[0] == 'N' && this.suradnice[0] < 0) {
+            this.suradnice[0] = this.suradnice[0] * (-1);
+        }
+        if (this.smery[1] == 'W' && this.suradnice[1] > 0) {
+            this.suradnice[1] = this.suradnice[1] * (-1);
+        } else if (this.smery[1] == 'E' && this.suradnice[1] < 0) {
+            this.suradnice[1] = this.suradnice[1] * (-1);
+        }
 
 
     }
@@ -53,11 +62,11 @@ public class GPSData implements IData {
                 }
 
             case 1:
-                if (Integer.valueOf(this.smery[0]) < Integer.valueOf((Character)paData.getDataAtD(dimension))) {
+                if (this.smery[0] < (Character)paData.getDataAtD(1)) {
                     return 1;
-                } else if (Integer.valueOf(this.smery[0]) < Integer.valueOf((Character)paData.getDataAtD(dimension))) {
+                } else if (this.smery[0] > (Character)paData.getDataAtD(1)) {
                     return -1;
-                } else if (Integer.valueOf(this.smery[0]).equals(Integer.valueOf((Character)paData.getDataAtD(dimension)))) {
+                } else if (this.smery[0] == (Character)paData.getDataAtD(1)) {
                     return 0;
                 }
 
@@ -75,11 +84,11 @@ public class GPSData implements IData {
                 }
 
             case 3:
-                if (Integer.valueOf(this.smery[1]) < Integer.valueOf((Character)paData.getDataAtD(dimension))) {
+                if (this.smery[1] < (Character)paData.getDataAtD(3)) {
                     return 1;
-                } else if (Integer.valueOf(this.smery[1]) < Integer.valueOf((Character)paData.getDataAtD(dimension))) {
+                } else if (this.smery[1] > (Character)paData.getDataAtD(3)) {
                     return -1;
-                } else if (Integer.valueOf(this.smery[1]).equals(Integer.valueOf((Character)paData.getDataAtD(dimension)))) {
+                } else if (this.smery[1] == (Character)paData.getDataAtD(3)) {
                     return 0;
                 }
 
@@ -231,5 +240,9 @@ public class GPSData implements IData {
 
     public void setSmerAtD(int dimension, char smer) {
         this.smery[dimension] = smer;
+    }
+
+    public String toString() {
+        return ("Súradnice (" + this.suradnice[0] + ", " + this.suradnice[1] + ") + (" + this.smery[0] + ", " + this.smery[1] + ")");
     }
 }

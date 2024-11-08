@@ -392,7 +392,7 @@ public class TrControl {
 
             ArrayList<Nehnutelnost> nehnutelnostPrekryvS = this.najdiVsetkyNehnutelnosti((Double) uzemnyCelokMazany.getSirka().getDataAtD(0), (Double) uzemnyCelokMazany.getSirka().getDataAtD(2),
                     uzemnyCelokMazany.getSirka().getSmerAtD(0), uzemnyCelokMazany.getSirka().getSmerAtD(1));
-            ArrayList<Nehnutelnost> nehnutelnostPrekryvD = this.najdiVsetkyNehnutelnosti((Double) uzemnyCelokMazany.getDlzka().getDataAtD(0), (Double) uzemnyCelokMazany.getDlzka().getDataAtD(1),
+            ArrayList<Nehnutelnost> nehnutelnostPrekryvD = this.najdiVsetkyNehnutelnosti((Double) uzemnyCelokMazany.getDlzka().getDataAtD(0), (Double) uzemnyCelokMazany.getDlzka().getDataAtD(2),
                     uzemnyCelokMazany.getDlzka().getSmerAtD(0), uzemnyCelokMazany.getDlzka().getSmerAtD(1));
             for (Nehnutelnost nehnutelnost : nehnutelnostPrekryvS) {
                 if (nehnutelnost != null && this.najdiKonkretnyCelok(nehnutelnost.getDlzka()).prekryvaSaSCelkom(uzemnyCelokMazany)) {
@@ -409,9 +409,9 @@ public class TrControl {
             this.stromGPSNehnutelnosti.delete(uzemnyCelokMazany.getSirka());
             this.stromGPSNehnutelnosti.delete(uzemnyCelokMazany.getDlzka());
 
-            ArrayList<Parcela> parcelaPrekryvS = this.najdiVsetkyParcely((Double) uzemnyCelokMazany.getSirka().getDataAtD(0), (Double) uzemnyCelokMazany.getSirka().getDataAtD(1),
+            ArrayList<Parcela> parcelaPrekryvS = this.najdiVsetkyParcely((Double) uzemnyCelokMazany.getSirka().getDataAtD(0), (Double) uzemnyCelokMazany.getSirka().getDataAtD(2),
                     uzemnyCelokMazany.getSirka().getSmerAtD(0), uzemnyCelokMazany.getSirka().getSmerAtD(1));
-            ArrayList<Parcela> parcelaPrekryvD = this.najdiVsetkyParcely((Double) uzemnyCelokMazany.getDlzka().getDataAtD(0), (Double) uzemnyCelokMazany.getDlzka().getDataAtD(1),
+            ArrayList<Parcela> parcelaPrekryvD = this.najdiVsetkyParcely((Double) uzemnyCelokMazany.getDlzka().getDataAtD(0), (Double) uzemnyCelokMazany.getDlzka().getDataAtD(2),
                     uzemnyCelokMazany.getDlzka().getSmerAtD(0), uzemnyCelokMazany.getDlzka().getSmerAtD(1));
             for (Parcela parcela : parcelaPrekryvS) {
                 if (parcela != null && this.najdiKonkretnyCelok(parcela.getDlzka()).prekryvaSaSCelkom(uzemnyCelokMazany)) {
@@ -451,8 +451,8 @@ public class TrControl {
                 char[] dupChary = {'N', 'E', 'N', 'E'};
                 this.pridajParcelu(random.nextInt(), "Prekryvajuca parcela", suradnicePrekryvu, dupChary , false);
             } else {
-                char[] randChary = {(char) (74 + (random.nextInt(2) * 9)), (char) (69 + (random.nextInt(2) * 18)),
-                        (char) (74 + (random.nextInt(2) * 9)), (char) (69 + (random.nextInt(2) * 18))};
+                char[] randChary = {(char) (78 + (random.nextInt(2) * 5)), (char) (69 + (random.nextInt(2) * 18)),
+                        (char) (78 + (random.nextInt(2) * 5)), (char) (69 + (random.nextInt(2) * 18))};
                 double[] suradnice = {Math.round(random.nextDouble(-90, 90)*100.0)/100.0, Math.round(random.nextDouble(-90, 90)*100.0)/100.0,
                         Math.round(random.nextDouble(-90, 90)*100.0)/100.0, Math.round(random.nextDouble(-90, 90)*100.0)/100.0};
                 this.pridajParcelu(random.nextInt(), "Obycajna parcela " + (char) (random.nextInt(25) + 65), suradnice, randChary,true);
@@ -470,8 +470,8 @@ public class TrControl {
                 char[] dupChary = {'N', 'E', 'N', 'E'};
                 this.pridajNehnutelnost(random.nextInt(), "Prekryvajuca Nehnutelnost", suradnicePrekryvu, dupChary,false);
             } else {
-                char[] randChary = {(char) (74 + (random.nextInt(2) * 9)), (char) (69 + (random.nextInt(2) * 18)),
-                        (char) (74 + (random.nextInt(2) * 9)), (char) (69 + (random.nextInt(2) * 18))};
+                char[] randChary = {(char) (78 + (random.nextInt(2) * 2)), (char) (69 + (random.nextInt(2) * 18)),
+                        (char) (78 + (random.nextInt(2) * 2)), (char) (69 + (random.nextInt(2) * 18))};
                 double[] suradnice = {Math.round(random.nextDouble(-90, 90)*100.0)/100.0, Math.round(random.nextDouble(-90, 90)*100.0)/100.0,
                         Math.round(random.nextDouble(-90, 90)*100.0)/100.0, Math.round(random.nextDouble(-90, 90)*100.0)/100.0};
                 this.pridajNehnutelnost(random.nextInt(), "Obycajna Nehnutelnost " + (char) (random.nextInt(25) + 65), suradnice,randChary,false);

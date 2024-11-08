@@ -36,11 +36,17 @@ public class TestTrieda {
         if (!inty && !testData) {
             this.kDStrom = new KDTree<IData>(4);
         }
-
         this.vkladanePrvky = new ArrayList<TrNode<IData>>();
-        for (int i = 0; i < 20000; i++) {
-            this.naplnStromAVypisInty(1);
+        if (inty) {
+            for (int i = 0; i < 20000; i++) {
+                this.naplnStromAVypisInty(1);
+            }
+        } else if (!testData) {
+            for (int i = 0; i < 20000; i++) {
+                this.naplnStromAVypis(1,false);
+            }
         }
+
         for (int i = 0; i < 1; i++) {
             Random random = new Random(10);
             System.out.println("__________________________ SEED: (" + i + ") __________________________");
@@ -70,6 +76,9 @@ public class TestTrieda {
                     }
 
                 } else if (cislo > 0.66) {
+                    if (this.vkladanePrvky.size() < 1) {
+                        break;
+                    }
                     IData hladaneData = this.vkladanePrvky.get(random.nextInt(this.vkladanePrvky.size())).getData();
                     ArrayList<IData> hladaneDataControl = new ArrayList<>();
                     for (TrNode<IData> iDataTrNode : this.vkladanePrvky) {
@@ -130,19 +139,22 @@ public class TestTrieda {
     }
 
     public void naplnStromAVypis(int paPocetPrvkov, boolean paAllowDuplicates) {
-        Random rand = new Random();
+        Random random = new Random();
 
 
         for (int i = 0; i < paPocetPrvkov; i++) {
-            double[] tempPole = {rand.nextDouble(0, 90), rand.nextDouble(0, 90)};
+            double[] tempPole = {random.nextDouble(0, 90), random.nextDouble(0, 90)};
             double[] dupPole = {0.3, 0.8};
 
             char[] dupChary = {'N', 'E'};
-            char[] randChary = {(char) (74 + (rand.nextInt(2) * 9)), (char) (69 + (rand.nextInt(2) * 18))};
+            char[] randChary = {(char) (78 + (random.nextInt(2) * 5)), (char) (69 + (random.nextInt(2) * 18)),
+                    (char) (78 + (random.nextInt(2) * 5)), (char) (69 + (random.nextInt(2) * 18))};
+            double[] suradnice = {Math.round(random.nextDouble(-90, 90)*100.0)/100.0, Math.round(random.nextDouble(-90, 90)*100.0)/100.0,
+                    Math.round(random.nextDouble(-90, 90)*100.0)/100.0, Math.round(random.nextDouble(-90, 90)*100.0)/100.0};
             if (paAllowDuplicates && i % 2 == 1) {
                 tempPole = dupPole;
             }
-            GPSData gpsData = new GPSData( tempPole, randChary);
+            GPSData gpsData = new GPSData( suradnice, randChary);
 
             if (paAllowDuplicates) {
                 gpsData = new GPSData(dupPole, dupChary);
@@ -152,7 +164,7 @@ public class TestTrieda {
 
 
             TrNode gpsNode = new TrNode(gpsData);
-            System.out.println("Inserting Node at (" + tempPole[0] + "), (" + tempPole[1] + ")");
+            System.out.println("Inserting Node at (" + suradnice[0] + "), (" + suradnice[1] + ")");
             this.vkladanePrvky.add(gpsNode);
             this.kDStrom.insert(gpsData);
             }
