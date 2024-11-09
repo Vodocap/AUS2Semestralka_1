@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
  */
 public class MainWindow {
     private JFrame window;
-    private JPanel leftPanel;
+    private JPanel centerPanel;
 
     private TrControl trControl;
 
@@ -22,19 +22,19 @@ public class MainWindow {
     public MainWindow() {
         this.trControl = new TrControl();
         this.window = new JFrame();
-        this.leftPanel = new JPanel();
+        this.centerPanel = new JPanel();
         this.window.setTitle("Aplikácia pre geodetov");
         this.window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.window.setLayout(new BorderLayout(10, 5));
         this.window.setSize(1000, 800);
         this.window.setLocationRelativeTo(null);
-        this.leftPanel.setLayout(new BoxLayout(this.leftPanel, BoxLayout.Y_AXIS));
-        this.leftPanel.setBackground(Color.BLACK);
+        this.centerPanel.setLayout(new BoxLayout(this.centerPanel, BoxLayout.Y_AXIS));
+        this.centerPanel.setBackground(Color.BLACK);
 
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
-        this.window.add(this.leftPanel, BorderLayout.WEST);
+        this.window.add(this.centerPanel, BorderLayout.CENTER);
 
 
         Button najdiCelokButtom = new Button("Najdi uzemne celky");
@@ -44,13 +44,13 @@ public class MainWindow {
         Button vyradCelok = new Button("Vyrad uzemny celok");
         Button nacitajZoSuboru = new Button("Nacitaj databazu zo suborov");
         Button ulozDoSuboru = new Button("Uloz databazu do suborov");
-        this.leftPanel.add(najdiCelokButtom);
-        this.leftPanel.add(pridajCelokButton);
-        this.leftPanel.add(vygenerujCelky);
-        this.leftPanel.add(upravCelok);
-        this.leftPanel.add(vyradCelok);
-        this.leftPanel.add(nacitajZoSuboru);
-        this.leftPanel.add(ulozDoSuboru);
+        this.centerPanel.add(najdiCelokButtom);
+        this.centerPanel.add(pridajCelokButton);
+        this.centerPanel.add(vygenerujCelky);
+        this.centerPanel.add(upravCelok);
+        this.centerPanel.add(vyradCelok);
+        this.centerPanel.add(nacitajZoSuboru);
+        this.centerPanel.add(ulozDoSuboru);
 
 
         upravCelok.addActionListener(new ActionListener() {

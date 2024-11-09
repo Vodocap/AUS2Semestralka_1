@@ -27,7 +27,7 @@ public class GPSData implements IData {
         this.smery[0] = paSmery[0];
         this.smery[1] = paSmery[1];
         Random rand = new Random();
-        this.ID = String.valueOf((char) (rand.nextInt(25) + 65) + " - " + rand.nextLong());
+
         this.suradnice = new double[2];
         this.suradnice[0] = paSuradnice[0];
         this.suradnice[1] = paSuradnice[1];

@@ -7,6 +7,8 @@ import sk.uniza.fri.aplikacia.UzemnyCelok;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
@@ -27,16 +29,17 @@ public class VymazCelok extends JFrame {
     private JButton zrusitButton;
     private JCheckBox parcelaCheckBox;
     private JCheckBox nehnutelnostCheckBox;
-    private JList<Object> list1;
+    private JList<UzemnyCelok> list1;
     private JTextField textField1;
     private JTextField textField2;
     private JButton vymazButton;
     private JPanel jPanel1;
     private JPanel panel1;
-    private JTextField smerXSirka;
-    private JTextField smerYSirka;
-    private JTextField smerXDlzka;
-    private JTextField smerYDlzka;
+    private JComboBox comboSmerXSirka;
+    private JComboBox comboSmerYSirka;
+    private JComboBox comboSmerXDlzka;
+    private JComboBox comboSmerYDlzka;
+    private JTextPane textPane1;
     private MainWindow mainWindow;
     private TrControl trControl;
 
@@ -49,10 +52,6 @@ public class VymazCelok extends JFrame {
         this.list1.setVisibleRowCount(-1);
         this.mainWindow = paMainWindow;
         this.trControl = this.mainWindow.getTrControl();
-        this.smerXSirka.setText(String.valueOf('N'));
-        this.smerYSirka.setText(String.valueOf('E'));
-        this.smerXDlzka.setText(String.valueOf('N'));
-        this.smerYDlzka.setText(String.valueOf('E'));
 
         this.zrusitButton.addActionListener(new ActionListener() {
             @Override
@@ -80,24 +79,36 @@ public class VymazCelok extends JFrame {
 
                     if (VymazCelok.this.parcelaCheckBox.isSelected() && VymazCelok.this.nehnutelnostCheckBox.isSelected()) {
                         uzemnyCeloks1 = VymazCelok.this.trControl.najdiVsetkyObjekty(suradnice[0], suradnice[1],
-                                VymazCelok.this.smerXSirka.getText().charAt(0), VymazCelok.this.smerYSirka.getText().charAt(0));
+                                ((String) VymazCelok.this.comboSmerXSirka.getSelectedItem()).charAt(0), ((String) VymazCelok.this.comboSmerYSirka.getSelectedItem()).charAt(0));
+
                         uzemnyCeloks2 = VymazCelok.this.trControl.najdiVsetkyObjekty(Double.parseDouble(VymazCelok.this.textField1.getText()), Double.parseDouble(VymazCelok.this.textField2.getText())
-                                , VymazCelok.this.smerXDlzka.getText().charAt(0), VymazCelok.this.smerYDlzka.getText().charAt(0));
+                                , ((String) VymazCelok.this.comboSmerXDlzka.getSelectedItem()).charAt(0), ((String) VymazCelok.this.comboSmerYDlzka.getSelectedItem()).charAt(0));
+
                         vysledky.addAll(uzemnyCeloks2);
                         vysledky.addAll(uzemnyCeloks1);
 
                     }
                     if (VymazCelok.this.parcelaCheckBox.isSelected() && !VymazCelok.this.nehnutelnostCheckBox.isSelected()) {
-                        parcelas = VymazCelok.this.trControl.najdiVsetkyParcely(suradnice[0], suradnice[1], VymazCelok.this.smerXSirka.getText().charAt(0), VymazCelok.this.smerYSirka.getText().charAt(0));
+                        parcelas = VymazCelok.this.trControl.najdiVsetkyParcely(suradnice[0], suradnice[1],
+                                ((String) VymazCelok.this.comboSmerXSirka.getSelectedItem()).charAt(0), ((String) VymazCelok.this.comboSmerYSirka.getSelectedItem()).charAt(0));
+
                         vysledky.addAll(parcelas);
 
                     } else if (VymazCelok.this.nehnutelnostCheckBox.isSelected() && !VymazCelok.this.parcelaCheckBox.isSelected()) {
-                        nehnutelnosts = VymazCelok.this.trControl.najdiVsetkyNehnutelnosti(suradnice[0], suradnice[1], VymazCelok.this.smerXSirka.getText().charAt(0), VymazCelok.this.smerYSirka.getText().charAt(0));
+                        nehnutelnosts = VymazCelok.this.trControl.najdiVsetkyNehnutelnosti(suradnice[0], suradnice[1],
+                                ((String) VymazCelok.this.comboSmerXSirka.getSelectedItem()).charAt(0), ((String) VymazCelok.this.comboSmerYSirka.getSelectedItem()).charAt(0));
+
                         vysledky.addAll(nehnutelnosts);
                     }
 
+
                     VymazCelok.this.list1.clearSelection();
-                    VymazCelok.this.list1.setListData(vysledky.toArray());
+                    Object[] objektyArray = vysledky.toArray();
+                    UzemnyCelok[] vyslednyArray = new UzemnyCelok[objektyArray.length];
+                    for (int i = 0; i < vyslednyArray.length; i++) {
+                        vyslednyArray[i] = (UzemnyCelok) objektyArray[i];
+                    }
+                    VymazCelok.this.list1.setListData(vyslednyArray);
 
 
                 } catch (NumberFormatException exception) {
@@ -137,19 +148,33 @@ public class VymazCelok extends JFrame {
                 skontrolujViditelnostTextFieldov();
             }
         });
+
+        this.list1.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+
+                try {
+                    if (e.getValueIsAdjusting() == false && VymazCelok.this.list1.getSelectedValue() != null) {
+                        VymazCelok.this.textPane1.setText(VymazCelok.this.list1.getSelectedValue().getStringObjektov());
+                    }
+                } finally {
+
+                }
+            }
+        });
     }
 
     private void skontrolujViditelnostTextFieldov() {
         if (VymazCelok.this.parcelaCheckBox.isSelected() && VymazCelok.this.nehnutelnostCheckBox.isSelected()) {
             VymazCelok.this.textField1.setVisible(true);
             VymazCelok.this.textField2.setVisible(true);
-            VymazCelok.this.smerXDlzka.setVisible(true);
-            VymazCelok.this.smerYDlzka.setVisible(true);
+            VymazCelok.this.comboSmerXDlzka.setVisible(true);
+            VymazCelok.this.comboSmerYDlzka.setVisible(true);
         } else {
             VymazCelok.this.textField1.setVisible(false);
             VymazCelok.this.textField2.setVisible(false);
-            VymazCelok.this.smerXDlzka.setVisible(false);
-            VymazCelok.this.smerYDlzka.setVisible(false);
+            VymazCelok.this.comboSmerXDlzka.setVisible(false);
+            VymazCelok.this.comboSmerYDlzka.setVisible(false);
         }
     }
 
@@ -312,48 +337,70 @@ public class VymazCelok extends JFrame {
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.WEST;
         jPanel1.add(label5, gbc);
-        smerXSirka = new JTextField();
+        comboSmerXSirka = new JComboBox();
+        final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
+        defaultComboBoxModel1.addElement("N");
+        defaultComboBoxModel1.addElement("S");
+        comboSmerXSirka.setModel(defaultComboBoxModel1);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        jPanel1.add(smerXSirka, gbc);
-        smerYSirka = new JTextField();
+        jPanel1.add(comboSmerXSirka, gbc);
+        comboSmerYSirka = new JComboBox();
+        final DefaultComboBoxModel defaultComboBoxModel2 = new DefaultComboBoxModel();
+        defaultComboBoxModel2.addElement("E");
+        defaultComboBoxModel2.addElement("W");
+        comboSmerYSirka.setModel(defaultComboBoxModel2);
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 3;
-        gbc.gridwidth = 7;
+        gbc.gridwidth = 6;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        jPanel1.add(smerYSirka, gbc);
-        smerXDlzka = new JTextField();
+        jPanel1.add(comboSmerYSirka, gbc);
+        comboSmerXDlzka = new JComboBox();
+        final DefaultComboBoxModel defaultComboBoxModel3 = new DefaultComboBoxModel();
+        defaultComboBoxModel3.addElement("N");
+        defaultComboBoxModel3.addElement("S");
+        comboSmerXDlzka.setModel(defaultComboBoxModel3);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        jPanel1.add(smerXDlzka, gbc);
-        smerYDlzka = new JTextField();
+        jPanel1.add(comboSmerXDlzka, gbc);
+        comboSmerYDlzka = new JComboBox();
+        final DefaultComboBoxModel defaultComboBoxModel4 = new DefaultComboBoxModel();
+        defaultComboBoxModel4.addElement("E");
+        defaultComboBoxModel4.addElement("W");
+        comboSmerYDlzka.setModel(defaultComboBoxModel4);
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 4;
-        gbc.gridwidth = 7;
+        gbc.gridwidth = 6;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        jPanel1.add(smerYDlzka, gbc);
-        final JPanel spacer1 = new JPanel();
+        jPanel1.add(comboSmerYDlzka, gbc);
+        final JScrollPane scrollPane2 = new JScrollPane();
+        scrollPane2.setMinimumSize(new Dimension(100, 100));
+        scrollPane2.setPreferredSize(new Dimension(100, 100));
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel1.add(spacer1, gbc);
-        final JPanel spacer2 = new JPanel();
+        gbc.gridy = 10;
+        gbc.gridwidth = 8;
+        gbc.fill = GridBagConstraints.BOTH;
+        jPanel1.add(scrollPane2, gbc);
+        textPane1 = new JTextPane();
+        scrollPane2.setViewportView(textPane1);
+        final JLabel label6 = new JLabel();
+        label6.setText("Prekryvy:");
         gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel1.add(spacer2, gbc);
+        gbc.gridx = 8;
+        gbc.gridy = 9;
+        gbc.anchor = GridBagConstraints.WEST;
+        jPanel1.add(label6, gbc);
     }
 
     /**

@@ -37,10 +37,11 @@ public class UpravCelok extends JFrame {
     private JTextField textField1;
     private JTextField textField2;
     private JButton upravButton;
-    private JTextField smerXSirka;
-    private JTextField smerYSirka;
-    private JTextField smerXDlzka;
-    private JTextField smerYDlzka;
+    private JComboBox comboSmerXSirka;
+    private JComboBox comboSmerYSirka;
+    private JComboBox comboSmerXDlzka;
+    private JComboBox comboSmerYDlzka;
+    private JTextPane textPane1;
     private MainWindow mainWindow;
     private TrControl trControl;
 
@@ -69,6 +70,10 @@ public class UpravCelok extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    if (UpravCelok.this.list1.getSelectedValue() == null) {
+                        JOptionPane.showMessageDialog(null, "Nie je vybratý žiadny územný celok");
+                        return;
+                    }
 
                     UpravCelokPopup upravCelokPopup = new UpravCelokPopup(UpravCelok.this.trControl, UpravCelok.this.list1.getSelectedValue());
                     upravCelokPopup.setContentPane(upravCelokPopup.$$$getRootComponent$$$());
@@ -98,19 +103,27 @@ public class UpravCelok extends JFrame {
                     ArrayList<Object> vysledky = new ArrayList<>();
 
                     if (UpravCelok.this.parcelaCheckBox.isSelected() && UpravCelok.this.nehnutelnostCheckBox.isSelected()) {
-                        uzemnyCeloks1 = UpravCelok.this.trControl.najdiVsetkyObjekty(suradnice[0], suradnice[1], UpravCelok.this.smerXSirka.getText().charAt(0), UpravCelok.this.smerYSirka.getText().charAt(0));
+                        uzemnyCeloks1 = UpravCelok.this.trControl.najdiVsetkyObjekty(suradnice[0], suradnice[1],
+                                ((String) UpravCelok.this.comboSmerXSirka.getSelectedItem()).charAt(0), ((String) UpravCelok.this.comboSmerYSirka.getSelectedItem()).charAt(0));
+
+
                         uzemnyCeloks2 = UpravCelok.this.trControl.najdiVsetkyObjekty(Double.parseDouble(UpravCelok.this.textField1.getText()), Double.parseDouble(UpravCelok.this.textField2.getText()),
-                                UpravCelok.this.smerXDlzka.getText().charAt(0), UpravCelok.this.smerYDlzka.getText().charAt(0));
+                                ((String) UpravCelok.this.comboSmerXDlzka.getSelectedItem()).charAt(0), ((String) UpravCelok.this.comboSmerYDlzka.getSelectedItem()).charAt(0));
+
                         vysledky.addAll(uzemnyCeloks2);
                         vysledky.addAll(uzemnyCeloks1);
 
                     }
                     if (UpravCelok.this.parcelaCheckBox.isSelected() && !UpravCelok.this.nehnutelnostCheckBox.isSelected()) {
-                        parcelas = UpravCelok.this.trControl.najdiVsetkyParcely(suradnice[0], suradnice[1], UpravCelok.this.smerXSirka.getText().charAt(0), UpravCelok.this.smerYSirka.getText().charAt(0));
+                        parcelas = UpravCelok.this.trControl.najdiVsetkyParcely(suradnice[0], suradnice[1],
+                                ((String) UpravCelok.this.comboSmerXSirka.getSelectedItem()).charAt(0), ((String) UpravCelok.this.comboSmerYSirka.getSelectedItem()).charAt(0));
+
                         vysledky.addAll(parcelas);
 
                     } else if (UpravCelok.this.nehnutelnostCheckBox.isSelected() && !UpravCelok.this.parcelaCheckBox.isSelected()) {
-                        nehnutelnosts = UpravCelok.this.trControl.najdiVsetkyNehnutelnosti(suradnice[0], suradnice[1], UpravCelok.this.smerXSirka.getText().charAt(0), UpravCelok.this.smerYSirka.getText().charAt(0));
+                        nehnutelnosts = UpravCelok.this.trControl.najdiVsetkyNehnutelnosti(suradnice[0], suradnice[1],
+                                ((String) UpravCelok.this.comboSmerXSirka.getSelectedItem()).charAt(0), ((String) UpravCelok.this.comboSmerYSirka.getSelectedItem()).charAt(0));
+
                         vysledky.addAll(nehnutelnosts);
                     }
 
@@ -144,6 +157,19 @@ public class UpravCelok extends JFrame {
             }
         });
 
+        this.list1.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+
+                try {
+                    if (e.getValueIsAdjusting() == false && UpravCelok.this.list1.getSelectedValue() != null) {
+                        UpravCelok.this.textPane1.setText(UpravCelok.this.list1.getSelectedValue().getStringObjektov());
+                    }
+                } finally {
+
+                }
+            }
+        });
 
 
     }
@@ -152,13 +178,15 @@ public class UpravCelok extends JFrame {
         if (UpravCelok.this.parcelaCheckBox.isSelected() && UpravCelok.this.nehnutelnostCheckBox.isSelected()) {
             UpravCelok.this.textField1.setVisible(true);
             UpravCelok.this.textField2.setVisible(true);
-            UpravCelok.this.smerXDlzka.setVisible(true);
-            UpravCelok.this.smerYDlzka.setVisible(true);
+            UpravCelok.this.comboSmerXDlzka.setVisible(true);
+            UpravCelok.this.comboSmerYDlzka.setVisible(true);
+
         } else {
             UpravCelok.this.textField1.setVisible(false);
             UpravCelok.this.textField2.setVisible(false);
-            UpravCelok.this.smerXDlzka.setVisible(false);
-            UpravCelok.this.smerYDlzka.setVisible(false);
+            UpravCelok.this.comboSmerXDlzka.setVisible(false);
+            UpravCelok.this.comboSmerYDlzka.setVisible(false);
+
         }
     }
 
@@ -316,56 +344,76 @@ public class UpravCelok extends JFrame {
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.WEST;
         jPanel1.add(label5, gbc);
-        smerXSirka = new JTextField();
-        smerXSirka.setMinimumSize(new Dimension(50, 35));
-        smerXSirka.setPreferredSize(new Dimension(50, 35));
+        comboSmerXSirka = new JComboBox();
+        final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
+        defaultComboBoxModel1.addElement("N");
+        defaultComboBoxModel1.addElement("S");
+        comboSmerXSirka.setModel(defaultComboBoxModel1);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        jPanel1.add(smerXSirka, gbc);
-        smerYSirka = new JTextField();
-        smerYSirka.setMinimumSize(new Dimension(50, 35));
-        smerYSirka.setPreferredSize(new Dimension(50, 35));
+        jPanel1.add(comboSmerXSirka, gbc);
+        comboSmerYSirka = new JComboBox();
+        final DefaultComboBoxModel defaultComboBoxModel2 = new DefaultComboBoxModel();
+        defaultComboBoxModel2.addElement("E");
+        defaultComboBoxModel2.addElement("W");
+        comboSmerYSirka.setModel(defaultComboBoxModel2);
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 3;
-        gbc.gridwidth = 7;
+        gbc.gridwidth = 6;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        jPanel1.add(smerYSirka, gbc);
-        smerXDlzka = new JTextField();
-        smerXDlzka.setMinimumSize(new Dimension(50, 35));
-        smerXDlzka.setPreferredSize(new Dimension(50, 35));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3;
-        gbc.gridy = 4;
-        gbc.gridwidth = 7;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        jPanel1.add(smerXDlzka, gbc);
-        smerYDlzka = new JTextField();
-        smerYDlzka.setMinimumSize(new Dimension(50, 35));
-        smerYDlzka.setPreferredSize(new Dimension(50, 35));
+        jPanel1.add(comboSmerYSirka, gbc);
+        comboSmerXDlzka = new JComboBox();
+        final DefaultComboBoxModel defaultComboBoxModel3 = new DefaultComboBoxModel();
+        defaultComboBoxModel3.addElement("N");
+        defaultComboBoxModel3.addElement("S");
+        comboSmerXDlzka.setModel(defaultComboBoxModel3);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        jPanel1.add(smerYDlzka, gbc);
+        jPanel1.add(comboSmerXDlzka, gbc);
+        comboSmerYDlzka = new JComboBox();
+        final DefaultComboBoxModel defaultComboBoxModel4 = new DefaultComboBoxModel();
+        defaultComboBoxModel4.addElement("E");
+        defaultComboBoxModel4.addElement("W");
+        comboSmerYDlzka.setModel(defaultComboBoxModel4);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3;
+        gbc.gridy = 4;
+        gbc.gridwidth = 6;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        jPanel1.add(comboSmerYDlzka, gbc);
+        final JScrollPane scrollPane2 = new JScrollPane();
+        scrollPane2.setMinimumSize(new Dimension(100, 100));
+        scrollPane2.setPreferredSize(new Dimension(100, 100));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 10;
+        gbc.gridwidth = 8;
+        gbc.fill = GridBagConstraints.BOTH;
+        jPanel1.add(scrollPane2, gbc);
+        textPane1 = new JTextPane();
+        scrollPane2.setViewportView(textPane1);
+        final JLabel label6 = new JLabel();
+        label6.setText("Prekryvy");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 8;
+        gbc.gridy = 9;
+        gbc.anchor = GridBagConstraints.WEST;
+        jPanel1.add(label6, gbc);
         final JPanel spacer1 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         jPanel.add(spacer1, gbc);
-        final JPanel spacer2 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        jPanel.add(spacer2, gbc);
     }
 
     /**

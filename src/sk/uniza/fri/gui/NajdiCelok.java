@@ -193,10 +193,15 @@ public class NajdiCelok extends JFrame {
         if (NajdiCelok.this.parcelaCheckBox.isSelected() && NajdiCelok.this.nehnutelnostCheckBox.isSelected()) {
             NajdiCelok.this.textField1.setVisible(true);
             NajdiCelok.this.textField2.setVisible(true);
+            NajdiCelok.this.comboSmerXDlzka.setVisible(true);
+            NajdiCelok.this.comboSmerYDlzka.setVisible(true);
+
 
         } else {
             NajdiCelok.this.textField1.setVisible(false);
             NajdiCelok.this.textField2.setVisible(false);
+            NajdiCelok.this.comboSmerXDlzka.setVisible(false);
+            NajdiCelok.this.comboSmerYDlzka.setVisible(false);
         }
     }
 

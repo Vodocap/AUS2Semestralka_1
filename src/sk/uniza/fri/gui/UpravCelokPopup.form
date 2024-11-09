@@ -26,7 +26,7 @@
         <children>
           <component id="d3afc" class="javax.swing.JTextField" binding="textFieldSurYD">
             <constraints>
-              <grid row="2" column="3" row-span="1" col-span="7" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="2" column="3" row-span="1" col-span="6" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
               <gridbag weightx="0.0" weighty="0.0"/>
@@ -38,7 +38,7 @@
           </component>
           <component id="90203" class="javax.swing.JTextField" binding="textFieldSurYH">
             <constraints>
-              <grid row="1" column="3" row-span="1" col-span="7" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="1" column="3" row-span="1" col-span="6" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
               <gridbag weightx="0.0" weighty="0.0"/>
@@ -144,31 +144,6 @@
               <text value="Popis"/>
             </properties>
           </component>
-          <component id="f5a1c" class="javax.swing.JTextField" binding="textFieldSmerXD">
-            <constraints>
-              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-              <gridbag weightx="0.0" weighty="0.0"/>
-            </constraints>
-            <properties>
-              <minimumSize width="50" height="35"/>
-              <preferredSize width="50" height="35"/>
-            </properties>
-          </component>
-          <component id="65081" class="javax.swing.JTextField" binding="textFieldSmerXH">
-            <constraints>
-              <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-              <gridbag weightx="0.0" weighty="0.0"/>
-            </constraints>
-            <properties>
-              <minimumSize width="50" height="35"/>
-              <preferredSize width="50" height="35"/>
-              <text value=""/>
-            </properties>
-          </component>
           <component id="c292e" class="javax.swing.JTextField" binding="textFieldSurXD">
             <constraints>
               <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
@@ -197,20 +172,11 @@
           </component>
           <component id="71b1c" class="javax.swing.JLabel">
             <constraints>
-              <grid row="1" column="10" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="1" column="9" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
               <text value="Súradnice"/>
-            </properties>
-          </component>
-          <component id="5cd99" class="javax.swing.JLabel">
-            <constraints>
-              <grid row="3" column="10" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="0.0" weighty="0.0"/>
-            </constraints>
-            <properties>
-              <text value="Smery"/>
             </properties>
           </component>
           <component id="30d55" class="javax.swing.JLabel">
@@ -240,30 +206,61 @@
               <text value="Zrušiť"/>
             </properties>
           </component>
-          <component id="1fa32" class="javax.swing.JTextField" binding="textFieldSmerYH">
+          <component id="b76d3" class="javax.swing.JComboBox" binding="comboSmerXSirka">
             <constraints>
-              <grid row="3" column="3" row-span="1" col-span="7" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
+              <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <minimumSize width="50" height="35"/>
-              <preferredSize width="50" height="35"/>
-              <text value=""/>
+              <model>
+                <item value="N"/>
+                <item value="S"/>
+              </model>
             </properties>
           </component>
-          <component id="f55fe" class="javax.swing.JTextField" binding="textFieldSmerYD">
+          <component id="f6b8a" class="javax.swing.JComboBox" binding="comboSmerYSirka">
             <constraints>
-              <grid row="4" column="3" row-span="1" col-span="7" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
+              <grid row="3" column="3" row-span="1" col-span="6" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <minimumSize width="50" height="35"/>
-              <preferredSize width="50" height="35"/>
-              <text value=""/>
+              <model>
+                <item value="E"/>
+                <item value="W"/>
+              </model>
+            </properties>
+          </component>
+          <component id="c42e8" class="javax.swing.JComboBox" binding="comboSmerXDlzka">
+            <constraints>
+              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <model>
+                <item value="N"/>
+                <item value="S"/>
+              </model>
+            </properties>
+          </component>
+          <component id="4ff79" class="javax.swing.JComboBox" binding="comboSmerYDlzka">
+            <constraints>
+              <grid row="4" column="3" row-span="1" col-span="6" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <model>
+                <item value="E"/>
+                <item value="W"/>
+              </model>
+            </properties>
+          </component>
+          <component id="5cd99" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="3" column="9" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <text value="Smery"/>
             </properties>
           </component>
         </children>
