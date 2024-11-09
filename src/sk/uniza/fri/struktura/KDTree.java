@@ -59,7 +59,7 @@ public class KDTree<T extends IData> {
     public boolean insert(T data) {
         TrNode<T> paNode = new TrNode<>(data);
         data.setCurrentNode(paNode);
-        System.out.println("INSERTING NODE (" + data.getDataAtD(0) + ", " + data.getDataAtD(2) + ")");
+        System.out.println("INSERTING NODE (" + data.toString() + ")");
         if (this.root == null ) {
             this.emplaceRoot(paNode);
             paNode.setLevel(0);
@@ -234,11 +234,11 @@ public class KDTree<T extends IData> {
 
             TrNode<T> replacerNode = null;
             if (nodeToRemove.hasLeft()) {
-                replacerNode = this.findExtremeOrDuplicates(nodeToRemove.getLeft(), nodeToRemove.getLeft(),true, false, true);
+                replacerNode  = this.minOrMaxSearch(nodeToRemove.getLeft(), true);;
             }
             if (nodeToRemove.hasRight()) {
-                replacerNode = this.findExtremeOrDuplicates(nodeToRemove.getRight(), nodeToRemove.getRight(), false, false, true);
-                this.findExtremeOrDuplicates(replacerNode, nodeToRemove ,  false, true, false);
+                replacerNode = this.minOrMaxSearch(nodeToRemove.getRight(), false);
+                this.findDuplicates(replacerNode, nodeToRemove);
             }
 
             if (replacerNode != null) {
@@ -279,11 +279,11 @@ public class KDTree<T extends IData> {
         while (!nodeToRemove.isLeaf()) {
 
             if (nodeToRemove.hasLeft()) {
-                replacerNode = this.findExtremeOrDuplicates(nodeToRemove.getLeft(), nodeToRemove.getLeft(),true, false, true);
+                replacerNode = this.minOrMaxSearch(nodeToRemove.getLeft(), true);
             }
             if (nodeToRemove.hasRight()) {
-                replacerNode = this.findExtremeOrDuplicates(nodeToRemove.getRight(), nodeToRemove.getRight(), false, false, true);
-                this.findExtremeOrDuplicates(replacerNode, nodeToRemove ,  false, true, false);
+                replacerNode = this.minOrMaxSearch(nodeToRemove.getRight(), false);
+                this.findDuplicates(replacerNode, nodeToRemove);
             }
             if (replacerNode != null) {
 
@@ -307,9 +307,14 @@ public class KDTree<T extends IData> {
     }
 
 
-    private ArrayList<TrNode<T>> minOrMaxSearch(TrNode<T> paNode, boolean minOrMax) {
+    private TrNode<T> minOrMaxSearch(TrNode<T> paNode, boolean minOrMax) {
         ArrayList<TrNode<T>> nodesResult = new ArrayList<>();
         int level = paNode.getLevel() - 1;
+        TrNode<T> minNode = paNode;
+        TrNode<T> maxNode = paNode;
+        if (paNode.isRoot()) {
+            level = paNode.getLevel();
+        }
 
 
         Stack<TrNode<T>> stack = new Stack<>();
@@ -321,7 +326,6 @@ public class KDTree<T extends IData> {
                 stack.push(currentNode);
                 if (minOrMax) {
                     if ((level % this.dimensions) == (currentNode.getLevel() % this.dimensions)) {
-
                         currentNode = currentNode.getRight();
 
                     } else {
@@ -335,6 +339,15 @@ public class KDTree<T extends IData> {
             }
 
             TrNode<T> poppedNode = stack.pop();
+            if (poppedNode.getData().compareTo(minNode.getData(), level % this.dimensions) <= 0) {
+
+                minNode = poppedNode;
+            }
+
+            if (poppedNode.getData().compareTo(maxNode.getData(), level % this.dimensions) >= 0) {
+
+                maxNode = poppedNode;
+            }
             nodesResult.add(poppedNode);
 
             if ((level % this.dimensions) != (poppedNode.getLevel() % this.dimensions)) {
@@ -345,8 +358,11 @@ public class KDTree<T extends IData> {
 
         }
 
+        if (minOrMax) {
+            return maxNode;
+        }
 
-        return nodesResult;
+        return minNode;
     }
 
 
@@ -389,73 +405,56 @@ public class KDTree<T extends IData> {
         return nodesResult;
     }
 
-    private TrNode<T> findExtremeOrDuplicates(TrNode<T> compareNode, TrNode<T> startNode , boolean minOrMax, boolean findDuplicates, boolean searchExtremes) {
-        //this.proccessNode(paNode);
-        TrNode<T> minNode = compareNode;
-        TrNode<T> maxNode = compareNode;
-        int level = compareNode.getLevel() - 1;
-        if (compareNode.isRoot()) {
-            level = compareNode.getLevel();
-        }
+    private void findDuplicates(TrNode<T> compareNode, TrNode<T> startNode) {
+//            ArrayList<TrNode<T>> duplicateCandidates = this.inorder(startNode);
 
+        TrNode<T> currentNode = startNode;
+        int comparisonDimension = startNode.getLevel() % this.dimensions;
 
-        if (findDuplicates) {
-            ArrayList<TrNode<T>> duplicateCandidates = this.inorder(startNode);
-            for (TrNode<T> duplicateCandidate : duplicateCandidates) {
-                if (duplicateCandidate != compareNode) {
-                    if (duplicateCandidate.getData().compareTo(compareNode.getData(), startNode.getLevel() % this.dimensions) == 0) {
+        while (currentNode != null) {
+            if (!currentNode.hasLeft()) {
+                if (currentNode.getData().compareTo(compareNode.getData(), comparisonDimension) == 0) {
+                    this.duplicateData.add(currentNode.getData());
+                }
+                currentNode = currentNode.getRight();
 
-                        this.duplicateData.add(duplicateCandidate.getData());
+            } else {
+                TrNode<T> previousNode = currentNode.getLeft();
+                while (previousNode.getRight() != null && previousNode.getRight() != currentNode) {
+                    previousNode = previousNode.getRight();
+                }
+
+                if (!previousNode.hasRight()) {
+                    previousNode.setRight(currentNode);
+                    currentNode = currentNode.getLeft();
+
+                } else {
+                    previousNode.setRight(null);
+                    if (currentNode.getData().compareTo(compareNode.getData(), comparisonDimension) == 0) {
+
+                        this.duplicateData.add(currentNode.getData());
                     }
+                    currentNode = currentNode.getRight();
                 }
             }
-            this.duplicateData.remove(startNode.getData());
-
-
-
 
         }
-
-        if (searchExtremes) {
-            ArrayList<TrNode<T>> minMaxCandidates = this.minOrMaxSearch(startNode, minOrMax);
-//        System.out.println("Nova prehliadka");
-//        System.out.println(minMaxCandidates.size());
-//        System.out.println("Stara prehliadka");
-//        System.out.println(this.inorder(startNode).size());
-
-            for (TrNode<T> minMaxCandidate : minMaxCandidates) {
+        this.duplicateData.remove(startNode.getData());
 
 
 
-                if (minMaxCandidate != compareNode) {
-
-
-                    if (minMaxCandidate.getData().compareTo(minNode.getData(), level % this.dimensions) <= 0) {
-
-                        minNode = minMaxCandidate;
-                    }
-
-                    if (minMaxCandidate.getData().compareTo(maxNode.getData(), level % this.dimensions) >= 0) {
-
-                        maxNode = minMaxCandidate;
-                    }
-                }
-        }
+//            for (TrNode<T> duplicateCandidate : duplicateCandidates) {
+//                if (duplicateCandidate != compareNode) {
+//                    if (duplicateCandidate.getData().compareTo(compareNode.getData(), startNode.getLevel() % this.dimensions) == 0) {
+//
+//                        this.duplicateData.add(duplicateCandidate.getData());
+//                    }
+//                }
+//            }
+//            this.duplicateData.remove(startNode.getData());
 
 
 
-
-
-
-
-
-            }
-
-        if (minOrMax) {
-            return maxNode;
-        } else {
-            return minNode;
-        }
 
 
     }

@@ -37,18 +37,18 @@ public class TestTrieda {
             this.kDStrom = new KDTree<IData>(4);
         }
         this.vkladanePrvky = new ArrayList<TrNode<IData>>();
-        if (inty) {
-            for (int i = 0; i < 20000; i++) {
-                this.naplnStromAVypisInty(1);
-            }
-        } else if (!testData) {
-            for (int i = 0; i < 20000; i++) {
-                this.naplnStromAVypis(1,false);
-            }
-        }
+//        if (inty) {
+//            for (int i = 0; i < 20000; i++) {
+//                this.naplnStromAVypisInty(1);
+//            }
+//        } else if (!testData) {
+//            for (int i = 0; i < 20000; i++) {
+//                this.naplnStromAVypis(1,false);
+//            }
+//        }
 
-        for (int i = 0; i < 1; i++) {
-            Random random = new Random(10);
+        for (int i = 0; i < 100000; i++) {
+            Random random = new Random(i);
             System.out.println("__________________________ SEED: (" + i + ") __________________________");
 
             if (testData) {
@@ -69,6 +69,7 @@ public class TestTrieda {
                         }
 
                     }
+                    this.skontrolujStrom();
                 } else if (cislo > 0.33 && cislo < 0.66) {
                     if (!(this.vkladanePrvky.isEmpty())) {
                         this.deletujAVypisSkontroluj(1);
@@ -164,7 +165,6 @@ public class TestTrieda {
 
 
             TrNode gpsNode = new TrNode(gpsData);
-            System.out.println("Inserting Node at (" + suradnice[0] + "), (" + suradnice[1] + ")");
             this.vkladanePrvky.add(gpsNode);
             this.kDStrom.insert(gpsData);
             }
@@ -222,7 +222,7 @@ public class TestTrieda {
         for (int i = 0; i < paPocetPrvkov; i++) {
             int rand_index = rand.nextInt(this.vkladanePrvky.size());
             TrNode<IData> vkladanyNode = this.vkladanePrvky.get(rand_index);
-            System.out.println("Deleting Node at (" + vkladanyNode.getData().getDataAtD(0) + "), (" + vkladanyNode.getData().getDataAtD(1) + ")");
+            System.out.println("DELETING NODE AT (" + vkladanyNode.getData().toString() + ")");
             this.kDStrom.delete(this.vkladanePrvky.get(rand_index).getData());
             this.vkladanePrvky.remove(this.vkladanePrvky.get(rand_index));
 
