@@ -48,9 +48,9 @@ public class UpravCelokPopup extends JFrame {
         this.textFieldCislo.setText(String.valueOf(this.upravovanyCelok.getCislo()));
         this.textFieldPopis.setText(this.upravovanyCelok.getPopis());
         this.textFieldSurXH.setText(String.valueOf(this.upravovanyCelok.getSirka().getDataAtD(0)));
-        this.textFieldSurYH.setText(String.valueOf(this.upravovanyCelok.getSirka().getDataAtD(2)));
+        this.textFieldSurYH.setText(String.valueOf(this.upravovanyCelok.getSirka().getDataAtD(1)));
         this.textFieldSurXD.setText(String.valueOf(this.upravovanyCelok.getDlzka().getDataAtD(0)));
-        this.textFieldSurYD.setText(String.valueOf(this.upravovanyCelok.getDlzka().getDataAtD(2)));
+        this.textFieldSurYD.setText(String.valueOf(this.upravovanyCelok.getDlzka().getDataAtD(1)));
         this.comboSmerXSirka.setSelectedItem(String.valueOf(this.upravovanyCelok.getSirka().getSmerAtD(0)));
         this.comboSmerYSirka.setSelectedItem(String.valueOf(this.upravovanyCelok.getSirka().getSmerAtD(1)));
         this.comboSmerXDlzka.setSelectedItem(String.valueOf(this.upravovanyCelok.getDlzka().getSmerAtD(0)));
