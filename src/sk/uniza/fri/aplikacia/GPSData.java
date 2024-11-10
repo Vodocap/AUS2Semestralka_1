@@ -47,53 +47,17 @@ public class GPSData implements IData {
     @Override
     public int compareTo(IData paData, int dimension) {
 
-        switch (dimension) {
-            case 0:
-                double porovnavajuce = this.suradnice[dimension];
-                double porovnavaneS = (Double) paData.getDataAtD(dimension);
-                double epsilon = 1e-9;
+        double porovnavajuce = this.suradnice[dimension];
+        double porovnavaneS = (Double) paData.getDataAtD(dimension);
+        double epsilon = 1e-9;
 
-                if (Math.abs(porovnavaneS - porovnavajuce) < epsilon) {
-                    return 0;
-                } else if (porovnavajuce > porovnavaneS) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-
-            case 1:
-                if (this.smery[0] < (Character)paData.getDataAtD(1)) {
-                    return 1;
-                } else if (this.smery[0] > (Character)paData.getDataAtD(1)) {
-                    return -1;
-                } else if (this.smery[0] == (Character)paData.getDataAtD(1)) {
-                    return 0;
-                }
-
-            case 2:
-                porovnavajuce = this.suradnice[1];
-                porovnavaneS = (Double) paData.getDataAtD(2);
-                epsilon = 1e-9;
-
-                if (Math.abs(porovnavaneS - porovnavajuce) < epsilon) {
-                    return 0;
-                } else if (porovnavajuce > porovnavaneS) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-
-            case 3:
-                if (this.smery[1] < (Character)paData.getDataAtD(3)) {
-                    return 1;
-                } else if (this.smery[1] > (Character)paData.getDataAtD(3)) {
-                    return -1;
-                } else if (this.smery[1] == (Character)paData.getDataAtD(3)) {
-                    return 0;
-                }
-
+        if (Math.abs(porovnavaneS - porovnavajuce) < epsilon) {
+            return 0;
+        } else if (porovnavajuce > porovnavaneS) {
+            return 1;
+        } else {
+            return -1;
         }
-        return 2;
 
 
     }
@@ -102,28 +66,17 @@ public class GPSData implements IData {
     @Override
     public boolean equals(IData paData, boolean compareID) {
         int rovneSuradnice = 0;
-        if (this.compareTo(paData, 0) == 0) {
-            rovneSuradnice++;
+        for (int i = 0; i < this.suradnice.length; i++) {
+            if (this.compareTo(paData, i) == 0) {
+                rovneSuradnice++;
+            }
         }
-        if (this.compareTo(paData, 2) == 0) {
-            rovneSuradnice++;
-        }
-
-
-        int rovneSmery = 0;
-        if (this.compareTo(paData, 1) == 0) {
-            rovneSmery++;
-        }
-        if (this.compareTo(paData, 3) == 0) {
-            rovneSmery++;
-        }
-
         if (compareID) {
-            if (rovneSuradnice == this.suradnice.length && this.ID.equals(paData.getID()) && rovneSmery == this.smery.length) {
+            if (rovneSuradnice == this.suradnice.length && this.ID.equals(paData.getID())) {
                 return true;
             }
         } else {
-            if (rovneSuradnice == this.suradnice.length && rovneSmery == this.smery.length) {
+            if (rovneSuradnice == this.suradnice.length) {
                 return true;
             }
         }
@@ -133,21 +86,7 @@ public class GPSData implements IData {
 
     @Override
     public Object getDataAtD(int dimension) {
-        switch (dimension) {
-            case 0:
-                return this.suradnice[0];
-
-            case 1:
-                return this.smery[0];
-
-            case 2:
-                return this.suradnice[1];
-
-            case 3:
-                return this.smery[1];
-
-        }
-        return null;
+        return this.suradnice[dimension];
     }
     
 
@@ -178,7 +117,7 @@ public class GPSData implements IData {
         suradniceCopy = new double[2];
         char[] smeryCopy = new char[2];
         suradniceCopy[0] = (Double) this.getDataAtD(0);
-        suradniceCopy[1] = (Double) this.getDataAtD(2);
+        suradniceCopy[1] = (Double) this.getDataAtD(1);
         smeryCopy[0] = this.getSmerAtD(0);
         smeryCopy[1] = this.getSmerAtD(1);
         GPSData copiedData = new GPSData(suradniceCopy, smeryCopy);
@@ -236,10 +175,6 @@ public class GPSData implements IData {
 
     public char getSmerAtD(int dimension) {
         return this.smery[dimension];
-    }
-
-    public void setSmerAtD(int dimension, char smer) {
-        this.smery[dimension] = smer;
     }
 
     public String toString() {
