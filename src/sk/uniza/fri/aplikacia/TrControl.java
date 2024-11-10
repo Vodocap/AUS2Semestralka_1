@@ -470,8 +470,8 @@ public class TrControl {
                 char[] dupChary = {'N', 'E', 'N', 'E'};
                 this.pridajNehnutelnost(random.nextInt(), "Prekryvajuca Nehnutelnost", suradnicePrekryvu, dupChary,false);
             } else {
-                char[] randChary = {(char) (78 + (random.nextInt(2) * 2)), (char) (69 + (random.nextInt(2) * 18)),
-                        (char) (78 + (random.nextInt(2) * 2)), (char) (69 + (random.nextInt(2) * 18))};
+                char[] randChary = {(char) (78 + (random.nextInt(2) * 5)), (char) (69 + (random.nextInt(2) * 18)),
+                        (char) (78 + (random.nextInt(2) * 5)), (char) (69 + (random.nextInt(2) * 18))};
                 double[] suradnice = {Math.round(random.nextDouble(-90, 90)*100.0)/100.0, Math.round(random.nextDouble(-90, 90)*100.0)/100.0,
                         Math.round(random.nextDouble(-90, 90)*100.0)/100.0, Math.round(random.nextDouble(-90, 90)*100.0)/100.0};
                 this.pridajNehnutelnost(random.nextInt(), "Obycajna Nehnutelnost " + (char) (random.nextInt(25) + 65), suradnice,randChary,false);

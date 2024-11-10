@@ -75,7 +75,7 @@ public class UpravCelok extends JFrame {
                         return;
                     }
 
-                    UpravCelokPopup upravCelokPopup = new UpravCelokPopup(UpravCelok.this.trControl, UpravCelok.this.list1.getSelectedValue());
+                    UpravCelokPopup upravCelokPopup = new UpravCelokPopup(UpravCelok.this.trControl, UpravCelok.this.list1.getSelectedValue(), UpravCelok.this);
                     upravCelokPopup.setContentPane(upravCelokPopup.$$$getRootComponent$$$());
                     upravCelokPopup.pack();
                     upravCelokPopup.setVisible(true);
@@ -84,6 +84,7 @@ public class UpravCelok extends JFrame {
                 } catch (NumberFormatException exception) {
                     JOptionPane.showMessageDialog(null, "Nie je vybratý žiadny územný celok");
                 }
+                UpravCelok.this.najdiMetoda();
             }
         });
 
@@ -92,48 +93,7 @@ public class UpravCelok extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    double[] suradnice = new double[2];
-                    suradnice[0] = Double.parseDouble(UpravCelok.this.textFieldSurXH.getText());
-                    suradnice[1] = Double.parseDouble(UpravCelok.this.textFieldSurYH.getText());
-
-                    ArrayList<Parcela> parcelas = new ArrayList<>();
-                    ArrayList<Nehnutelnost> nehnutelnosts = new ArrayList<>();
-                    ArrayList<UzemnyCelok> uzemnyCeloks1 = new ArrayList<>();
-                    ArrayList<UzemnyCelok> uzemnyCeloks2 = new ArrayList<>();
-                    ArrayList<Object> vysledky = new ArrayList<>();
-
-                    if (UpravCelok.this.parcelaCheckBox.isSelected() && UpravCelok.this.nehnutelnostCheckBox.isSelected()) {
-                        uzemnyCeloks1 = UpravCelok.this.trControl.najdiVsetkyObjekty(suradnice[0], suradnice[1],
-                                ((String) UpravCelok.this.comboSmerXSirka.getSelectedItem()).charAt(0), ((String) UpravCelok.this.comboSmerYSirka.getSelectedItem()).charAt(0));
-
-
-                        uzemnyCeloks2 = UpravCelok.this.trControl.najdiVsetkyObjekty(Double.parseDouble(UpravCelok.this.textField1.getText()), Double.parseDouble(UpravCelok.this.textField2.getText()),
-                                ((String) UpravCelok.this.comboSmerXDlzka.getSelectedItem()).charAt(0), ((String) UpravCelok.this.comboSmerYDlzka.getSelectedItem()).charAt(0));
-
-                        vysledky.addAll(uzemnyCeloks2);
-                        vysledky.addAll(uzemnyCeloks1);
-
-                    }
-                    if (UpravCelok.this.parcelaCheckBox.isSelected() && !UpravCelok.this.nehnutelnostCheckBox.isSelected()) {
-                        parcelas = UpravCelok.this.trControl.najdiVsetkyParcely(suradnice[0], suradnice[1],
-                                ((String) UpravCelok.this.comboSmerXSirka.getSelectedItem()).charAt(0), ((String) UpravCelok.this.comboSmerYSirka.getSelectedItem()).charAt(0));
-
-                        vysledky.addAll(parcelas);
-
-                    } else if (UpravCelok.this.nehnutelnostCheckBox.isSelected() && !UpravCelok.this.parcelaCheckBox.isSelected()) {
-                        nehnutelnosts = UpravCelok.this.trControl.najdiVsetkyNehnutelnosti(suradnice[0], suradnice[1],
-                                ((String) UpravCelok.this.comboSmerXSirka.getSelectedItem()).charAt(0), ((String) UpravCelok.this.comboSmerYSirka.getSelectedItem()).charAt(0));
-
-                        vysledky.addAll(nehnutelnosts);
-                    }
-
-                    UpravCelok.this.list1.clearSelection();
-                    Object[] objektyArray = vysledky.toArray();
-                    UzemnyCelok[] vyslednyArray = new UzemnyCelok[objektyArray.length];
-                    for (int i = 0; i < vyslednyArray.length; i++) {
-                        vyslednyArray[i] = (UzemnyCelok) objektyArray[i];
-                    }
-                    UpravCelok.this.list1.setListData(vyslednyArray);
+                    UpravCelok.this.najdiMetoda();
 
 
                 } catch (NumberFormatException exception) {
@@ -164,6 +124,8 @@ public class UpravCelok extends JFrame {
                 try {
                     if (e.getValueIsAdjusting() == false && UpravCelok.this.list1.getSelectedValue() != null) {
                         UpravCelok.this.textPane1.setText(UpravCelok.this.list1.getSelectedValue().getStringObjektov());
+                    } else if (UpravCelok.this.list1.getSelectedValue() == null) {
+                        UpravCelok.this.textPane1.setText("");
                     }
                 } finally {
 
@@ -172,6 +134,51 @@ public class UpravCelok extends JFrame {
         });
 
 
+    }
+
+    public void najdiMetoda() {
+        double[] suradnice = new double[2];
+        suradnice[0] = Double.parseDouble(UpravCelok.this.textFieldSurXH.getText());
+        suradnice[1] = Double.parseDouble(UpravCelok.this.textFieldSurYH.getText());
+
+        ArrayList<Parcela> parcelas = new ArrayList<>();
+        ArrayList<Nehnutelnost> nehnutelnosts = new ArrayList<>();
+        ArrayList<UzemnyCelok> uzemnyCeloks1 = new ArrayList<>();
+        ArrayList<UzemnyCelok> uzemnyCeloks2 = new ArrayList<>();
+        ArrayList<Object> vysledky = new ArrayList<>();
+
+        if (UpravCelok.this.parcelaCheckBox.isSelected() && UpravCelok.this.nehnutelnostCheckBox.isSelected()) {
+            uzemnyCeloks1 = UpravCelok.this.trControl.najdiVsetkyObjekty(suradnice[0], suradnice[1],
+                    ((String) UpravCelok.this.comboSmerXSirka.getSelectedItem()).charAt(0), ((String) UpravCelok.this.comboSmerYSirka.getSelectedItem()).charAt(0));
+
+
+            uzemnyCeloks2 = UpravCelok.this.trControl.najdiVsetkyObjekty(Double.parseDouble(UpravCelok.this.textField1.getText()), Double.parseDouble(UpravCelok.this.textField2.getText()),
+                    ((String) UpravCelok.this.comboSmerXDlzka.getSelectedItem()).charAt(0), ((String) UpravCelok.this.comboSmerYDlzka.getSelectedItem()).charAt(0));
+
+            vysledky.addAll(uzemnyCeloks2);
+            vysledky.addAll(uzemnyCeloks1);
+
+        }
+        if (UpravCelok.this.parcelaCheckBox.isSelected() && !UpravCelok.this.nehnutelnostCheckBox.isSelected()) {
+            parcelas = UpravCelok.this.trControl.najdiVsetkyParcely(suradnice[0], suradnice[1],
+                    ((String) UpravCelok.this.comboSmerXSirka.getSelectedItem()).charAt(0), ((String) UpravCelok.this.comboSmerYSirka.getSelectedItem()).charAt(0));
+
+            vysledky.addAll(parcelas);
+
+        } else if (UpravCelok.this.nehnutelnostCheckBox.isSelected() && !UpravCelok.this.parcelaCheckBox.isSelected()) {
+            nehnutelnosts = UpravCelok.this.trControl.najdiVsetkyNehnutelnosti(suradnice[0], suradnice[1],
+                    ((String) UpravCelok.this.comboSmerXSirka.getSelectedItem()).charAt(0), ((String) UpravCelok.this.comboSmerYSirka.getSelectedItem()).charAt(0));
+
+            vysledky.addAll(nehnutelnosts);
+        }
+
+        UpravCelok.this.list1.clearSelection();
+        Object[] objektyArray = vysledky.toArray();
+        UzemnyCelok[] vyslednyArray = new UzemnyCelok[objektyArray.length];
+        for (int i = 0; i < vyslednyArray.length; i++) {
+            vyslednyArray[i] = (UzemnyCelok) objektyArray[i];
+        }
+        UpravCelok.this.list1.setListData(vyslednyArray);
     }
 
     private void skontrolujViditelnostTextFieldov() {

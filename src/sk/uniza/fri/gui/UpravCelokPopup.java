@@ -34,14 +34,16 @@ public class UpravCelokPopup extends JFrame {
     private JComboBox comboSmerYSirka;
     private JComboBox comboSmerXDlzka;
     private JComboBox comboSmerYDlzka;
+    private UpravCelok otecOkno;
 
     private UzemnyCelok upravovanyCelok;
     private TrControl trControl;
 
-    public UpravCelokPopup(TrControl paTrControl, UzemnyCelok paUpravovanyCelok) {
+    public UpravCelokPopup(TrControl paTrControl, UzemnyCelok paUpravovanyCelok, UpravCelok povodneOkno) {
         this.createUIComponents();
         $$$setupUI$$$();
         this.trControl = paTrControl;
+        this.otecOkno = povodneOkno;
         this.upravovanyCelok = paUpravovanyCelok;
         this.textFieldCislo.setText(String.valueOf(this.upravovanyCelok.getCislo()));
         this.textFieldPopis.setText(this.upravovanyCelok.getPopis());
@@ -83,6 +85,8 @@ public class UpravCelokPopup extends JFrame {
                         UpravCelokPopup.this.trControl.upravNehnutelnost((Nehnutelnost) UpravCelokPopup.this.upravovanyCelok,
                                 Integer.parseInt(UpravCelokPopup.this.textFieldCislo.getText()), UpravCelokPopup.this.textFieldPopis.getText(), suradnice, smery);
                     }
+                    UpravCelokPopup.this.otecOkno.najdiMetoda();
+                    UpravCelokPopup.this.dispose();
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Prosím zadajte platné hodnoty");
 

@@ -169,6 +169,8 @@ public class NajdiCelok extends JFrame {
                 try {
                     if (e.getValueIsAdjusting() == false && NajdiCelok.this.list1.getSelectedValue() != null) {
                         NajdiCelok.this.textPane1.setText(NajdiCelok.this.list1.getSelectedValue().getStringObjektov());
+                    } else if (NajdiCelok.this.list1.getSelectedValue() == null) {
+                        NajdiCelok.this.textPane1.setText("");
                     }
                 } finally {
 
