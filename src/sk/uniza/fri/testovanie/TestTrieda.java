@@ -34,20 +34,20 @@ public class TestTrieda {
     public void generatorOperacii(int pocetoperacii, boolean inty, boolean testData) {
         this.kDStrom = new KDTree<IData>(2);
         if (!inty && !testData) {
-            this.kDStrom = new KDTree<IData>(4);
+            this.kDStrom = new KDTree<IData>(2);
         }
         this.vkladanePrvky = new ArrayList<TrNode<IData>>();
-//        if (inty) {
-//            for (int i = 0; i < 20000; i++) {
-//                this.naplnStromAVypisInty(1);
-//            }
-//        } else if (!testData) {
-//            for (int i = 0; i < 20000; i++) {
-//                this.naplnStromAVypis(1,false);
-//            }
-//        }
+        if (inty) {
+            for (int i = 0; i < 20000; i++) {
+                this.naplnStromAVypisInty(1);
+            }
+        } else if (!testData) {
+            for (int i = 0; i < 20000; i++) {
+                this.naplnStromAVypis(1,false);
+            }
+        }
 
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 1; i++) {
             Random random = new Random(i);
             System.out.println("__________________________ SEED: (" + i + ") __________________________");
 
