@@ -373,7 +373,7 @@ public class TrControl {
 
         if (!novaSirka.equals(originalNehnutelnost.getSirka(), false) || !novaDlzka.equals(originalNehnutelnost.getDlzka(), false)) {
             this.vyradUzemnyCelok(originalNehnutelnost);
-            this.pridajNehnutelnost(noveCislo, novyPopis, noveSuradnice, noveChary, false);
+            this.pridajNehnutelnost(noveCislo, novyPopis, noveSuradnice, noveChary, true);
 
         }
     }

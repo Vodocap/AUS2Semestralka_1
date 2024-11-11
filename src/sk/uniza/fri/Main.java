@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         TestTrieda testTrieda = new TestTrieda(2);
 
-        testTrieda.generatorOperacii(100, true, false);
+        testTrieda.generatorOperacii(100, false, false);
 //        testTrieda.testovaciePripady();
 //        TrControl trControl = new TrControl();
 //        double [] suradnice = {10, 20, 30, 40};
