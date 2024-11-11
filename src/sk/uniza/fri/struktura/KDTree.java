@@ -234,7 +234,7 @@ public class KDTree<T extends IData> {
 
             TrNode<T> replacerNode = null;
             if (nodeToRemove.hasLeft()) {
-                replacerNode  = this.minOrMaxSearch(nodeToRemove.getLeft(), true);;
+                replacerNode  = this.minOrMaxSearch(nodeToRemove.getLeft(), true);
             }
             if (nodeToRemove.hasRight()) {
                 replacerNode = this.minOrMaxSearch(nodeToRemove.getRight(), false);
@@ -406,7 +406,6 @@ public class KDTree<T extends IData> {
     }
 
     private void findDuplicates(TrNode<T> compareNode, TrNode<T> startNode) {
-//            ArrayList<TrNode<T>> duplicateCandidates = this.inorder(startNode);
 
         TrNode<T> currentNode = startNode;
         int comparisonDimension = startNode.getLevel() % this.dimensions;
