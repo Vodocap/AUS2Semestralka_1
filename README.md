@@ -110,8 +110,7 @@ Projekt je rozdelený do troch hlavných balíčkov:
 ### 1. Vloženie do stromu
 - **Metóda `insert`:**
   - Prijíma generický typ údajov `IData`.
-  - Automaticky nastaví referencie a pozíciu v strome.
-  - Implementuje kontrolu duplicity.
+  - Vloží ich do stromu
 
 ### 2. Vyhľadávanie
 - **`find`:** Nájde konkrétny objekt podľa jeho ID.
