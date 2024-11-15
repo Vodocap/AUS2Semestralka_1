@@ -12,8 +12,6 @@ Tento projekt je semestrálna práca vypracovaná ako súčasť predmetu **Algor
 - [Použitie](#použitie)
 - [Zložitosť-algoritmov](#zložitosť-algoritmov)
 - [Príklady-metód](#príklady-metód)
-- [Prispievanie](#prispievanie)
-
 ---
 
 ## Funkcionalita
@@ -122,11 +120,4 @@ Projekt je rozdelený do troch hlavných balíčkov:
 
 ---
 
-## Prispievanie
-
-Ak chcete prispieť:
-1. Vytvorte **fork** tohto repozitára.
-2. Vytvorte novú vetvu pre svoju úpravu.
-3. Pošlite **pull request**.
----
 
