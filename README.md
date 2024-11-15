@@ -10,7 +10,6 @@ Tento projekt je semestrálna práca vypracovaná ako súčasť predmetu **Algor
 - [Štruktúra-projektu](#štruktúra-projektu)
 - [Inštalácia](#inštalácia)
 - [Použitie](#použitie)
-- [Diagram-tried](#diagram-tried)
 - [Zložitosť-algoritmov](#zložitosť-algoritmov)
 - [Príklady-metód](#príklady-metód)
 - [Prispievanie](#prispievanie)
