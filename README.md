@@ -1,6 +1,6 @@
 # Implementácia K-D stromu v aplikácii pre geodetov
 
-Tento projekt je semestrálna práca vypracovaná ako súčasť predmetu **Algoritmy a dátové štruktúry 2**. Cieľom je vytvoriť aplikáciu, ktorá implementuje K-D strom na správu a vyhľadávanie geografických údajov, vrátane parciel a nehnuteľností.
+Tento projekt je semestrálna práca vypracovaná ako súčasť predmetu **Algoritmy a dátové štruktúry 2**. Cieľom je vytvoriť aplikáciu, ktorá implementuje K-D strom na správu a vyhľadávanie geografických údajov, vrátane parciel a nehnuteľností. Štruktúra v danej implementácií však podporuje len bodové vyhľadávanie.
 
 ---
 
